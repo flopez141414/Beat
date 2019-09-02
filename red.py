@@ -7,7 +7,7 @@ def window():
 
     window = QtWidgets.QWidget()
 
-    window.setWindowTitle("Red")
+    window.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")
 
     window.setGeometry(50, 50, 500, 500)
 
