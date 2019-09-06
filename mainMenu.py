@@ -1,46 +1,67 @@
 import sys
-from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QAction, QTabWidget, QVBoxLayout
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QAction
+from PyQt5.QtCore import pyqtSlot
 
 
-class Window(QMainWindow):
+class App(QMainWindow):
+
     def __init__(self):
         super().__init__()
-
-        self.title = "BEAT: Behavior Extraction and Analysis Tool"
-        self.top = 100
-        self.left = 100
-        self.width = 680
-        self.height = 500
-        self.setWindowIcon(QtGui.QIcon("icon.png")) # add icon
-
-        self.InitWindow()
-
-    def InitWindow(self):
-        mainMenu = self.menuBar() # init menuBar
-
-        projectMenu = mainMenu.addMenu("Project")
-        analysisMenu = mainMenu.addMenu("Analysis")
-        pluginMenu = mainMenu.addMenu("Plugin Management")
-        POImenu = mainMenu.addMenu("Points of Interest")
-        docMenu = mainMenu.addMenu("Documentation")
-
-
-        # QAction to exit using ctrl + E
-        #Deje esto aqui nomas para testing, esto agrega opciones para menubar
-        #Lo que queremos aser es que los botones de menu bar cambien la vista del panel
-        exitButton = QAction(QIcon("exit.png"), 'Exit', self) # image name, label, self
-        exitButton.setShortcut("Ctrl+E")
-        exitButton.setStatusTip("Exit Application")
-        exitButton.triggered.connect(self.close)
-        projectMenu.addAction(exitButton)
-
-
+        self.title = 'BEAT: Behavior Extraction and Analysis Tool'
+        self.left = 0
+        self.top = 0
+        self.width = 800
+        self.height = 800
         self.setWindowTitle(self.title)
-        self.setGeometry(self.top, self.left, self.width, self.height)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        self.table_widget = MyTableWidget(self)
+        self.setCentralWidget(self.table_widget)
+
         self.show()
 
-App = QApplication(sys.argv)
-window = Window()
-sys.exit(App.exec())
+
+class MyTableWidget(QWidget):
+
+    def __init__(self, parent):
+        super(QWidget, self).__init__(parent)
+        self.layout = QVBoxLayout(self)
+
+        # Initialize tab screen
+        self.tabs = QTabWidget()
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+        self.tab3 = QWidget()
+        self.tab4 = QWidget()
+        self.tab5 = QWidget()
+        self.tabs.resize(100, 100)
+
+        # Add tabs
+        self.tabs.addTab(self.tab1, "Project")
+        self.tabs.addTab(self.tab2, "Analysis")
+        self.tabs.addTab(self.tab3, "Plugin and Management")
+        self.tabs.addTab(self.tab4, "Points of Interest")
+        self.tabs.addTab(self.tab5, "Documentation")
+
+        # Create first tab This is how you add elements to a tab
+        self.tab1.layout = QVBoxLayout(self)
+        #self.pushButton1 = QPushButton("PyQt5 button")
+      #  self.tab1.layout.addWidget(self.pushButton1)
+       # self.tab1.setLayout(self.tab1.layout)
+
+        # Add tabs to widget
+        self.layout.addWidget(self.tabs)
+        self.setLayout(self.layout)
+
+    @pyqtSlot()
+    def on_click(self):
+        print("\n")
+        for currentQTableWidgetItem in self.tableWidget.selectedItems():
+            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = App()
+    sys.exit(app.exec_())
