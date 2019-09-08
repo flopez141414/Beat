@@ -7,7 +7,7 @@ def window():
 
     window = QtWidgets.QWidget()
 
-    window.setWindowTitle("Red")
+    window.setWindowTitle("BEAT")
 
     window.setGeometry(50, 50, 500, 500)
 
