@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore
+
+from analysisTab import AnalysisTab
 from projectTab import ProjectTab
 
 
@@ -15,7 +17,7 @@ def main():
     
     tabWidget = QTabWidget()
     tabWidget.addTab(ProjectTab(), "project tab")
-#     tabWidget.addTab(AnalysisTab(), "AnalysisTab")
+    tabWidget.addTab(AnalysisTab(), "AnalysisTab")
 #     tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
 #     tabWidget.addTab(PointsOfInterestTab(), "PointsOfInterestTab")
 #     tabWidget.addTab(DocumentationTab(), "DocumentationTab")
