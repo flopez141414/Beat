@@ -45,19 +45,19 @@ class AnalysisTab(QWidget):
         leftPanelLabel = QLabel('Point of Interest View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
-        leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
+        leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
-        leftLayout.addWidget(searchButton, 1, 4, 1, 1)
-        leftLayout.addWidget(poiList, 2, 0, 1, 5)
+        leftLayout.addWidget(searchButton, 1, 3, 1, 1)
+        leftLayout.addWidget(poiList, 2, 0, 1, 4)
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         poiContentArea = QTextEdit()
         terminal = QTextEdit()
-        commentButton = QPushButton('C')
-        outputButton = QPushButton('O')
-        analysisButton = QPushButton('A')
+        commentButton = QPushButton('Comments')
+        outputButton = QPushButton('Output')
+        analysisButton = QPushButton('Analysis')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(poiContentArea, 1, 0, 10, 8)
