@@ -7,6 +7,7 @@ from PointsOfInterestTab import PointsOfInterestTab
 from DocumentationTab import DocumentationTab
 from projectTab import ProjectTab
 from analysisTab import AnalysisTab
+# from PluginManagementTab import PluginManagementTab
 
 def main():
     #initialize stuff
@@ -14,11 +15,11 @@ def main():
     mainWindow = QMainWindow()
 
     tabWidget = QTabWidget()
-    tabWidget.addTab(ProjectTab(), "project tab")
-    tabWidget.addTab(AnalysisTab(), "AnalysisTab")
-    #tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
-    tabWidget.addTab(PointsOfInterestTab(), "PointsOfInterestTab")
-    tabWidget.addTab(DocumentationTab(), "DocumentationTab")
+    tabWidget.addTab(ProjectTab(), "Project tab")
+    tabWidget.addTab(AnalysisTab(), "Analysis Tab")
+#     tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
+    tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
+    tabWidget.addTab(DocumentationTab(), "Documentation Tab")
 
     mainWindow.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")
     mainWindow.setCentralWidget(tabWidget)

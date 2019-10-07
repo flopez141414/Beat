@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, QLineEdit, QListWidget
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, QLineEdit, QListWidget
+from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, QLineEdit, QListWidget
 
 
 class ProjectTab(QWidget):
@@ -50,12 +49,42 @@ class ProjectTab(QWidget):
 
         deleteButton = QPushButton('Delete')
         saveButton = QPushButton('Save')
-        rightLayout.addWidget(saveButton, 11, 7)
-        rightLayout.addWidget(deleteButton, 11, 1)
+        rightLayout.addWidget(saveButton, 15, 7)
+        rightLayout.addWidget(deleteButton, 15, 1)
 
         button = QPushButton("My Button")
         button.clicked.connect(self.clickEvent)
         self.setLayout(mainlayout)
+        
+        self.infoTable = QTableWidget()
+        self.infoTable.setRowCount(2)
+        self.infoTable.setColumnCount(2)
+        self.infoTable.setItem(0, 0, QTableWidgetItem("OS"))
+        self.infoTable.setItem(1, 0, QTableWidgetItem("Binary Type"))
+        self.infoTable.doubleClicked.connect(self.on_click)
+#         rightLayout.addWidget(self.infoTable)
 
     def clickEvent(self):
         print("Clicked")
+        
+    def on_click(self):
+        print("\n")
+        for currentQTableWidgetItem in self.infoTable.selectedItems():
+            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+            
+    
+
+    def staticAnalysis(self):
+        rlocal = r2pipe.open("/bin/ping")
+        binInfo = rlocal.cmd('ij')
+        data = json.loads(binInfo)
+#         myvalue = (data['core']['file'])
+#         print(myvalue)
+  
+        myvalue = (data['core']['file'])
+        for key in data:
+            print(data['core']['file'])
+            
+        self.infoTable.setItem(1,1,QTableWidgetItem(myvalue))
+
+#     def populateBinaryInfo(self):
