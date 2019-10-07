@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'layout.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
-
 from CommentView import Ui_Dialog as comment_window 
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
 from PyQt5 import QtCore, QtGui, QtWidgets
+#####################################################################################################
+from tkinter import Tk #for explorer
+from tkinter.filedialog import askopenfilename #for explorer
 
 
 class Ui_MainWindow(object):
+
+    def explorerOpen(self):
+        root = Tk()
+        ftypes = [('htm file', "*.htm")]
+        ttl = "Title"
+        dir1 = 'C:\\'
+        root.fileName = askopenfilename(filetypes=ftypes, initialdir=dir1, title=ttl)
+        print(root.fileName)
+
     def openWindow12(self):
         self.window = QtWidgets.QDialog()
         self.ui = comment_window()
@@ -28,9 +34,7 @@ class Ui_MainWindow(object):
         self.ui = output_Field_Window()
         self.ui.setupUi(self.window)
         self.window.show()
-    
-        
-    
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1271, 774)
@@ -179,6 +183,7 @@ class Ui_MainWindow(object):
         self.gridLayout_15.addWidget(self.description_box, 1, 1, 1, 1)
         self.browse = QtWidgets.QPushButton(self.dpv_description)
         self.browse.setObjectName("browse")
+        self.browse.clicked.connect(self.explorerOpen)
         self.gridLayout_15.addWidget(self.browse, 2, 2, 1, 1)
         self.save = QtWidgets.QPushButton(self.dpv_description)
         self.save.setAutoDefault(False)
@@ -297,7 +302,6 @@ class Ui_MainWindow(object):
         self.pushButton_11.setObjectName("pushButton_11")
         ############ Button A from Analysis Window
         self.pushButton_11.clicked.connect(self.openWindow11)
-        
 
         self.checkBox_16 = QtWidgets.QCheckBox(self.analysisTab)
         self.checkBox_16.setGeometry(QtCore.QRect(51, 287, 110, 17))
@@ -307,8 +311,7 @@ class Ui_MainWindow(object):
         self.pushButton_12.setObjectName("pushButton_12")
         ############ Button O from Analysis Window
         self.pushButton_12.clicked.connect(self.openWindow12)
-        
-        
+
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.analysisTab)
         self.gridLayoutWidget_2.setGeometry(QtCore.QRect(330, 150, 491, 321))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
@@ -554,6 +557,8 @@ class Ui_MainWindow(object):
         self.delete_3.setObjectName("delete_3")
         self.gridLayout_16.addWidget(self.delete_3, 10, 0, 1, 1)
         self.browse_2 = QtWidgets.QPushButton(self.dpv_description_2)
+        self.browse_2.clicked.connect(self.explorerOpen)
+        #brian explorerOpen
         self.browse_2.setObjectName("browse_2")
         self.gridLayout_16.addWidget(self.browse_2, 0, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.dpv_description_2)
@@ -925,6 +930,7 @@ class Ui_MainWindow(object):
         self.project_view_15.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Project View</span></p></body></html>"))
         self.textBrowser_8.setToolTip(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Point of Interest Content Area</span></p></body></html>"))
         self.textBrowser_8.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                                            
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
