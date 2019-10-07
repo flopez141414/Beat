@@ -1,10 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTabWidget
 
-from functions.PluginManagementTab import PluginManagementTab
-from functions.tabs.PointsOfInterestTab import PointsOfInterestTab
-
-
+from PointsOfInterestTab import PointsOfInterestTab
 
 def main():
     #initialinze stuff
