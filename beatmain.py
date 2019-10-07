@@ -7,14 +7,14 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore
 from projectTab import ProjectTab
 
-
 def main():
-    #initialinze stuff
+    #initialize stuff
     app = QApplication([])
     mainWindow = QMainWindow()
-    
+ 
     tabWidget = QTabWidget()
     tabWidget.addTab(ProjectTab(), "project tab")
+    
 #     tabWidget.addTab(AnalysisTab(), "AnalysisTab")
 #     tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
 #     tabWidget.addTab(PointsOfInterestTab(), "PointsOfInterestTab")
@@ -24,5 +24,6 @@ def main():
     mainWindow.show()
     sys.exit(app.exec())
     
-    
 main()
+
+ 
