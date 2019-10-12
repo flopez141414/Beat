@@ -9,9 +9,15 @@ from PyQt5 import QtCore
 
 
 class AnalysisTab(QWidget):
+    
     def __init__(self):
         super().__init__()
-
+        stringsPOI=[]
+        functionsPOI=[]
+        variablesPOI=[]
+        dllsPOI=[]
+        structuresPOI=[]
+        
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         rightLayout = QGridLayout()
@@ -23,7 +29,7 @@ class AnalysisTab(QWidget):
         # Top layout elements
         pluginDropdown = QComboBox()
         runStatic = QPushButton('Run')
-        poiDropdown = QComboBox()
+        self.poiDropdown = QComboBox()
         runDynamic = QPushButton('Run')
         stopDynamic = QPushButton('Stop')
 
@@ -32,7 +38,7 @@ class AnalysisTab(QWidget):
         topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
         topLayout.addWidget(runStatic, 1, 1, 1, 1)
         topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
-        topLayout.addWidget(poiDropdown, 2, 1, 1, 2)
+        topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
         topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
         topLayout.addWidget(runDynamic, 1, 6)
         topLayout.addWidget(stopDynamic, 1, 7)
@@ -53,22 +59,71 @@ class AnalysisTab(QWidget):
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
-        poiContentArea = QTextEdit()
-        terminal = QTextEdit()
+        self.poiContentArea = QTextEdit()
+        self.terminal = QTextEdit()
         commentButton = QPushButton('Comments')
         outputButton = QPushButton('Output')
         analysisButton = QPushButton('Analysis')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
-        rightLayout.addWidget(poiContentArea, 1, 0, 10, 8)
-        rightLayout.addWidget(terminal, 11, 0, 10, 8)
+        rightLayout.addWidget(self.poiContentArea, 1, 0, 10, 8)
+        rightLayout.addWidget(self.terminal, 11, 0, 10, 8)
         rightLayout.addWidget(analysisButton, 1, 9)
         rightLayout.addWidget(outputButton, 2, 9)
         rightLayout.addWidget(commentButton, 2, 8)
 
-        button = QPushButton("My Button")
-        button.clicked.connect(self.clickEvent)
-        self.setLayout(mainlayout)
+        #set Plugin name
+        pluginDropdown.addItem("Select Plugin")
+        pluginDropdown.addItem("Network Plugin")
+        pluginDropdown.addItem("dummy")
+        pluginDropdown.activated[str].connect(self.onActivated)
 
+
+        self.poiDropdown.activated[str].connect(self.displayPOI)
+        runStatic.clicked.connect(self.clickEvent)
+        self.setLayout(mainlayout)
+    def displayPOI(self,option):
+        if option=="Strings":
+            self.poiContentArea.setText(stringsPOI)
+        elif option == "Variables":
+            self.poiContentArea.setText(variablesPOI)
+        elif option == "Functions":
+            self.poiContentArea.setText(functionsPOI)
+        elif option == "Structures":
+            self.poiContentArea.setText(structuresPOI)
+        elif option == "Dlls":
+            self.poiContentArea.setText(dllsPOI)
+    def onActivated(self,option):
+        if option == "Network Plugin":
+            self.poiDropdown.clear()
+            self.poiDropdown.addItem("Select POI to display")
+            self.poiDropdown.addItem("Strings")
+            self.poiDropdown.addItem("Functions")
+            self.poiDropdown.addItem("Variables")
+            self.poiDropdown.addItem("Dlls")
+            self.poiDropdown.addItem("Structures")
+        elif option == "dummy":
+            self.poiDropdown.clear()
+            self.poiDropdown.addItem("the fuck??")
     def clickEvent(self):
-        print("Clicked")
+        bina=r2pipe.open("hello")
+        self.terminal.setText("Running Static Analysis..")
+        global stringsPOI
+        global variablesPOI
+        global functionsPOI
+        global dllsPOI
+        global structuresPOI
+        stringsPOI =bina.cmd("f;~str.")
+        dllsPOI = bina.cmd("ii")
+        functionsPOI = bina.cmd("pdf;~call")
+        structuresPOI = bina.cmd("")
+        variablesPOI = bina.cmd("")
+        self.terminal.append("Static Analysis done!")
+        
+
+        
+        
+        
+        
+
+        
