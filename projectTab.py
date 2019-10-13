@@ -36,7 +36,6 @@ class ProjectTab(QWidget):
         binaryFileProp = QTextEdit()
         browseButton = QPushButton('Browse')
 
-
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(projNameArea, 1, 2, 10, 2)
         rightLayout.addWidget(projDescriptionArea, 2, 2, 10, 2)
@@ -50,8 +49,8 @@ class ProjectTab(QWidget):
 
         deleteButton = QPushButton('Delete')
         saveButton = QPushButton('Save')
-        rightLayout.addWidget(saveButton, 11, 7)
-        rightLayout.addWidget(deleteButton, 11, 1)
+        rightLayout.addWidget(saveButton, 15, 7)
+        rightLayout.addWidget(deleteButton, 15, 1)
 
         button = QPushButton("My Button")
         button.clicked.connect(self.clickEvent)
