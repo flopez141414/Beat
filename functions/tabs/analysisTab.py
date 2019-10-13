@@ -104,7 +104,7 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("Structures")
         elif option == "dummy":
             self.poiDropdown.clear()
-            self.poiDropdown.addItem("the fuck??")
+            self.poiDropdown.addItem("new plugin POI")
     def clickEvent(self):
         bina=r2pipe.open("hello")
         self.terminal.setText("Running Static Analysis..")
