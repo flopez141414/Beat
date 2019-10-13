@@ -1,5 +1,7 @@
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, QLineEdit, QListWidget
+from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
+    QLineEdit, QListWidget, QFileDialog
 
 
 class ProjectTab(QWidget):
@@ -34,7 +36,7 @@ class ProjectTab(QWidget):
         binaryFilePath = QTextEdit()
         binaryFileProp = QTextEdit()
         browseButton = QPushButton('Browse')
-
+        browseButton.clicked.connect(self.OpenFile)
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(projNameArea, 1, 2, 10, 2)
@@ -71,8 +73,6 @@ class ProjectTab(QWidget):
         print("\n")
         for currentQTableWidgetItem in self.infoTable.selectedItems():
             print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
-            
-    
 
     def staticAnalysis(self):
         rlocal = r2pipe.open("/bin/ping")
@@ -80,7 +80,7 @@ class ProjectTab(QWidget):
         data = json.loads(binInfo)
 #         myvalue = (data['core']['file'])
 #         print(myvalue)
-  
+
         myvalue = (data['core']['file'])
         for key in data:
             print(data['core']['file'])
@@ -88,3 +88,13 @@ class ProjectTab(QWidget):
         self.infoTable.setItem(1,1,QTableWidgetItem(myvalue))
 
 #     def populateBinaryInfo(self):
+    def OpenFile(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+            return fileName
+
+        return "not found"

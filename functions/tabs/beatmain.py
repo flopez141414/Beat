@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QTabWidget
 
 import r2pipe
 import pymongo
+
 from PointsOfInterestTab import PointsOfInterestTab
 from DocumentationTab import DocumentationTab
 from projectTab import ProjectTab

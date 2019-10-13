@@ -1,4 +1,5 @@
 import sys
+
 import r2pipe
 import pymongo
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
@@ -47,6 +48,7 @@ class AnalysisTab(QWidget):
         # Left panel
         searchBox = QLineEdit()
         searchButton = QPushButton('Search')
+
         poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
@@ -119,7 +121,7 @@ class AnalysisTab(QWidget):
         structuresPOI = bina.cmd("")
         variablesPOI = bina.cmd("")
         self.terminal.append("Static Analysis done!")
-        
+
 
         
         

@@ -38,7 +38,6 @@ class DocumentationTab(QWidget):
         rightLayout.addWidget(rightPanelLabel, 0, 0)
         rightLayout.addWidget(poiContentArea, 1, 0, 10, 8)
         button = QPushButton("My Button")
-        button.clicked.connect(self.clickEvent)
         self.setLayout(mainlayout)
 
     def clickEvent(self):
