@@ -66,7 +66,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Analysis Result View"))
+        Dialog.setWindowTitle(_translate("Dialog", "Save Analysis Result"))
         self.label_5.setText(_translate("Dialog", "<html><head/><body><p align=\"center\">Analysis Result A</p></body></html>"))
         self.pushButton_Delete.setText(_translate("Dialog", "Delete"))
         self.pushButton_New.setText(_translate("Dialog", "New"))
