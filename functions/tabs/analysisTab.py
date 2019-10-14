@@ -142,9 +142,9 @@ class AnalysisTab(QWidget):
             
         
              
-        while True:
-            r2.cmd("dc") # Continue until breakpoint is hit 'debug continue execution'
-            r2.cmd("dso") # Execute over the breakpoint 'debug step over'
+#         while True:
+#             r2.cmd("dc") # Continue until breakpoint is hit 'debug continue execution'
+#             r2.cmd("dso") # Execute over the breakpoint 'debug step over'
          
 # #             rax = 0x00000000
 # #             rbx = 0x00000000
@@ -164,9 +164,9 @@ class AnalysisTab(QWidget):
 # #             rbp = 0x00000000
 # #             rflags = 0x00000000
 # #             rsp = 0x00000000
-            payloadAddr = r2.cmd("dr") # values at registers 'debug show register'
-            print(payloadAddr)
-               
-            break
+#             payloadAddr = r2.cmd("dr") # values at registers 'debug show register'
+#             print(payloadAddr)
+#                
+#             break
 
         
