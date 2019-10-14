@@ -125,8 +125,9 @@ class AnalysisTab(QWidget):
             #self.poiContentArea.setText(structuresPOI)
         elif option == "Dlls":
             self.poiList.clear()
-            for item in dllsPOI:
-                self.poiList.addItem(item)
+            for item in dllsPOI[2:]:
+                item2=item.split()
+                self.poiList.addItem(item2[4])
             #self.poiContentArea.setText(dllsPOI)
     def onActivated(self,option):
         if option == "Network Plugin":
