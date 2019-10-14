@@ -77,6 +77,9 @@ class AnalysisTab(QWidget):
         pluginDropdown.addItem("Network Plugin")
         pluginDropdown.addItem("dummy")
         pluginDropdown.activated[str].connect(self.onActivated)
+        
+        #dynamic analysis run event listener
+        runDynamic.clicked.connect(self.dynamicAnalysis)
 
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
@@ -104,9 +107,9 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("Structures")
         elif option == "dummy":
             self.poiDropdown.clear()
-            self.poiDropdown.addItem("the fuck??")
+            self.poiDropdown.addItem("dummy plugin")
     def clickEvent(self):
-        bina=r2pipe.open("hello")
+        bina=r2pipe.open("ping")
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
@@ -119,11 +122,51 @@ class AnalysisTab(QWidget):
         structuresPOI = bina.cmd("")
         variablesPOI = bina.cmd("")
         self.terminal.append("Static Analysis done!")
+    
+    
+    def dynamicAnalysis(self):
+        programToAnalyze = "ping"
+        functionName = "sym.imp.recv"
         
-
+        r2 = r2pipe.open("ping") # Open program to be analyzed by radare2
+        r2.cmd('e bin.maxstrbuf=0xfffff09c5e400ba8') # Increase the buffer size 
+        r2.cmd('e dbg.bpinmaps=0') # disable cannot set breakpoint on unmapped memory
+        r2.cmd("aaa") # Perform static analysis on program 
+        r2.cmd("doo arg1=127.0.0.1") # Re open program in debug/background mode
+        references = r2.cmdj("axtj sym.imp.strncmp") # Find all references to functionName in binary
         
+        for i in range(len(references)):
+            breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
+            r2.cmd(breakpoint) # Add breakpoints at references locations
+#             print(breakpoint)
+            
         
-        
-        
+             
+        while True:
+            r2.cmd("dc") # Continue until breakpoint is hit 'debug continue execution'
+            r2.cmd("dso") # Execute over the breakpoint 'debug step over'
+         
+# #             rax = 0x00000000
+# #             rbx = 0x00000000
+# #             rcx = 0x00000000
+# #             rdx = 0x00000000
+# #             rsi = 0x00000000
+# #             rdi = 0x00000000
+# #             r8 = 0x00000000
+# #             r9 = 0x00000000
+# #             r10 = 0x00000000
+# #             r11 = 0x00000000
+# #             r12 = 0x00000000
+# #             r13 = 0x00000000
+# #             r14 = 0x00000000
+# #             r15 = 0x00000000
+# #             rip = 0x00003c80
+# #             rbp = 0x00000000
+# #             rflags = 0x00000000
+# #             rsp = 0x00000000
+            payloadAddr = r2.cmd("dr") # values at registers 'debug show register'
+            print(payloadAddr)
+               
+            break
 
         
