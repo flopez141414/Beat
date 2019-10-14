@@ -2,7 +2,9 @@ import r2pipe
 import json
 
 # opens binary file and extracts variables, strings, imports, functions, packet info, and struct info
-rlocal = r2pipe.open("/bin/ping") 
+from PyQt5.QtWidgets import QFileDialog
+
+rlocal = r2pipe.open("/bin/ping")
 #     global variableInfo = rlocal.cmd()
 stringInfo = rlocal.cmd('izzj')
 dllInfo = rlocal.cmd('iij')
@@ -39,4 +41,15 @@ def parseBinaryInfo(r2binfo):
     
 # parseStrings(stringInfo)
 parseBinaryInfo(binaryInfo)
-    
+
+#method to open file explorer
+def OpenFile(self):
+    options = QFileDialog.Options()
+    options |= QFileDialog.DontUseNativeDialog
+    fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                              "All Files (*);;Python Files (*.py)", options=options)
+    if fileName:
+        print(fileName)
+        return fileName
+
+    return "not found"

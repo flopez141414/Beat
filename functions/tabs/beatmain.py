@@ -4,6 +4,7 @@ from PyQt5.QtGui import QPalette
 
 import r2pipe
 import pymongo
+
 from PointsOfInterestTab import PointsOfInterestTab
 from DocumentationTab import DocumentationTab
 from projectTab import ProjectTab
@@ -49,3 +50,5 @@ def main():
     
     
 main()
+
+

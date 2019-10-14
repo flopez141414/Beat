@@ -1,4 +1,5 @@
 import sys
+
 import r2pipe
 import pymongo
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
@@ -6,6 +7,12 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore
+from PyQt5.uic.properties import QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from CommentView import Ui_Dialog as comment_window
+from AnalysisResultView import Ui_Dialog as analysis_window
+from OutputFieldView import Ui_Dialog as output_Field_Window
 
 
 class AnalysisTab(QWidget):
@@ -47,6 +54,7 @@ class AnalysisTab(QWidget):
         # Left panel
         searchBox = QLineEdit()
         searchButton = QPushButton('Search')
+
         poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
@@ -61,16 +69,21 @@ class AnalysisTab(QWidget):
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.poiContentArea = QTextEdit()
         self.terminal = QTextEdit()
-        commentButton = QPushButton('Comments')
-        outputButton = QPushButton('Output')
-        analysisButton = QPushButton('Analysis')
+        self.commentButton = QPushButton('Comments')
+        self.outputButton = QPushButton('Output')
+        self.analysisButton = QPushButton('Analysis')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(self.poiContentArea, 1, 0, 10, 8)
         rightLayout.addWidget(self.terminal, 11, 0, 10, 8)
-        rightLayout.addWidget(analysisButton, 1, 9)
-        rightLayout.addWidget(outputButton, 2, 9)
-        rightLayout.addWidget(commentButton, 2, 8)
+        rightLayout.addWidget(self.analysisButton, 1, 9)
+        rightLayout.addWidget(self.outputButton, 2, 9)
+        rightLayout.addWidget(self.commentButton, 2, 8)
+
+        #Functionality
+        self.commentButton.clicked.connect(self.openCommentWindow)
+        self.analysisButton.clicked.connect(self.openAnalysisWindow)
+        self.outputButton.clicked.connect(self.openOutputWindow)
 
         #set Plugin name
         pluginDropdown.addItem("Select Plugin")
@@ -107,7 +120,8 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("Structures")
         elif option == "dummy":
             self.poiDropdown.clear()
-            self.poiDropdown.addItem("dummy plugin")
+            self.poiDropdown.addItem("opps")
+
     def clickEvent(self):
         bina=r2pipe.open("ping")
         self.terminal.setText("Running Static Analysis..")
@@ -169,4 +183,21 @@ class AnalysisTab(QWidget):
 #                
 #             break
 
-        
+# Methods to open windows
+    def openCommentWindow(self):
+        self.window = QtWidgets.QDialog()
+        self.ui = comment_window()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def openAnalysisWindow(self):
+        self.window = QtWidgets.QDialog()
+        self.ui = analysis_window()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def openOutputWindow(self):
+        self.window = QtWidgets.QDialog()
+        self.ui = output_Field_Window()
+        self.ui.setupUi(self.window)
+        self.window.show()
