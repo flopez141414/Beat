@@ -18,6 +18,7 @@ from OutputFieldView import Ui_Dialog as output_Field_Window
 
 
 
+
 class AnalysisTab(QWidget):
 
     def __init__(self):
@@ -132,7 +133,9 @@ class AnalysisTab(QWidget):
 
     def clickEvent(self):
 #         bina = r2pipe.open("hello")
-        bina = r2pipe.open(filename)
+
+        import projectTab
+        bina = r2pipe.open(projectTab.myFileName)
         
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI

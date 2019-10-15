@@ -1,5 +1,6 @@
 import json
 import r2pipe
+import sys
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
@@ -10,6 +11,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton
 class ProjectTab(QWidget):
     def __init__(self):
         super().__init__()
+        
 
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
@@ -133,6 +135,9 @@ class ProjectTab(QWidget):
             self.binaryFileProp.setItem(colNum, 1, QTableWidgetItem(a[1]))
             colNum += 1
 
+
+    # global.py
+    myFileName = ""
     def OpenFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -141,6 +146,13 @@ class ProjectTab(QWidget):
         if fileName:
             self.binaryFilePath.setText(fileName)
             self.staticAnalysis(fileName)
+#             self.myFilename = fileName
+            global myFileName
+            myFileName = fileName
+            
             return fileName
 
         return "not found"
+    
+    def getFileName(self):
+        return self.myFilename
