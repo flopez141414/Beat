@@ -5,19 +5,19 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 
 
 class AnalysisTab(QWidget):
-    
+
     def __init__(self):
         super().__init__()
-        stringsPOI=[]
-        functionsPOI=[]
-        variablesPOI=[]
-        dllsPOI=[]
-        structuresPOI=[]
-        
+        stringsPOI = []
+        functionsPOI = []
+        variablesPOI = []
+        dllsPOI = []
+        structuresPOI = []
+
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         rightLayout = QGridLayout()
@@ -49,6 +49,8 @@ class AnalysisTab(QWidget):
         searchButton = QPushButton('Search')
         poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
+        leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
@@ -58,6 +60,8 @@ class AnalysisTab(QWidget):
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
+        rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.poiContentArea = QTextEdit()
         self.terminal = QTextEdit()
@@ -72,18 +76,18 @@ class AnalysisTab(QWidget):
         rightLayout.addWidget(outputButton, 2, 9)
         rightLayout.addWidget(commentButton, 2, 8)
 
-        #set Plugin name
+        # set Plugin name
         pluginDropdown.addItem("Select Plugin")
         pluginDropdown.addItem("Network Plugin")
         pluginDropdown.addItem("dummy")
         pluginDropdown.activated[str].connect(self.onActivated)
 
-
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickEvent)
         self.setLayout(mainlayout)
-    def displayPOI(self,option):
-        if option=="Strings":
+
+    def displayPOI(self, option):
+        if option == "Strings":
             self.poiContentArea.setText(stringsPOI)
         elif option == "Variables":
             self.poiContentArea.setText(variablesPOI)
@@ -93,7 +97,8 @@ class AnalysisTab(QWidget):
             self.poiContentArea.setText(structuresPOI)
         elif option == "Dlls":
             self.poiContentArea.setText(dllsPOI)
-    def onActivated(self,option):
+
+    def onActivated(self, option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
             self.poiDropdown.addItem("Select POI to display")
@@ -105,25 +110,18 @@ class AnalysisTab(QWidget):
         elif option == "dummy":
             self.poiDropdown.clear()
             self.poiDropdown.addItem("the fuck??")
+
     def clickEvent(self):
-        bina=r2pipe.open("hello")
+        bina = r2pipe.open("hello")
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
         global functionsPOI
         global dllsPOI
         global structuresPOI
-        stringsPOI =bina.cmd("f;~str.")
+        stringsPOI = bina.cmd("f;~str.")
         dllsPOI = bina.cmd("ii")
         functionsPOI = bina.cmd("pdf;~call")
         structuresPOI = bina.cmd("")
         variablesPOI = bina.cmd("")
         self.terminal.append("Static Analysis done!")
-        
-
-        
-        
-        
-        
-
-        
