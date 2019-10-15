@@ -42,7 +42,9 @@ class AnalysisTab(QWidget):
         runStatic = QPushButton('Run')
         self.poiDropdown = QComboBox()
         runDynamic = QPushButton('Run')
-        stopDynamic = QPushButton('Stop')
+        self.stopDynamic = QPushButton('Stop')
+
+        self.stopDynamic.setEnabled(False)
 
         topLayout.addWidget(QLabel('Plugin'), 0, 0)
         topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
@@ -52,14 +54,14 @@ class AnalysisTab(QWidget):
         topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
         topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
         topLayout.addWidget(runDynamic, 1, 6)
-        topLayout.addWidget(stopDynamic, 1, 7)
+        topLayout.addWidget(self.stopDynamic, 1, 7)
         topLayout.addWidget(QLabel(), 0, 3, 1, 15)
 
         # Left panel
         searchBox = QLineEdit()
         searchButton = QPushButton('Search')
 
-        poiList = QListWidget()
+        self.poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
 #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
@@ -68,7 +70,7 @@ class AnalysisTab(QWidget):
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
-        leftLayout.addWidget(poiList, 2, 0, 1, 4)
+        leftLayout.addWidget(self.poiList, 2, 0, 1, 4)
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
@@ -103,22 +105,43 @@ class AnalysisTab(QWidget):
         runDynamic.clicked.connect(self.dynamicAnalysis)
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
-        runStatic.clicked.connect(self.clickEvent)
+        runStatic.clicked.connect(self.clickStaticAnalysis)
         self.setLayout(mainlayout)
 
-    def displayPOI(self, option):
-        if option == "Strings":
-            self.poiContentArea.setText(stringsPOI)
+    def displayPOI(self,option):
+        if option=="Strings":
+            self.poiList.clear()
+            for item in stringsPOI:
+                item2=item.split()
+                self.poiList.addItem(item2[2])
+            #self.poiContentArea.setText(stringsPOI)
         elif option == "Variables":
-            self.poiContentArea.setText(variablesPOI)
+            self.poiList.clear()
+            #for item in variablesPOI:
+             #   self.poiList.addItem(item)
+            #self.poiContentArea.setText(variablesPOI)
         elif option == "Functions":
-            self.poiContentArea.setText(functionsPOI)
+            self.poiList.clear()
+            for item in functionsPOI:
+                item2=item.split()
+                if item2[3]=="->":
+                    self.poiList.addItem(item2[5])
+                else:
+                    self.poiList.addItem(item2[3])
+            #self.poiContentArea.setText(functionsPOI)
         elif option == "Structures":
-            self.poiContentArea.setText(structuresPOI)
+            self.poiList.clear()
+            #for item in structuresPOI:
+             #   self.poiList.addItem(item)
+            #self.poiContentArea.setText(structuresPOI)
         elif option == "Dlls":
             self.poiContentArea.setText(dllsPOI)
-
-    def onActivated(self, option):
+            self.poiList.clear()
+            for item in dllsPOI[2:]:
+                item2=item.split()
+                self.poiList.addItem(item2[4])
+            #self.poiContentArea.setText(dllsPOI)
+    def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
             self.poiDropdown.addItem("Select POI to display")
@@ -131,23 +154,21 @@ class AnalysisTab(QWidget):
             self.poiDropdown.clear()
             self.poiDropdown.addItem("opps")
 
-    def clickEvent(self):
-#         bina = r2pipe.open("hello")
-
+    def clickStaticAnalysis(self):
         import projectTab
         bina = r2pipe.open(projectTab.myFileName)
-        
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
         global functionsPOI
         global dllsPOI
         global structuresPOI
-        stringsPOI = bina.cmd("f;~str.")
-        dllsPOI = bina.cmd("ii")
-        functionsPOI = bina.cmd("pdf;~call")
-        structuresPOI = bina.cmd("")
-        variablesPOI = bina.cmd("")
+
+        stringsPOI =bina.cmd("f;~str.").splitlines()
+        dllsPOI = bina.cmd("ii").splitlines()
+        functionsPOI = bina.cmd("aaa;afl").splitlines()
+        #structuresPOI = bina.cmd("").splitlines()
+        #variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
     
     
