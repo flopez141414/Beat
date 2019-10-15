@@ -2,6 +2,8 @@ import sys
 
 import r2pipe
 import pymongo
+import json
+
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtGui import QIcon
@@ -147,7 +149,11 @@ class AnalysisTab(QWidget):
         r2.cmd('e dbg.bpinmaps=0') # disable cannot set breakpoint on unmapped memory
         r2.cmd("aaa") # Perform static analysis on program 
         r2.cmd("doo arg1=127.0.0.1") # Re open program in debug/background mode
-        references = r2.cmdj("axtj sym.imp.strncmp") # Find all references to functionName in binary
+        references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
+
+        print(references)
+#         for i in range(len(references)):
+#             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
         
         for i in range(len(references)):
             breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
