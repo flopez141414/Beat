@@ -82,6 +82,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relro"))
         self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Stripped"))
         self.binaryFileProp.doubleClicked.connect(self.on_click)
+        
 
     def clickEvent(self):
         print("Clicked")
@@ -138,7 +139,6 @@ class ProjectTab(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open file", "",
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
-            print(fileName)
             self.binaryFilePath.setText(fileName)
             self.staticAnalysis(fileName)
             return fileName

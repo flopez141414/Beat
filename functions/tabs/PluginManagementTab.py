@@ -25,7 +25,7 @@ class PluginManagementTab(QWidget):
         searchList = QListWidget()
         leftPanelLabel = QLabel('Plugin View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -37,7 +37,7 @@ class PluginManagementTab(QWidget):
         # Right panel
         rightPanelLabel = QLabel('Detailed Plugin View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
-        rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         pluginStructArea = QTextEdit()
         pluginDataSet = QTextEdit()

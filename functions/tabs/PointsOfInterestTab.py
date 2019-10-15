@@ -27,7 +27,7 @@ class PointsOfInterestTab(QWidget):
         poiList = QListWidget()
         leftPanelLabel = QLabel('Points of Interest View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -42,7 +42,7 @@ class PointsOfInterestTab(QWidget):
         saveButtonPOI = QPushButton('Save')
 
         rightPanelLabel = QLabel('Detailed Point of Interest View')
-        rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         pluginLabel = QLabel('Plugin')
         POILabel = QLabel('Point of Interest Type')

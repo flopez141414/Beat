@@ -25,7 +25,7 @@ class DocumentationTab(QWidget):
         poiList = QListWidget()
         leftPanelLabel = QLabel('Document View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -36,7 +36,7 @@ class DocumentationTab(QWidget):
         # Right panel
         rightPanelLabel = QLabel('Detail Document View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
-        rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         poiContentArea = QTextEdit()
         rightLayout.addWidget(rightPanelLabel, 0, 0)

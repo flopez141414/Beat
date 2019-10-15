@@ -60,7 +60,7 @@ class AnalysisTab(QWidget):
 
         poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
-        leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
@@ -71,7 +71,7 @@ class AnalysisTab(QWidget):
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
-        rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.poiContentArea = QTextEdit()
@@ -131,7 +131,9 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def clickEvent(self):
-        bina = r2pipe.open("hello")
+#         bina = r2pipe.open("hello")
+        bina = r2pipe.open(filename)
+        
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
