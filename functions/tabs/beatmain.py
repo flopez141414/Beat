@@ -1,19 +1,25 @@
 import sys
+
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTabWidget
 from PyQt5.QtGui import QPalette
 
 import r2pipe
 import pymongo
 
-from PointsOfInterestTab import PointsOfInterestTab
+from PluginManagementTab import PluginManagementTab
 from DocumentationTab import DocumentationTab
-from projectTab import ProjectTab
 from analysisTab import AnalysisTab
+from projectTab import ProjectTab
+from PointsOfInterestTab import PointsOfInterestTab
+
 from PyQt5.Qt import QColor
-# from PluginManagementTab import PluginManagementTab
+
+
+
 
 def main():
-    #initialize stuff
+    # initialize stuff
     app = QApplication([])
     mainWindow = QMainWindow()
     
@@ -39,15 +45,17 @@ def main():
     tabWidget = QTabWidget()
     tabWidget.addTab(ProjectTab(), "Project tab")
     tabWidget.addTab(AnalysisTab(), "Analysis Tab")
-#     tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
+    tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
     tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
     tabWidget.addTab(DocumentationTab(), "Documentation Tab")
 
     mainWindow.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")
+    mainWindow.setWindowIcon(QtGui.QIcon('BEAT-logo.png'))
+    mainWindow.setFont(QtGui.QFont('Helvetica', 12))
+    mainWindow.setAutoFillBackground(True)
     mainWindow.setCentralWidget(tabWidget)
     mainWindow.show()
     sys.exit(app.exec())
-    
     
 main()
 
