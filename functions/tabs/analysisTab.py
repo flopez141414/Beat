@@ -1,7 +1,7 @@
 import sys
-
 import r2pipe
 import pymongo
+import glob
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtGui import QIcon
@@ -9,7 +9,6 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore
 from PyQt5.uic.properties import QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
@@ -96,6 +95,11 @@ class AnalysisTab(QWidget):
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
+
+
+
+        self.poiList.itemSelectionChanged.connect(self.connectionwithPOI)
+        
         self.setLayout(mainlayout)
     def displayPOI(self,option):
         if option=="Strings":
@@ -142,7 +146,7 @@ class AnalysisTab(QWidget):
             self.poiDropdown.clear()
             self.poiDropdown.addItem("opps")
     def clickStaticAnalysis(self):
-        bina=r2pipe.open("ping.exe")
+        bina=r2pipe.open(glob.fileName)
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
@@ -175,3 +179,5 @@ class AnalysisTab(QWidget):
         self.ui = output_Field_Window()
         self.ui.setupUi(self.window)
         self.window.show()
+    def connectionwithPOI(self):
+        self.terminal.append("poi selected")

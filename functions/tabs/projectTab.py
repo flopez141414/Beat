@@ -1,4 +1,4 @@
-
+import glob
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
     QLineEdit, QListWidget, QFileDialog
@@ -89,12 +89,14 @@ class ProjectTab(QWidget):
 
 #     def populateBinaryInfo(self):
     def OpenFile(self):
+        global fileName
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                  "All Files (*);;Python Files (*.py)", options=options)
-        if fileName:
-            print(fileName)
-            return fileName
+        glob.fileName, _  = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                   "All Files (*);; Executable Files(*.exe)", options=options)
+        #fileName, _ =QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()")
+        if glob.fileName:
+            print(glob.fileName, "here")
+            return glob.fileName
 
         return "not found"
