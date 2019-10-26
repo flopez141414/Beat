@@ -6,18 +6,12 @@ import json
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5 import QtCore
-from PyQt5.uic.properties import QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
-
-
-
 
 class AnalysisTab(QWidget):
 
@@ -141,6 +135,7 @@ class AnalysisTab(QWidget):
                 item2=item.split()
                 self.poiList.addItem(item2[4])
             #self.poiContentArea.setText(dllsPOI)
+            
     def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
