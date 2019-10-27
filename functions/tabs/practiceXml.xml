@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project> 
-  <Project_name required="true"> </Project_name>
+  <Project_name required="true"> test</Project_name>
+    <projectDescription required="true"> </projectDescription>
   <BinaryFilePath required="true"> </BinaryFilePath>
+
   <StaticDataSet>
     <OS> </OS>
     <BinaryType> </BinaryType>
