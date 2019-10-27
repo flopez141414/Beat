@@ -19,6 +19,7 @@ def main():
     mainWindow = QMainWindow()
     
     # dark theme
+    '''''
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53,53,53))
     palette.setColor(QPalette.WindowText, QColor(255,255,255))
@@ -35,7 +36,7 @@ def main():
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
     palette.setColor(QPalette.HighlightedText, QColor(0,0,0))
     app.setPalette(palette)
-    
+    '''''
 
     tabWidget = QTabWidget()
     tabWidget.addTab(ProjectTab(), "Project tab")
