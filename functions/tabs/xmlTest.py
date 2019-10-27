@@ -3,6 +3,7 @@ tree = ET.parse('practiceXml.xml')
 root = tree.getroot()
 
 #iterate on xml
+
 for x in root.iter('PointOfInterest'):
     print(x.attrib)  # x.text
 

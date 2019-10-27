@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton
 projectNameHolder = ''
 projectDescHolder = ''
 projectPathHolder = ''
+fileProperties = []
 
 #sscess finished with exit code 0
 
@@ -141,11 +142,12 @@ class ProjectTab(QWidget):
     #             print(fileName)
 
     def staticAnalysis(self, filename):
+        global fileProperties
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "canary", "crypto", "nx", "pic", "relocs",
                              "relro", "stripped"]
 
         # filename = self.OpenFile()
-        rlocal = r2pipe.open(filenKame)
+        rlocal = r2pipe.open(filename)
         # list1 = rlocal.cmd('iI')
         binInfo = rlocal.cmd('iI').splitlines()
         # print(binInfo)
@@ -153,8 +155,9 @@ class ProjectTab(QWidget):
         colNum = 0
         for item in binPropertiesList:
             matchingline = [s for s in binInfo if item in s]
-            print(matchingline)
             a = matchingline[0].split()
+            fileProperties.append(a[1])
+            #item.setFlags(QtCore.Qt.ItemIsEnabled)
             self.binaryFileProp.setItem(colNum, 1, QTableWidgetItem(a[1]))
             colNum += 1
 
@@ -199,12 +202,37 @@ class ProjectTab(QWidget):
         b2tf = root.find("./BinaryFilePath")
         b2tf.text = ppath
 
+        b2tf = root.find("./StaticDataSet/OS")
+        b2tf.text = fileProperties[0]
+        b2tf = root.find("./StaticDataSet/BinaryType")
+        b2tf.text = fileProperties[1]
+        b2tf = root.find("./StaticDataSet/Machine")
+        b2tf.text = fileProperties[2]
+        b2tf = root.find("./StaticDataSet/Class")
+        b2tf.text = fileProperties[3]
+        b2tf = root.find("./StaticDataSet/Bits")
+        b2tf.text = fileProperties[4]
+        b2tf = root.find("./StaticDataSet/Canary")
+        b2tf.text = fileProperties[5]
+        b2tf = root.find("./StaticDataSet/Crypto")
+        b2tf.text = fileProperties[6]
+        b2tf = root.find("./StaticDataSet/NX")
+        b2tf.text = fileProperties[7]
+        b2tf = root.find("./StaticDataSet/Pic")
+        b2tf.text = fileProperties[8]
+        b2tf = root.find("./StaticDataSet/Relocs")
+        b2tf.text = fileProperties[9]
+        b2tf = root.find("./StaticDataSet/Relro")
+        b2tf.text = fileProperties[10]
+        b2tf = root.find("./StaticDataSet/Stripped")
+        b2tf.text = fileProperties[11]
+
         print(ET.tostring(root, encoding='utf8').decode('utf8'))
 
         my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
         xmlUploader.uploadXML(my_dict)
 
-   #     print(my_dict)
+        #print(my_dict)
 
 
 
