@@ -123,17 +123,22 @@ class ProjectTab(QWidget):
 
         # filename = self.OpenFile()
         rlocal = r2pipe.open(filename)
-        # list1 = rlocal.cmd('iI')
+        list2 = rlocal.cmd('iIj')
         binInfo = rlocal.cmd('iI').splitlines()
         # print(binInfo)
+        print(list2)
 
+        list1 = []
         colNum = 0
         for item in binPropertiesList:
             matchingline = [s for s in binInfo if item in s]
+            list1.append(matchingline)
             print(matchingline)
             a = matchingline[0].split()
             self.binaryFileProp.setItem(colNum, 1, QTableWidgetItem(a[1]))
             colNum += 1
+        print(type(list1))
+        print("json", json.dump(list1))
 
 
     # global.py
