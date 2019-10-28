@@ -42,14 +42,14 @@ class ProjectTab(QWidget):
         searchBox = QLineEdit()
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
-        searchList = QListWidget()
+        self.searchList = QListWidget()
         leftPanelLabel = QLabel('Project View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
-        leftLayout.addWidget(searchList, 2, 0, 1, 4)
+        leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
 
         leftLayout.addWidget(newButton, 6, 0)
 
@@ -79,15 +79,15 @@ class ProjectTab(QWidget):
 
         rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
         rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Path'), 6, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Properties'), 5, 1, 1, 1)
+        rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
+        rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
 
         deleteButton = QPushButton('Delete')
 
         saveButton = QPushButton('Save')
 
         saveButton.clicked.connect(self.saveFile) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!click call method
-
+        newButton.clicked.connect(self.listProjects)
         rightLayout.addWidget(saveButton, 15, 8)
         rightLayout.addWidget(deleteButton, 15, 1)
 
@@ -110,6 +110,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relro"))
         self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Stripped"))
         self.binaryFileProp.doubleClicked.connect(self.on_click)
+        self.searchList.doubleClicked.connect(self.select_project)
 
     def clickEvent(self):
         print("Clicked")
@@ -233,6 +234,24 @@ class ProjectTab(QWidget):
         xmlUploader.uploadXML(my_dict)
 
         #print(my_dict)
+
+    def listProjects(self):
+        projectList = xmlUploader.retrieve_list_of_projects()
+        for item in projectList:
+            self.searchList.addItem(item)
+
+    def select_project(self):
+        print("start")
+        print("here", [item.text() for item in self.searchList.selectedItems()])
+        project = [item.text() for item in self.searchList.selectedItems()]
+        projectName = ' '.join([str(elem) for elem in project])
+        print(type(projectName))
+        xmlUploader.retrieve_selected_project(projectName)
+
+
+
+        #
+        # def loadProject(self):
 
 
 
