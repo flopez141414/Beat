@@ -27,6 +27,7 @@ projectPathHolder = ''
 class ProjectTab(QWidget):
     def __init__(self):
         super().__init__()
+
         global projectNameHolder
         global projectDescHolder
         global projectPathHolder
@@ -41,14 +42,14 @@ class ProjectTab(QWidget):
         searchBox = QLineEdit()
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
-        searchList = QListWidget()
+        self.searchList = QListWidget()
         leftPanelLabel = QLabel('Project View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
-        leftLayout.addWidget(searchList, 2, 0, 1, 4)
+        leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
 
         leftLayout.addWidget(newButton, 6, 0)
 
@@ -78,8 +79,8 @@ class ProjectTab(QWidget):
 
         rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
         rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Path'), 6, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Properties'), 5, 1, 1, 1)
+        rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
+        rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
 
         deleteButton = QPushButton('Delete')
 
@@ -87,10 +88,11 @@ class ProjectTab(QWidget):
 
         saveButton.clicked.connect(self.saveFile) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!click call method
 
+        newButton.clicked.connect(self.listProjects)
+
         rightLayout.addWidget(saveButton, 15, 8)
         rightLayout.addWidget(deleteButton, 15, 1)
 
-        button = QPushButton("My Button")
         deleteButton.clicked.connect(self.staticAnalysis)
         self.setLayout(mainlayout)
 
@@ -109,6 +111,8 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relro"))
         self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Stripped"))
         self.binaryFileProp.doubleClicked.connect(self.on_click)
+        self.searchList.doubleClicked.connect(self.select_project)
+
 
     def clickEvent(self):
         print("Clicked")
@@ -118,38 +122,11 @@ class ProjectTab(QWidget):
         for currentQTableWidgetItem in self.infoTable.selectedItems():
             print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
 
-    #     def staticAnalysis(self):
-    #         rlocal = r2pipe.open("/bin/ping")
-    #         binInfo = rlocal.cmd('ij')
-    #         data = json.loads(binInfo)
-    # #         myvalue = (data['core']['file'])
-    # #         print(myvalue)
-    #
-    #         myvalue = (data['core']['file'])
-    #         for key in data:
-    #             print(data['core']['file'])
-    #
-    #         self.infoTable.setItem(1,1,QTableWidgetItem(myvalue))
-    #
-    # #     def populateBinaryInfo(self):
-    #     def OpenFile(self):
-    #         options = QFileDialog.Options()
-    #         options |= QFileDialog.DontUseNativeDialog
-    #         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-    #                                                   "All Files (*);;Python Files (*.py)", options=options)
-    #         if fileName:
-    #             print(fileName)
-
     def staticAnalysis(self, filename):
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "canary", "crypto", "nx", "pic", "relocs",
                              "relro", "stripped"]
-
-        # filename = self.OpenFile()
-        rlocal = r2pipe.open(filenKame)
-        # list1 = rlocal.cmd('iI')
+        rlocal = r2pipe.open(filename)
         binInfo = rlocal.cmd('iI').splitlines()
-        # print(binInfo)
-
         colNum = 0
         for item in binPropertiesList:
             matchingline = [s for s in binInfo if item in s]
@@ -160,7 +137,6 @@ class ProjectTab(QWidget):
 
     # global.py
     myFileName = ""
-
     def OpenFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -172,9 +148,7 @@ class ProjectTab(QWidget):
             #             self.myFilename = fileName
             global myFileName
             myFileName = fileName
-
             return fileName
-
         return "not found"
 
     def getFileName(self):
@@ -198,13 +172,29 @@ class ProjectTab(QWidget):
         b2tf.text = pdesc
         b2tf = root.find("./BinaryFilePath")
         b2tf.text = ppath
-
         print(ET.tostring(root, encoding='utf8').decode('utf8'))
-
         my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
         xmlUploader.uploadXML(my_dict)
 
-   #     print(my_dict)
+
+    def listProjects(self):
+        projectList = xmlUploader.retrieve_list_of_projects()
+        for item in projectList:
+            self.searchList.addItem(item)
+
+    def select_project(self):
+        print("start")
+
+        print("here", [item.text() for item in self.searchList.selectedItems()])
+        project = [item.text() for item in self.searchList.selectedItems()]
+        projectName = ' '.join([str(elem) for elem in project])
+        print(type(projectName))
+        xmlUploader.retrieve_selected_project(projectName)
+
+   #
+   # def loadProject(self):
+
+
 
 
 
