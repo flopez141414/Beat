@@ -216,11 +216,11 @@ class ProjectTab(QWidget):
             xmlUploader.uploadXML(my_dict)
             self.disableEditing()
         elif pname == "":
-            errorMessageGnerator.showDialog("Enter a Project Name!")
+            errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
         elif pdesc == "":
-            errorMessageGnerator.showDialog("Enter a Description for the Project")
+            errorMessageGnerator.showDialog("Enter a description for the project","Project File Error")
         elif ppath == "":
-            errorMessageGnerator.showDialog("Cannot Create a project without a binary file")
+            errorMessageGnerator.showDialog("Cannot create a project without a binary file","Binary File Error")
         self.updateProjectList()
 
 
