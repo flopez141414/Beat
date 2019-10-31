@@ -34,7 +34,7 @@ def main():
     palette.setColor(QPalette.BrightText, QColor(255,0,0))
     palette.setColor(QPalette.Link, QColor(42, 130, 218))
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-    palette.setColor(QPalette.HighlightedText, QColor(0,0,0))
+    palette.setColor(QPalette.HighlightedText, QColor(0,0,0))4  
     app.setPalette(palette)
     '''''
 

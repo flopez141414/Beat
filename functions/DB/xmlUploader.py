@@ -3,6 +3,7 @@ import xmltodict
 import pprint
 import json
 
+
 def uploadXML(xml):
     client = MongoClient('localhost', 27017)
     # print(client)
@@ -42,5 +43,12 @@ def retrieve_selected_project(project_name):
 
     for item in projectsList:
         if item['Project']['Project_name']['#text'] == project_name:
-            print(item)
-            break
+            return item
+
+
+def delete_selected_project(nameofProject):
+    client = MongoClient('localhost', 27017)
+    db = client.pymongo_test
+    projects = db.posts
+    myquery = {"Project.Project_name.#text": nameofProject}
+    projects.delete_one(myquery)

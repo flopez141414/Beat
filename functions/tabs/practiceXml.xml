@@ -33,7 +33,7 @@
 	<SectionInBinary> </SectionInBinary>
       </Attributes>
     </PointOfInterest>
-    <PointOfInterest name = "string">
+    <PointOfInterest name = "string"> //holder
       <POIDescription></POIDescription>
       <Attributes>
 	<Value> </Value>

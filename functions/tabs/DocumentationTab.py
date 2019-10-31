@@ -46,3 +46,4 @@ class DocumentationTab(QWidget):
 
     def clickEvent(self):
         print("Clicked")
+
