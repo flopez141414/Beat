@@ -3,7 +3,7 @@ import sys
 import r2pipe
 import pymongo
 import json
-
+import projectTab as pt
 from PyQt5.QtWidgets import QMainWindow,QLabel, QApplication,QFormLayout, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout,QScrollArea, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtCore import pyqtSlot, Qt
@@ -203,11 +203,26 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(pSizeLine,3,1)
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
+    def parseNetworkItems(self):
+        global poiSuperList
+        target=['socket','send','rec','ipv','main']
+        for i in target:
+            self.searchedWord.append([s for s in poiSuperList if i in s])
+            
+        self.poiList.clear()
+        poiSuperList=[]
+        for items in self.searchedWord:
+            for item2 in items:
+                self.poiList.addItem(item2)
+        self.searchedWord = []
     def displayPOI(self,option):
         global poiSuperList
         if option=="Strings":
             poiSuperList=[]
             self.poiList.clear()
+#            target=['socket','send','rec','ipv','main']
+ #           for i in target:
+  #          self.searchedWord.append([s for s in poiSuperList if i in s])
             for item in stringsPOI:
                 item2=item.split()
                 self.poiList.addItem(item2[2])
@@ -249,6 +264,7 @@ class AnalysisTab(QWidget):
             #self.poiContentArea.setText(dllsPOI)
             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
         self.displayPOIparam()
+        self.parseNetworkItems()
     def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
@@ -263,8 +279,7 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def clickStaticAnalysis(self):
-        import projectTab
-        bina = r2pipe.open(projectTab.myFileName)
+        bina = r2pipe.open(pt.myFileName)
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
