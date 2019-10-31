@@ -9,19 +9,23 @@ import pprint
 import json
 
 sys.path.append("../DB")
+sys.path.append("../windows")
 import xmlUploader
+import errorMessageGnerator
 # from xmlUploader import uploadXml
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
-    QLineEdit, QListWidget, QFileDialog
+    QLineEdit, QListWidget, QFileDialog, QMessageBox
 
 #Global Variables to Save Project
 projectNameHolder = ''
 projectDescHolder = ''
 projectPathHolder = ''
 fileProperties = []
+
+projectSelected = False
 
 #sscess finished with exit code 0
 
@@ -83,18 +87,18 @@ class ProjectTab(QWidget):
         rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
         rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
 
-        deleteButton = QPushButton('Delete')
+        self.deleteButton = QPushButton('Delete')
 
         saveButton = QPushButton('Save')
 
-        saveButton.clicked.connect(self.saveFile) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!click call method
+        saveButton.clicked.connect(self.saveFile)
 
         newButton.clicked.connect(self.createNew)
 
         rightLayout.addWidget(saveButton, 15, 8)
-        rightLayout.addWidget(deleteButton, 15, 1)
+        rightLayout.addWidget(self.deleteButton, 15, 1)
 
-        deleteButton.clicked.connect(self.deleteProject)
+        self.deleteButton.clicked.connect(self.deleteProject)
         self.setLayout(mainlayout)
 
         self.binaryFileProp.setRowCount(13)
@@ -113,18 +117,13 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Relro"))
         self.binaryFileProp.setItem(12, 0, QTableWidgetItem("Stripped"))
         self.binaryFileProp.setEnabled(False)
-        self.binaryFileProp.doubleClicked.connect(self.on_click)
+        #self.binaryFileProp.doubleClicked.connect(self.on_click)
         self.searchList.doubleClicked.connect(self.select_project)
         self.searchList.doubleClicked.connect(self.disableEditing)
 
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
-
-    def on_click(self):
-        print("\n")
-        for currentQTableWidgetItem in self.binaryFileProp.selectedItems():
-            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
 
     def disableEditing(self):
         self.browseButton.setEnabled(False)
@@ -137,16 +136,15 @@ class ProjectTab(QWidget):
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic", "relocs",
                              "relro", "stripped"]
         rlocal = r2pipe.open(filename)
-        binInfo = rlocal.cmd('iI').splitlines()
-        print(binInfo)
         colNum = 0
+        binInfo = rlocal.cmd('iI').splitlines()
         for item in binPropertiesList:
             matchingline = [s for s in binInfo if item in s]
-            print(matchingline)
             a = matchingline[0].split()
             fileProperties.append(a[1])
             self.binaryFileProp.setItem(colNum, 1, QTableWidgetItem(a[1]))
             colNum += 1
+        self.updateProjectList()
 
     # global.py
     myFileName = ""
@@ -162,6 +160,7 @@ class ProjectTab(QWidget):
             global myFileName
             myFileName = fileName
             return fileName
+        self.updateProjectList()
         return "not found"
 
     def getFileName(self):
@@ -171,54 +170,59 @@ class ProjectTab(QWidget):
         global projectNameHolder
         global projectDescHolder
         global projectPathHolder
+        global projectSelected
 
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
 
-        # Adding to XMl
-        tree = ET.parse('practiceXml.xml')
-        root = tree.getroot()
-        b2tf = root.find("./Project_name")
-        b2tf.text = pname
-        b2tf = root.find("./projectDescription")
-        b2tf.text = pdesc
-        b2tf = root.find("./BinaryFilePath")
-        b2tf.text = ppath
-        b2tf = root.find("./StaticDataSet/OS")
-        b2tf.text = fileProperties[0]
-        b2tf = root.find("./StaticDataSet/BinaryType")
-        b2tf.text = fileProperties[1]
-        b2tf = root.find("./StaticDataSet/Machine")
-        b2tf.text = fileProperties[2]
-        b2tf = root.find("./StaticDataSet/Class")
-        b2tf.text = fileProperties[3]
-        b2tf = root.find("./StaticDataSet/Bits")
-        b2tf.text = fileProperties[4]
-        b2tf = root.find("./StaticDataSet/Language")
-        b2tf.text = fileProperties[5]
-        b2tf = root.find("./StaticDataSet/Canary")
-        b2tf.text = fileProperties[6]
-        b2tf = root.find("./StaticDataSet/Crypto")
-        b2tf.text = fileProperties[7]
-        b2tf = root.find("./StaticDataSet/NX")
-        b2tf.text = fileProperties[8]
-        b2tf = root.find("./StaticDataSet/Pic")
-        b2tf.text = fileProperties[9]
-        b2tf = root.find("./StaticDataSet/Relocs")
-        b2tf.text = fileProperties[10]
-        b2tf = root.find("./StaticDataSet/Relro")
-        b2tf.text = fileProperties[11]
-        b2tf = root.find("./StaticDataSet/Stripped")
-        b2tf.text = fileProperties[12]
+        if pname != "" and pdesc != "" and ppath != "":
+            # Adding to XMl
+            tree = ET.parse('practiceXml.xml')
+            root = tree.getroot()
+            b2tf = root.find("./Project_name")
+            b2tf.text = pname
+            b2tf = root.find("./projectDescription")
+            b2tf.text = pdesc
+            b2tf = root.find("./BinaryFilePath")
+            b2tf.text = ppath
+            b2tf = root.find("./StaticDataSet/OS")
+            b2tf.text = fileProperties[0]
+            b2tf = root.find("./StaticDataSet/BinaryType")
+            b2tf.text = fileProperties[1]
+            b2tf = root.find("./StaticDataSet/Machine")
+            b2tf.text = fileProperties[2]
+            b2tf = root.find("./StaticDataSet/Class")
+            b2tf.text = fileProperties[3]
+            b2tf = root.find("./StaticDataSet/Bits")
+            b2tf.text = fileProperties[4]
+            b2tf = root.find("./StaticDataSet/Language")
+            b2tf.text = fileProperties[5]
+            b2tf = root.find("./StaticDataSet/Canary")
+            b2tf.text = fileProperties[6]
+            b2tf = root.find("./StaticDataSet/Crypto")
+            b2tf.text = fileProperties[7]
+            b2tf = root.find("./StaticDataSet/NX")
+            b2tf.text = fileProperties[8]
+            b2tf = root.find("./StaticDataSet/Pic")
+            b2tf.text = fileProperties[9]
+            b2tf = root.find("./StaticDataSet/Relocs")
+            b2tf.text = fileProperties[10]
+            b2tf = root.find("./StaticDataSet/Relro")
+            b2tf.text = fileProperties[11]
+            b2tf = root.find("./StaticDataSet/Stripped")
+            b2tf.text = fileProperties[12]
+            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+            xmlUploader.uploadXML(my_dict)
+            self.disableEditing()
+        elif pname == "":
+            errorMessageGnerator.showDialog("Enter a Project Name!")
+        elif pdesc == "":
+            errorMessageGnerator.showDialog("Enter a Description for the Project")
+        elif ppath == "":
+            errorMessageGnerator.showDialog("Cannot Create a project without a binary file")
+        self.updateProjectList()
 
-        print(ET.tostring(root, encoding='utf8').decode('utf8'))
-
-        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-        xmlUploader.uploadXML(my_dict)
-        self.disableEditing()
-
-        # print(my_dict)
 
     def select_project(self):
         project = [item.text() for item in self.searchList.selectedItems()]
@@ -241,35 +245,49 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relocs']))
         self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
         self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
+        self.updateProjectList()
 
-
-    def deleteProject(self):
-        project = [item.text() for item in self.searchList.selectedItems()]
-        projectName = ' '.join([str(elem) for elem in project])
-        xmlUploader.delete_selected_project()
-        print("deleted")
 
     def createNew(self):
         self.projDescriptionArea.clear()
         self.projNameArea.clear()
         self.binaryFilePath.clear()
-        self.binaryFileProp.setItem(0, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(1, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(2, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(3, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(4, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(5, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(6, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(7, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(8, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(9, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(10, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(11, 1, QTableWidgetItem(" "))
-        self.binaryFileProp.setItem(12, 1, QTableWidgetItem(" "))
+        self.binaryFileProp.setItem(0, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(1, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(2, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(3, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(4, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(5, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(6, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(7, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(8, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(9, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(10, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(11, 1, QTableWidgetItem(""))
+        self.binaryFileProp.setItem(12, 1, QTableWidgetItem(""))
         self.browseButton.setEnabled(True)
         self.projNameArea.setEnabled(True)
         self.binaryFilePath.setEnabled(True)
         self.binaryFileProp.setEnabled(True)
+        self.updateProjectList()
+        #self.deleteButton.setEnabled(False)
 
+
+    def deleteProject(self):
+        global projectNameHolder
+        toErase = projectNameHolder.toPlainText()
+        if not toErase:
+            errorMessageGnerator.showDialog("Please select a project to delete")
+        xmlUploader.delete_selected_project(toErase)
+        for item in self.searchList.selectedItems():
+            self.searchList.takeItem(self.searchList.row(item))
+        self.updateProjectList()
+        self.createNew()
+
+    def updateProjectList(self):
+        self.searchList.clear()
+        projectList = xmlUploader.retrieve_list_of_projects()
+        for item in projectList:
+            self.searchList.addItem(item)
 
 

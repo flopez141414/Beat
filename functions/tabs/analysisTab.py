@@ -152,6 +152,7 @@ class AnalysisTab(QWidget):
     def clickStaticAnalysis(self):
         import projectTab
         bina = r2pipe.open(projectTab.myFileName)
+
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
@@ -165,7 +166,7 @@ class AnalysisTab(QWidget):
         #structuresPOI = bina.cmd("").splitlines()
         #variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
-    
+
     
     def dynamicAnalysis(self):
         programToAnalyze = "ping"
