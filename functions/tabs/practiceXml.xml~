@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project> 
+  <Project_name required="true"> </Project_name>
+  <BinaryFilePath required="true"> </BinaryFilePath>
+  <StaticDataSet>
+    <OS> </OS>
+    <BinaryType> </BinaryType>
+    <Machine> </Machine>
+    <Class> </Class>
+    <Bits> </Bits>
+    <Language> </Language>
+    <Canary> </Canary>
+    <Crypto> </Crypto>
+    <NX> </NX>
+    <Pic> </Pic>
+    <Relocs> </Relocs>
+    <Relro> </Relro>
+    <Stripped> </Stripped>
+  </StaticDataSet>
+  <Plugin>
+    <PluginName required="true">Network</PluginName>
+    <PointOfInterest>
+      <POIName> </POIName>
+      <POIDescription> </POIDescription>
+      <Attributes> 
+	<Variables>
+	  <Variable>
+	    <Type> </Type>
+	    <Value> </Value>
+	    <SectionInBinary> </SectionInBinary>
+	  </Variable>
+	</Variables>
+	<Strings>
+	  <String>
+	    <Value> </Value>
+	    <SectionInBinary> </SectionInBinary>
+	  </String>
+	</Strings>
+	<FunctionsInDLL>
+	  <Function>
+	    <OrderOfParameter> </OrderOfParameter>
+	    <ParameterType> </ParameterType>
+	    <ReturnType> </ReturnType>
+	    <ReturnValue> </ReturnValue>
+	    <OrderInRelationOfFunction> </OrderInRelationOfFunction>
+	  </Function>
+	</FunctionsInDLL>
+	<Structs>
+	  <Struct>
+	    <SectionInBinary> </SectionInBinary>
+	    <MemberOrder> </MemberOrder>
+	    <MemberType> </MemberType>
+	    <MemberValue> </MemberValue>
+	  </Struct>
+	</Structs>
+	<Protocols>
+	  <Protocol>
+	    <SectionInBinary> </SectionInBinary>
+	    <Struct>
+	      <SectionInBinary> </SectionInBinary>
+	      <MemberOrder> </MemberOrder>
+	      <MemberType> </MemberType>
+	      <MemberValue> </MemberValue>
+	      <Size> </Size>
+	    </Struct>
+	  </Protocol>
+	</Protocols>
+      </Attributes>
+    </PointOfInterest>
+    <Analysis>
+      <AnalysisFileName required="True"></AnalysisFileName>
+      <AnalysisDescription></AnalysisDescription>
+    </Analysis>
+    <Output> </Output>
+  </Plugin>
+  <Comment> </Comment>
+  <Documentation> 
+    <NameOfDoc> </NameOfDoc>
+    <DescriptionOfDoc> </DescriptionOfDoc>
+  </Documentation>
+  <ErrorHandler>
+    <ErrorNumber>
+      <ErrorName> </ErrorName>
+      <ErrorDescription> </ErrorDescription>
+    </ErrorNumber>
+  </ErrorHandler>
+</Project>
