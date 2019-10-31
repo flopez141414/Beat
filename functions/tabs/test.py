@@ -36,10 +36,6 @@ my_xml = """
 my_dict = xmltodict.parse(my_xml)
 
 posts = db.posts
-# test = {
-#     'title': 'Test',
-#     'content': 'PyMongo is fun, you guys',
-#     'author': 'Rocio'
-# }
+
 result = posts.insert_one(my_dict)
 print('One post: {0}'.format(result.inserted_id))
