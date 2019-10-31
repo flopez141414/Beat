@@ -2,11 +2,11 @@ import PyQt5
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
-def showDialog(message):
+def showDialog(message,title):
    msgBox = QMessageBox()
    msgBox.setIcon(QMessageBox.Warning)
    msgBox.setText(message)
-   msgBox.setWindowTitle("         BEAT ERROR             ")
+   msgBox.setWindowTitle(title)
    msgBox.setStandardButtons(QMessageBox.Ok)
    msgBox.setSizeIncrement(1, 1)
    msgBox.setSizeGripEnabled(True)
