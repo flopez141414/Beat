@@ -43,6 +43,14 @@ def retrieve_selected_project(project_name):
 
     for item in projectsList:
         if item['Project']['Project_name']['#text'] == project_name:
-            print(item)
-            break
+            return item
 
+
+def delete_selected_project():
+    client = MongoClient('localhost', 27017)
+    # print(client)
+    db = client.pymongo_test
+    # print(db)
+    projects = db.posts
+    #projectsList = projects.find()
+    db.posts.find( { "$text": { "$search": "project2" }})
