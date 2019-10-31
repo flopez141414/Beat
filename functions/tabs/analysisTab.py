@@ -38,7 +38,10 @@ class AnalysisTab(QWidget):
         runDynamic = QPushButton('Run')
         self.stopDynamic = QPushButton('Stop')
 
-        self.stopDynamic.setEnabled(False)
+        # TODO: Using this button to test terminal temporarily: remove comment from setEnabled call after finished
+#         self.stopDynamic.setEnabled(False)
+        # TODO: Disable this connection after testing is finished and create a new button to grab input from terminal 
+        self.stopDynamic.clicked.connect(self.sendTextToTerminal)
 
         topLayout.addWidget(QLabel('Plugin'), 0, 0)
         topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
@@ -97,6 +100,8 @@ class AnalysisTab(QWidget):
         
         #dynamic analysis run event listener
         runDynamic.clicked.connect(self.dynamicAnalysis)
+        self.connectedClient = False # flag to continue step into dynamic analysis
+        self.initialized = False # flag to see if we have already initiated dynamic analysis
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
@@ -159,62 +164,86 @@ class AnalysisTab(QWidget):
         global dllsPOI
         global structuresPOI
 
-        stringsPOI =bina.cmd("f;~str.").splitlines()
+        stringsPOI = bina.cmd("f;~str.").splitlines()
         dllsPOI = bina.cmd("ii").splitlines()
         functionsPOI = bina.cmd("aaa;afl").splitlines()
         #structuresPOI = bina.cmd("").splitlines()
         #variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
     
-    
     def dynamicAnalysis(self):
-        programToAnalyze = "ping"
-        functionName = "sym.imp.recv"
-        
-        r2 = r2pipe.open("ping") # Open program to be analyzed by radare2
-        r2.cmd('e bin.maxstrbuf=0xfffff09c5e400ba8') # Increase the buffer size 
-        r2.cmd('e dbg.bpinmaps=0') # disable cannot set breakpoint on unmapped memory
-        r2.cmd("aaa") # Perform static analysis on program 
-        r2.cmd("doo arg1=127.0.0.1") # Re open program in debug/background mode
-        references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
+        # only do the initializing of breakpoints/opening file/running in debug mode once
+        if(self.initialized is False):
+            programToAnalyze = "server.out"
+            functionName = "sym.imp.recv"
+            global r2
+            r2 = r2pipe.open("server.out") # Open program to be analyzed by radare2
+            r2.cmd("aaa") # Perform static analysis on program 
+            r2.cmd("doo 12344") # Re open program in debug/background mode
+            self.initialized = True
+            print("initialized dynamic analysis; connect the client now")
+#         references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
 
-        print(references)
+#         r2.cmd("db 0x401548") # hardcoded breakpoint to sym.imp.recv reference in main
+#         print(references)
+# #         for i in range(len(references)):
+# #             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
+        
 #         for i in range(len(references)):
-#             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
+#             breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
+#             r2.cmd(breakpoint) # Add breakpoints at references locations
+# #             print(breakpoint)
+        else:
+            if(self.connectedClient):
+                debugData = r2.cmdj('axtj sym.imp.recv')
+                
+                breakpoint = 'db ' + hex(debugData[0]["from"])
+                
+                r2.cmd(breakpoint)
+                self.terminal.append("set breakpoint at %s" % breakpoint)
+                
+                terminalData = r2.cmd("dc") # this will pause the program till you connect the client
+                self.terminal.append(terminalData)
+
+                terminalData = r2.cmd("dso") # once client is connected, proceed to step over the function
+                self.terminal.append(terminalData)
+                
+                # retreive data that server.out recieved
+                messageAddr = r2.cmd("dr rsi")
+                getPayloadCommand = "psz @" + messageAddr
+                payload = r2.cmd(getPayloadCommand)
+                
+                # r2 output
+                self.terminal.append("found payload: %s" % payload)
+                self.terminal.append("at: %s" % messageAddr)
+# 
+#                 breakpoints = r2.cmd("db")
+#                 print(breakpoints)
+#                 r2.cmd("dc")
+
+
         
-        for i in range(len(references)):
-            breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
-            r2.cmd(breakpoint) # Add breakpoints at references locations
-#             print(breakpoint)
-            
-        
-             
-#         while True:
-#             r2.cmd("dc") # Continue until breakpoint is hit 'debug continue execution'
-#             r2.cmd("dso") # Execute over the breakpoint 'debug step over'
-         
-# #             rax = 0x00000000
-# #             rbx = 0x00000000
-# #             rcx = 0x00000000
-# #             rdx = 0x00000000
-# #             rsi = 0x00000000
-# #             rdi = 0x00000000
-# #             r8 = 0x00000000
-# #             r9 = 0x00000000
-# #             r10 = 0x00000000
-# #             r11 = 0x00000000
-# #             r12 = 0x00000000
-# #             r13 = 0x00000000
-# #             r14 = 0x00000000
-# #             r15 = 0x00000000
-# #             rip = 0x00003c80
-# #             rbp = 0x00000000
-# #             rflags = 0x00000000
-# #             rsp = 0x00000000
-#             payloadAddr = r2.cmd("dr") # values at registers 'debug show register'
-#             print(payloadAddr)
-#                
+#         whie True:
+#             r2.cmd("dso") # step over recv function
+# #         ripAddress = r2.cmd("dr rsi")
+#             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
+#             print(payload)
 #             break
+             
+             
+    
+    def sendTextToTerminal(self):
+#         binary = r2.open("hello")
+#         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
+#         print(commandToSend)
+        
+#         myText = binary.cmd(commandToSend)
+#         print(myText)   
+#         
+        self.connectedClient = True
+
+        
+        
 
 # Methods to open windows
     def openCommentWindow(self):
