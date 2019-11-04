@@ -19,60 +19,9 @@
     <Relro> </Relro>
     <Stripped> </Stripped>
   </StaticDataSet>
-  <Plugin>
-    <PluginName required="true">Network</PluginName>
-    <Analysis>
-      <AnalysisFileName required="True"></AnalysisFileName>
-      <AnalysisDescription></AnalysisDescription>
-    </Analysis>
-    <PointOfInterest name="variable">
-      <POIDescription> </POIDescription>
-      <Attributes> 
-	<Type> </Type>
-	<Value> </Value>
-	<SectionInBinary> </SectionInBinary>
-      </Attributes>
-    </PointOfInterest>
-    <PointOfInterest name = "string"> //holder
-      <POIDescription></POIDescription>
-      <Attributes>
-	<Value> </Value>
-	<SectionInBinary> </SectionInBinary>
-      </Attributes>
-    </PointOfInterest>
-    <PointOfInterest name ="functionInDll">
-      <POIDescription></POIDescription>
-	  <Attributes>
-	    <OrderOfParameter> </OrderOfParameter>
-	    <ParameterType> </ParameterType>
-	    <ReturnType> </ReturnType>
-	    <ReturnValue> </ReturnValue>
-	    <OrderInRelationOfFunction> </OrderInRelationOfFunction>
-	  </Attributes>
-    </PointOfInterest>
-    <PointOfInterest name="structs">
-      <POIDescription></POIDescription>
-      <Attributes>
-	<SectionInBinary> </SectionInBinary>
-	<MemberOrder> </MemberOrder>
-	<MemberType> </MemberType>
-	<MemberValue> </MemberValue>
-      </Attributes>
-    </PointOfInterest>
-    <PointOfInterest name="protocol">
-      <Attributes>
-	<SectionInBinary> </SectionInBinary>
-	<Struct>
-	  <SectionInBinary> </SectionInBinary>
-	  <MemberOrder> </MemberOrder>
-	  <MemberType> </MemberType>
-	  <MemberValue> </MemberValue>
-	  <Size> </Size>
-	</Struct>
-      </Attributes>
-    </PointOfInterest>
-    <Output> </Output>
-  </Plugin>
+  <PluginHolder>
+
+  </PluginHolder>
   <Comment> </Comment>
   <Documentation> 
     <NameOfDoc> </NameOfDoc>

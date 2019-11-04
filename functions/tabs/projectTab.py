@@ -112,7 +112,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relocs"))
         self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Relro"))
         self.binaryFileProp.setItem(12, 0, QTableWidgetItem("Stripped"))
-         .binaryFileProp.doubleClicked.connect(self.on_click)
+        self.binaryFileProp.doubleClicked.connect(self.on_click)
         self.searchList.doubleClicked.connect(self.select_project)
 
         projectList = xmlUploader.retrieve_list_of_projects()
@@ -214,6 +214,8 @@ class ProjectTab(QWidget):
         my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
         xmlUploader.uploadXML(my_dict)
 
+
+
         # print(my_dict)
 
 
@@ -244,7 +246,12 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relocs']))
         self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
         self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
-
+        tree = ET.parse('practiceXml.xml')
+        xml1 = tree.getroot()
+        tree = ET.parse('testplugin.xml')
+        xml2 = tree.getroot()
+        xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
+        print('hello!')
 
     def deleteProject(self):
         global projectNameHolder

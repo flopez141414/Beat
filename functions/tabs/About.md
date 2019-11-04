@@ -1,0 +1,17 @@
+![alt text](BEAT-2small.png)
+
+#### Version: 4.0
+
+* Commit: https://github.com/flopez141414/Beat-Team-12
+* Date: 10/31/2019
+* Copyright 2019 Team 12. All rights reserved.
+* Third party software:   
+
+    * Jinja 2.2.10
+    * Radare2 3.2.1
+    * MongoDB 4.2
+        
+* The BEAT software is a tool designed to provide the capability 
+  to conduct a targeted binary analysis, 
+  with the added capacity to modify contents of plugins via a 
+  graphical user interface.

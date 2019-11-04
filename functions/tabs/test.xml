@@ -1,0 +1,12 @@
+<plugin>
+	<name>Merger Test</name>
+	<desctription>Network Plugin includes six points of interest</desctription>
+	<pointOfInterest>Variable</pointOfInterest>
+	<pointOfInterest>String</pointOfInterest>
+	<pointOfInterest>Dll</pointOfInterest>
+	<pointOfInterest>Function</pointOfInterest>
+	<pointOfInterest>PacketProtocol</pointOfInterest>
+	<pointOfInterest>Struct</pointOfInterest>
+	<output>
+	</output>
+</plugin>
