@@ -290,4 +290,12 @@ class ProjectTab(QWidget):
         for item in projectList:
             self.searchList.addItem(item)
 
+    '''''
+    This is to test merger
+        tree = ET.parse('practiceXml.xml')
+        xml1 = tree.getroot()
+        tree = ET.parse('testplugin.xml')
+        xml2 = tree.getroot()
+        xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
+    '''''
 
