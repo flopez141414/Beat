@@ -1,0 +1,8 @@
+HOW TO SET UP MongoDB:
+
+If first time setting up MongoDB:
+
+1. Download MongoDB.
+2. Go to Control Panel and click on Administrative Tools.
+3. Double click on Services. A new window opens up.
+4. Search MoongoDB.exe. Right click on it and select Start.

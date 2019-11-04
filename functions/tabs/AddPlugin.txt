@@ -1,0 +1,12 @@
+HOW TO ADD A NEW PLUGIN:
+
+1. Open BEAT
+2. Go to Plugin Management Tab
+3. Click on New button on the left side of the panel
+4. Click Browse button to select a valid Plugin XML file structure
+5. Click Browse button to select a Plugin predefined data set
+6. Write down the Plugin Name
+7. Write down the Plugin Description
+8. Select output field
+9. List of Points of Interest will be displayed
+10. Click Save button

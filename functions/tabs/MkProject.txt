@@ -1,0 +1,11 @@
+HOW TO MAKE A PROJECT:
+
+1. Open BEAT.
+2. Go to Project Tab.
+3. Select New button on the left side of the panel.
+4. Under Detailed Project View:
+	- Add Project Name.
+	- Add Project Description.
+	- Click Browse button to select a valid .exe file.
+	- Click Save button. Project will be saved in DB.
+	- Binary file properties will be loaded.
