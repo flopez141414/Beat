@@ -64,17 +64,17 @@ class DocumentationTab(QWidget):
             current = currentQTableWidgetItem.text()
         print(current)
         if current == 'About BEAT':
-            self.fileOpener('About.txt')
+            self.fileOpener('../../documentation/About.txt')
         elif current == 'Add Plugin':
-            self.fileOpener('AddPlugin.txt')
+            self.fileOpener('../../documentation/AddPlugin.txt')
         elif current == 'Delete Plugin':
-            self.fileOpener('DelPlugin.txt')
+            self.fileOpener('../../documentation/DelPlugin.txt')
         elif current == 'Delete Project':
-            self.fileOpener('DelProject.txt')
+            self.fileOpener('../../documentation/DelProject.txt')
         elif current == 'Make Project':
-            self.fileOpener('MkProject.txt')
+            self.fileOpener('../../documentation/MkProject.txt')
         elif current == 'Set MongoDB':
-            self.fileOpener('SetMongo.txt')
+            self.fileOpener('../../documentation/SetMongo.txt')
 
     def fileOpener(self,File_object):
         cwd = os.getcwd()
