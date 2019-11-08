@@ -21,6 +21,11 @@ def uploadXML(xml):
     posts = connection_project_path ()
     result = posts.insert_one(my_dict)
 
+def uploadPlugin(xml):
+    my_dict = xmltodict.parse(xml)
+    posts = connection_plugin_path ()
+    result = posts.insert_one(my_dict)
+
 def retrieve_list_of_projects():
     projects = connection_project_path()
     projectsList = projects.find()
