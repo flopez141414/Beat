@@ -219,6 +219,7 @@ class AnalysisTab(QWidget):
         for items in self.searchedWord:
             for item2 in items:
                 self.poiList.addItem(item2)
+                poiSuperList.append(item2)
         self.searchedWord = []
     def displayPOI(self,option):
         global poiSuperList
