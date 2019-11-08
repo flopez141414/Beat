@@ -16,3 +16,14 @@ def showDialog(message,title):
    if returnValue == QMessageBox.Ok:
       print('OK clicked')
 
+def infoToast(message,title):
+   msgBox = QMessageBox()
+   msgBox.setIcon(QMessageBox.Information)
+   msgBox.setText(message)
+   msgBox.setWindowTitle(title)
+   msgBox.setStandardButtons(QMessageBox.Ok)
+   msgBox.setSizeIncrement(1, 1)
+   msgBox.setSizeGripEnabled(True)
+   returnValue = msgBox.exec()
+
+

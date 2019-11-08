@@ -39,9 +39,9 @@ class ProjectTab(QWidget):
 
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
-        rightLayout = QGridLayout()
+        self.rightLayout = QGridLayout()
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
-        mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
+        mainlayout.addLayout(self.rightLayout, 1, 1, 6, 5)
 
         # Left panel
         searchBox = QLineEdit()
@@ -50,53 +50,39 @@ class ProjectTab(QWidget):
         self.searchList = QListWidget()
         leftPanelLabel = QLabel('Project View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
-
         leftLayout.addWidget(newButton, 6, 0)
 
         # Right panel
-        rightPanelLabel = QLabel('Detailed Project View')
-        rightPanelLabel.setAlignment(Qt.AlignCenter)
+        self.rightPanelLabel = QLabel('Detailed Project View')
+        #rightPanelLabel.hide()
+        self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
         projectNameHolder = self.projNameArea # storing global
         self.projDescriptionArea = QTextEdit()
         projectDescHolder = self.projDescriptionArea
         self.binaryFilePath = QTextEdit()
         projectPathHolder = self.binaryFilePath
+
         self.binaryFileProp = QTableWidget()
         self.binaryFileProp.horizontalHeader().setStretchLastSection(True)
         self.binaryFileProp.verticalHeader().setVisible(False)
         self.binaryFileProp.horizontalHeader().setVisible(False)
         self.binaryFileProp.setAlternatingRowColors(True)
         self.browseButton = QPushButton('Browse')
+        self.LoadButton = QPushButton('Load Current PM')
+
+        self.LoadButton.clicked.connect(self.setCurrentProject)
         self.browseButton.clicked.connect(self.OpenFile)
-
-        rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 14)
-        rightLayout.addWidget(self.projNameArea, 1, 2, 10, 10)
-        rightLayout.addWidget(self.projDescriptionArea, 2, 2, 5, 10)
-        rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
-        rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
-        rightLayout.addWidget(self.browseButton, 4, 12)
-
-        rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
-
         self.deleteButton = QPushButton('Delete')
-
-        saveButton = QPushButton('Save')
-
-        saveButton.clicked.connect(self.saveFile)
+        self.saveButton = QPushButton('Save')
+        self.saveButton.toggle()
+        self.saveButton.clicked.connect(self.saveFile)
 
         newButton.clicked.connect(self.createNew)
-
-        rightLayout.addWidget(saveButton, 15, 8)
-        rightLayout.addWidget(self.deleteButton, 15, 1)
 
         self.deleteButton.clicked.connect(self.deleteProject)
         self.setLayout(mainlayout)
@@ -171,7 +157,7 @@ class ProjectTab(QWidget):
         global projectDescHolder
         global projectPathHolder
         global projectSelected
-
+        #self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
@@ -223,8 +209,32 @@ class ProjectTab(QWidget):
             errorMessageGnerator.showDialog("Cannot create a project without a binary file","Binary File Error")
         self.updateProjectList()
 
+    #loads right side
+    def loadRightLayout(self):
+        self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 14)
+        self.rightLayout.addWidget(self.projNameArea, 1, 2, 10, 10)
+        self.rightLayout.addWidget(self.projDescriptionArea, 2, 2, 5, 10)
+        self.rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
+        self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
+        self.rightLayout.addWidget(self.browseButton, 4, 12)
+        self.rightLayout.addWidget(self.LoadButton, 4, 12)
+        self.LoadButton.hide()
+
+        self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
+        self.rightLayout.addWidget(self.saveButton, 15, 8)
+        self.rightLayout.addWidget(self.deleteButton, 15, 1)
 
     def select_project(self):
+        #for this mode we will load the right layout
+        self.loadRightLayout()
+        #disable buttons not needed
+        self.saveButton.hide()
+        self.browseButton.hide()
+        self.LoadButton.show()
+
         project = [item.text() for item in self.searchList.selectedItems()]
         projectName = ' '.join([str(elem) for elem in project])
         project = xmlUploader.retrieve_selected_project(projectName)
@@ -249,6 +259,13 @@ class ProjectTab(QWidget):
 
 
     def createNew(self):
+        #enable buttons
+        self.saveButton.show()
+        self.browseButton.show()
+        #disable Button
+        self.deleteButton.hide()
+
+        self.loadRightLayout()
         self.projDescriptionArea.clear()
         self.projNameArea.clear()
         self.binaryFilePath.clear()
@@ -271,6 +288,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setEnabled(True)
         self.updateProjectList()
         #self.deleteButton.setEnabled(False)
+       # self.turnOn()
 
 
     def deleteProject(self):
@@ -284,11 +302,26 @@ class ProjectTab(QWidget):
         self.updateProjectList()
         self.createNew()
 
+    def turnOn(self):
+        self.saveButton.show()
+
+    def turnOff(self):
+        self.saveButton.hide()
+
     def updateProjectList(self):
         self.searchList.clear()
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
+
+    '''''
+    We want to store the current project name.
+    Using the current project name we can retrieve the project XML from the DB
+    '''''
+    def setCurrentProject(self):
+        global projectNameHolder
+        toStore = projectNameHolder.toPlainText()
+        errorMessageGnerator.infoToast(' Current Project is ' + toStore ,'Current Project' )
 
     '''''
     This is to test merger

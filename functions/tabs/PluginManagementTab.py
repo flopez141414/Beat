@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
-
+import testTab
 
 class PluginManagementTab(QWidget):
     def __init__(self):
@@ -14,9 +14,9 @@ class PluginManagementTab(QWidget):
 
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
-        rightLayout = QGridLayout()
+        self.rightLayout = QGridLayout()
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
-        mainlayout.addLayout(rightLayout, 1, 1, 6, 1)
+        mainlayout.addLayout(self.rightLayout, 1, 1, 6, 5)
 
         # Left panel
         searchBox = QLineEdit()
@@ -35,45 +35,56 @@ class PluginManagementTab(QWidget):
         leftLayout.addWidget(newButton, 6, 0)
 
         # Right panel
-        rightPanelLabel = QLabel('Detailed Plugin View')
-        rightPanelLabel.setAlignment(Qt.AlignCenter)
+        self.rightPanelLabel = QLabel('Detailed Plugin View')
+        self.rightPanelLabel.setAlignment(Qt.AlignCenter)
 #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
-        rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
-        pluginStructArea = QTextEdit()
-        pluginDataSet = QTextEdit()
-        pluginName = QTextEdit()
-        pluginDesc = QTextEdit()
-        pointsOI = QTextEdit()
-        defaultOutDropdown = QComboBox()
-        browseButton1 = QPushButton('Browse')
-        browseButton2 = QPushButton('Browse')
+        self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
+        self.pluginStructArea = QTextEdit()
+        self.pluginDataSet = QTextEdit()
+        self.pluginName = QTextEdit()
+        self.pluginDesc = QTextEdit()
+        self.pointsOI = QTextEdit()
+        self.defaultOutDropdown = QComboBox()
+        self.browseButton1 = QPushButton('Browse')
+        self.browseButton2 = QPushButton('Browse')
+        newButton.clicked.connect(self.createNew)
 
-        rightLayout.addWidget(browseButton1, 1, 6)
-        rightLayout.addWidget(browseButton2, 2, 6)
+        self.browseButton1.clicked.connect(self.clickEvent)
 
-        rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
-        rightLayout.addWidget(pluginStructArea, 1, 2, 2, 1)
-        rightLayout.addWidget(pluginDataSet, 2, 2, 2, 1)
-        rightLayout.addWidget(pluginName, 3, 2, 2, 1)
-        rightLayout.addWidget(pluginDesc, 4, 2, 2, 1)
-        rightLayout.addWidget(defaultOutDropdown, 5, 2, 1, 1)
-        rightLayout.addWidget(pointsOI, 6, 2, 4, 1)
+        self.deleteButton = QPushButton('Delete')
+        self.saveButton = QPushButton('Save')
 
-        rightLayout.addWidget(QLabel('Plugin Structure'), 1, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Plugin Predefined Data Set'), 2, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Plugin Name'), 3, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Plugin Description'), 4, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
-        rightLayout.addWidget(QLabel('Points of Interest'), 6, 1, 1, 1)
-
-        deleteButton = QPushButton('Delete')
-        saveButton = QPushButton('Save')
-        rightLayout.addWidget(saveButton, 15, 7)
-        rightLayout.addWidget(deleteButton, 15, 1)
 
         button = QPushButton("My Button")
         button.clicked.connect(self.clickEvent)
         self.setLayout(mainlayout)
+    def loadRightLayout(self):
+        self.rightLayout.addWidget(self.browseButton1, 1, 6)
+        self.rightLayout.addWidget(self.browseButton2, 2, 6)
+        self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 10)
+        self.rightLayout.addWidget(self.pluginStructArea, 1, 2, 2, 1)
+        self.rightLayout.addWidget(self.pluginDataSet, 2, 2, 2, 1)
+        self.rightLayout.addWidget(self.pluginName, 3, 2, 2, 1)
+        self.rightLayout.addWidget(self.pluginDesc, 4, 2, 2, 1)
+        self.rightLayout.addWidget(self.defaultOutDropdown, 5, 2, 1, 1)
+        self.rightLayout.addWidget(self.pointsOI, 6, 2, 4, 1)
+
+        self.rightLayout.addWidget(QLabel('Plugin Structure'), 1, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Plugin Predefined Data Set'), 2, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Plugin Name'), 3, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Plugin Description'), 4, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Points of Interest'), 6, 1, 1, 1)
+        self.rightLayout.addWidget(self.saveButton, 15, 7)
+        self.rightLayout.addWidget(self.deleteButton, 15, 1)
+
+    def createNew(self):
+        self.loadRightLayout()
+        self.deleteButton.hide()
 
     def clickEvent(self):
+        testTab.meme()
         print("Clicked")
+
+    def savexml(self):
+        print('saving xml')
