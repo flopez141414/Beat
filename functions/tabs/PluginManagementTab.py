@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
-import testTab
+# import testTab
 
 class PluginManagementTab(QWidget):
     def __init__(self):
@@ -58,6 +58,7 @@ class PluginManagementTab(QWidget):
         button = QPushButton("My Button")
         button.clicked.connect(self.clickEvent)
         self.setLayout(mainlayout)
+
     def loadRightLayout(self):
         self.rightLayout.addWidget(self.browseButton1, 1, 6)
         self.rightLayout.addWidget(self.browseButton2, 2, 6)
@@ -83,7 +84,7 @@ class PluginManagementTab(QWidget):
         self.deleteButton.hide()
 
     def clickEvent(self):
-        testTab.meme()
+        # testTab.meme()
         print("Clicked")
 
     def savexml(self):

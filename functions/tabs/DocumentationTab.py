@@ -55,9 +55,6 @@ class DocumentationTab(QWidget):
         for item in docTitles:
             self.searchDocList.addItem(item)
 
-    # def clickEvent(self):
-    #     print("Clicked")
-
     def readFile(self):
         current = ''
         for currentQTableWidgetItem in self.searchDocList.selectedItems():

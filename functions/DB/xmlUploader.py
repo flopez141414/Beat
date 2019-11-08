@@ -6,24 +6,24 @@ import json
 #sets path to connect to DB
 def connection_project_path():
     client = MongoClient('localhost', 27017)
-    db = client.beat
-    posts = db.Project
+    db = client.BEAT
+    posts = db.Projects
     return posts
 
 def connection_plugin_path():
     client = MongoClient('localhost', 27017)
-    db = client.beat
-    posts = db.Plugin
+    db = client.BEAT
+    posts = db.Plugins
     return posts
 
 def uploadXML(xml):
     my_dict = xmltodict.parse(xml)
-    posts = connection_project_path ()
+    posts = connection_project_path()
     result = posts.insert_one(my_dict)
 
 def uploadPlugin(xml):
     my_dict = xmltodict.parse(xml)
-    posts = connection_plugin_path ()
+    posts = connection_plugin_path()
     result = posts.insert_one(my_dict)
 
 def retrieve_list_of_projects():
