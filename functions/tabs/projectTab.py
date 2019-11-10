@@ -219,6 +219,7 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.browseButton, 4, 12)
         self.rightLayout.addWidget(self.LoadButton, 4, 12)
         self.LoadButton.hide()
+        self.deleteButton.show()
 
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
         self.rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
