@@ -24,7 +24,6 @@ def main():
     mainWindow = QMainWindow()
     
     # dark theme
-
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53,53,53))
     palette.setColor(QPalette.WindowText, QColor(255,255,255))
