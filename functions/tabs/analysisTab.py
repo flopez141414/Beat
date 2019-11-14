@@ -4,6 +4,15 @@ import r2pipe
 import pymongo
 import json
 import projectTab as pt
+import xml.etree.ElementTree as ET
+import xmltodict
+import pprint
+import json
+
+sys.path.append("../DB")
+sys.path.append("../windows")
+import xmlUploader
+import errorMessageGnerator
 from PyQt5.QtWidgets import QMainWindow,QLabel, QApplication,QFormLayout, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout,QScrollArea, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtCore import pyqtSlot, Qt
@@ -12,6 +21,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
+
 
 class AnalysisTab(QWidget):
 
@@ -117,6 +127,8 @@ class AnalysisTab(QWidget):
         self.poiList.clear()
         for items in self.searchedWord:
             self.poiList.addItem(items)
+
+
 
     def displayPOIparam(self):
         content_widget=QWidget()
@@ -284,8 +296,10 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def clickStaticAnalysis(self):
-        bina = r2pipe.open(pt.myFileName)
+        self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
+        bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
+
         global stringsPOI
         global variablesPOI
         global functionsPOI

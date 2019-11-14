@@ -1,12 +1,13 @@
 import json
 import r2pipe
 import sys
-
 #XML libraries
 import xml.etree.ElementTree as ET
 import xmltodict
 import pprint
 import json
+import analysisTab as aT
+from typing import Any
 
 sys.path.append("../DB")
 sys.path.append("../windows")
@@ -24,8 +25,9 @@ projectNameHolder = ''
 projectDescHolder = ''
 projectPathHolder = ''
 fileProperties = []
-
+project=[]  # type: Any
 projectSelected = False
+listCounter=0
 
 #sscess finished with exit code 0
 
@@ -157,6 +159,7 @@ class ProjectTab(QWidget):
         global projectDescHolder
         global projectPathHolder
         global projectSelected
+        global project
         #self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
@@ -200,6 +203,7 @@ class ProjectTab(QWidget):
             b2tf.text = fileProperties[12]
             my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
             xmlUploader.uploadXML(my_dict)
+            project = xmlUploader.retrieve_selected_project(pname)
             self.disableEditing()
         elif pname == "":
             errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
@@ -208,6 +212,11 @@ class ProjectTab(QWidget):
         elif ppath == "":
             errorMessageGnerator.showDialog("Cannot create a project without a binary file","Binary File Error")
         self.updateProjectList()
+        self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
+        self.searchList.item(listCounter)
+
+
+
 
     #loads right side
     def loadRightLayout(self):
@@ -229,6 +238,7 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
 
     def select_project(self):
+        global project
         #for this mode we will load the right layout
         self.loadRightLayout()
         #disable buttons not needed
@@ -310,10 +320,16 @@ class ProjectTab(QWidget):
         self.saveButton.hide()
 
     def updateProjectList(self):
+        global project
+        global listCounter
+        listCounter = 0
         self.searchList.clear()
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
+            listCounter +=1
+
+
 
     '''''
     We want to store the current project name.
