@@ -1,32 +1,34 @@
 import r2pipe
 import json
+import projectTab
 
 # opens binary file and extracts variables, strings, imports, functions, packet info, and struct info
 from PyQt5.QtWidgets import QFileDialog
 
-rlocal = r2pipe.open("/bin/ping")
+rlocal = r2pipe.open(projectTab.myFileName)
 #     global variableInfo = rlocal.cmd()
 stringInfo = rlocal.cmd('izzj')
 dllInfo = rlocal.cmd('iij')
 functionInfo = rlocal.cmd('aaa ; aflj')
-binaryInfo = rlocal.cmd('iI').splitlines()
+# binaryInfo = rlocal.cmd('iI').splitlines()
 #     global packetInfo = rlocal.cmd('afl')
 #     global structInfo = rlocal.cmd('afl')
 
+# parse strings and store them in our database
 def parseStrings(r2str):
     myr2str = json.loads(r2str)
-    mystuff = []
+    myStrings = []
 #     print(myr2str['strings'][0]['string'])
     for key in myr2str['strings']:
 #         print(key['string'])
-        mystuff.append(key['string'])
+        myStrings.append(key['string'])
         
     #for finding duplicate strings    
-    mystuff.sort()
-    for i in range(len(mystuff)-1):
-        if mystuff[i] == mystuff[i+1]:
-            print('FOUND ONE', mystuff[i])
-#     print(mystuff)
+#     myStrings.sort()
+#     for i in range(len(myStrings)-1):
+#         if myStrings[i] == myStrings[i+1]:
+#             print('FOUND ONE', myStrings[i])
+    print(myStrings)
 
 def parseDll(r2dll):
     print(r2dll)
@@ -39,8 +41,6 @@ def parseBinaryInfo(r2binfo):
     print(type(r2binfo[0]))
     
     
-# parseStrings(stringInfo)
-parseBinaryInfo(binaryInfo)
 
 #method to open file explorer
 def OpenFile(self):
@@ -53,3 +53,6 @@ def OpenFile(self):
         return fileName
 
     return "not found"
+
+def runStringAnalysis:
+    parseStrings(r2str)

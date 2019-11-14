@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import xmltodict
 import pprint
 import json
+import xml.etree.ElementTree as ET
 
 
 def uploadXML(xml):
@@ -40,3 +41,12 @@ def delete_selected_project(nameofProject):
     projects = db.posts
     myquery = {"Project.Project_name.#text": nameofProject}
     projects.delete_one(myquery)
+    
+# holder element of where to place xml2
+def xmlmerger(holder, xml1, xml2):
+    print("+++++++++++++++++++++++++++++++++++++++++++++++")
+    for element1 in xml1.findall(holder):
+        element1.append(xml2)
+    ET.dump(xml1)
+    print(xml1)
+    print("+++++++++++++++++++++++++++++++++++++++++++++++")
