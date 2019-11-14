@@ -13,6 +13,22 @@ from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
 
+#XML libraries
+import xml.etree.ElementTree as ET
+import xmltodict
+import pprint
+import json
+
+sys.path.append("../DB")
+sys.path.append("../windows")
+import xmlUploader
+import errorMessageGnerator
+# from xmlUploader import uploadXml
+
+import base64
+
+import xml.dom.minidom
+
 class AnalysisTab(QWidget):
 
     def __init__(self):
@@ -208,6 +224,26 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(pSizeLine,3,1)
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
+    def makeStringTree(self, lista):
+#             if pname != "" and pdesc != "" and ppath != "":
+                # Adding to XMl
+            for i in lista:  
+                tree = ET.parse('../xml/StringPointOfInterest.xml')
+                root = tree.getroot()
+                b2tf = root.find("./value")
+                b2tf.text = i[3]
+                b2tf = root.find("./address")
+                b2tf.text = i[0]
+                b2tf = root.find("./comment")
+                b2tf.text = ""
+                b2tf = root.find("./section")
+                b2tf.text = i[1]
+                
+                
+            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+            xmlUploader.uploadXML(my_dict)
+            
+            
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -220,6 +256,7 @@ class AnalysisTab(QWidget):
             for item2 in items:
                 self.poiList.addItem(item2)
         self.searchedWord = []
+        
     def displayPOI(self,option):
         global poiSuperList
         if option=="Strings":
@@ -293,6 +330,7 @@ class AnalysisTab(QWidget):
         global structuresPOI
 
         stringsPOI =bina.cmd("f;~str.").splitlines()
+        self.makeStringTree(stringsPOI)
         protocolsPOI = bina.cmd("ii").splitlines()
         functionsPOI = bina.cmd("aaa;afl").splitlines()
         #structuresPOI = bina.cmd("").splitlines()
@@ -368,9 +406,54 @@ class AnalysisTab(QWidget):
 #         myText = binary.cmd(commandToSend)
 #         print(myText)   
 #         
-        self.connectedClient = True
+#         self.connectedClient = True
+
+        r2buffer = r2pipe.open('../../executables/ping')
+        stringInfo = r2buffer.cmd("izj")
+        jsonStrings = json.loads(stringInfo)
+        
+#         print(jsonStrings[0]["vaddr"])
+        
+
+        parentTree = ET.parse('../xml/pointOfInterestDataSet.xml')
+        parentRoot = parentTree.getroot()
+        stringHolderElement = parentRoot.find('./stringHolder')
+        
+        for index in range(len(jsonStrings)):
+#             for key in jsonStrings[index]: # access each string
+            myString = jsonStrings[index] # this dictonary contains one Strint poi
+            tree = ET.parse('../xml/StringPointOfInterest.xml')
+#             ET.Element
+            root = tree.getroot()
+            b2tf = root.find("./value")
+            b2tf.text = str(base64.standard_b64decode(myString['string']))
+            b2tf = root.find("./address")
+            b2tf.text = str(myString['paddr'])
+            b2tf = root.find("./section")
+            b2tf.text = str(myString['section'])
+            stringHolderElement.append(root)
+            
+            
+#             ET.Element.append(parentTree)      
+#             ET.Element.append(parentTree)  
+#         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
+#         ET.dump(parentTree)
+        parentTree.write('myxml.txt')
+          
+                
+        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+#         print(my_dict)
+#         tree.write('tree.xml')
+#         ET.Element.append(subelement)
+        
+            
+        xmlUploader.uploadXML(parent_dict)
+                # TODO: append these elements to the string xml holder
 
         
+ 
+         
         
 
 # Methods to open windows
