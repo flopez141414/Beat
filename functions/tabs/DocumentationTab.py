@@ -22,8 +22,8 @@ class DocumentationTab(QWidget):
         mainlayout.addLayout(rightLayout, 1, 1, 6, 8)
 
         # Left panel
-        searchBox = QLineEdit()
-        searchButton = QPushButton('Search')
+        self.searchBox = QLineEdit()
+        self.searchButton = QPushButton('Search')
 
         self.searchDocList = QListWidget()
         #docList = QTextEdit()
@@ -33,8 +33,8 @@ class DocumentationTab(QWidget):
 
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
-        leftLayout.addWidget(searchButton, 1, 4, 1, 1)
-        leftLayout.addWidget(searchBox, 1, 0, 1, 3)
+        leftLayout.addWidget(self.searchButton, 1, 4, 1, 1)
+        leftLayout.addWidget(self.searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(self.searchDocList, 2, 0, 1, 5)
 
         # Right panel
@@ -51,12 +51,19 @@ class DocumentationTab(QWidget):
         self.setLayout(mainlayout)
 
         #display titles for docs
-        docTitles = ["About BEAT" , "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Set MongoDB"]
-        for item in docTitles:
+        self.docTitles = ["About BEAT" , "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Set MongoDB"]
+        for item in self.docTitles:
             self.searchDocList.addItem(item)
+        self.searchButton.clicked.connect(self.searchDocs)
 
     # def clickEvent(self):
     #     print("Clicked")
+    def searchDocs(self):
+        target = self.searchBox.text()
+        self.searchedWord = [s for s in self.docTitles if target in s]
+        self.searchDocList.clear()
+        for items in self.searchedWord:
+            self.searchDocList.addItem(items)
 
     def readFile(self):
         current = ''
