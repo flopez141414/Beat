@@ -33,6 +33,7 @@ class AnalysisTab(QWidget):
         protocolsPOI = []
         structuresPOI = []
         poiSuperList= []
+        self.poiSuperList2=[]
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         rightLayout = QGridLayout()
@@ -118,6 +119,7 @@ class AnalysisTab(QWidget):
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
+        self.poiList.clicked.connect(self.clickedPOI)
         self.setLayout(mainlayout)
 
     def clickedSearch(self):
@@ -127,7 +129,19 @@ class AnalysisTab(QWidget):
         self.poiList.clear()
         for items in self.searchedWord:
             self.poiList.addItem(items)
-
+    ##########################################################################333
+    ########################################
+    #working on display
+    def clickedPOI(self):
+        current=[item.text() for item in self.poiList.selectedItems()]
+        print(' '.join(current))
+        print(self.poiSuperList2)
+        current=' '.join(current)
+        option=self.poiDropdown.currentText()
+        searchedPoi=[s for s in self.poiSuperList2 if current[0] in s]
+        print(searchedPoi)
+        if option=="Strings":
+            self.valueLine.setText(' '.join(searchedPoi[7:]))
 
 
     def displayPOIparam(self):
@@ -137,11 +151,14 @@ class AnalysisTab(QWidget):
         self.poiContentArea.setWidgetResizable(True)
         option= self.poiDropdown.currentText()
         if option=="Strings":
+            #stringsDatabase=xmlUploader.retrieve_selected_project(pt.project['Project']['Project_name']['#text'])
+            poiDatabase=xmlUploader.retrievePoiInProject()
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
             value= QLabel('Value:')
             sectionInBinary=QLabel('Section In Binary:')
             self.valueLine=QLineEdit()
             self.sectionInBinaryLine= QLineEdit()
+            #self.valueLine.setText(poiDatabase)
             layoutForPOI.addWidget(value,1,0)
             layoutForPOI.addWidget(self.valueLine,1,1)
             layoutForPOI.addWidget(sectionInBinary,2,0)
@@ -232,6 +249,7 @@ class AnalysisTab(QWidget):
             for item2 in items:
                 self.poiList.addItem(item2)
         self.searchedWord = []
+
     def displayPOI(self,option):
         global poiSuperList
         if option=="Strings":
@@ -242,10 +260,11 @@ class AnalysisTab(QWidget):
   #          self.searchedWord.append([s for s in poiSuperList if i in s])
             for item in stringsPOI:
                 item2=item.split()
-                self.poiList.addItem(item2[2])
-                poiSuperList.append(item2[2])
+                self.poiList.addItem(' '.join(item2[7:]))
+                poiSuperList.append(' '.join(item2[7:]))
             #self.poiContentArea.setText(stringsPOI)
             #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+
         elif option == "Variables":
             self.poiList.clear()
             poiSuperList=[]
@@ -295,6 +314,99 @@ class AnalysisTab(QWidget):
             self.poiDropdown.clear()
             self.poiDropdown.addItem("opps")
 
+    def makeStringTree(self, lista):
+        counter=0
+        parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
+        parentRoot = parentTree.getroot()
+        stringHolderElement = parentRoot.find('./stringHolder')
+        for item in lista:
+            #             for key in jsonStrings[index]: # access each string
+              # this dictonary contains one Strint poi
+            tree = ET.parse('../xml/StringPointOfInterest.xml')
+            #             ET.Element\
+            item2= item.split()
+
+            root = tree.getroot()
+            root.set('id','String: {}'.format(counter))
+            # b2tf.text='String {}'.format(counter+1)
+            b2tf = root.find("./value")
+            try:
+                b2tf.text = ' '.join(item2[7:])
+            except:
+                continue
+            b2tf = root.find("./address")
+            try:
+                b2tf.text = item2[1]
+            except:
+                b2tf.text="null"
+            b2tf = root.find("./section")
+            try:
+                b2tf.text =item2[5]
+            except:
+                b2tf.text = "null"
+            stringHolderElement.append(root)
+            counter+=1
+
+        #             ET.Element.append(parentTree)
+        #             ET.Element.append(parentTree)
+        #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
+        #         ET.dump(parentTree)
+        parentTree.write('myxml.txt')
+
+        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+        #         print(my_dict)
+        #         tree.write('tree.xml')
+        #         ET.Element.append(subelement)
+
+        xmlUploader.uploadXML(parent_dict)
+
+        def makeFunctionsTree(self, lista):
+            counter = 0
+            parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
+            parentRoot = parentTree.getroot()
+            stringHolderElement = parentRoot.find('./functionHolder')
+            for item in lista:
+                #             for key in jsonStrings[index]: # access each string
+                # this dictonary contains one Strint poi
+                tree = ET.parse('../xml/FunctionPointOfInterest.xml')
+                #             ET.Element\
+                item2 = item.split()
+
+                root = tree.getroot()
+                root.set('id', 'Function: {}'.format(counter))
+                # b2tf.text='String {}'.format(counter+1)
+                b2tf = root.find("./value")
+                try:
+                    b2tf.text = ' '.join(item2[7:])
+                except:
+                    continue
+                b2tf = root.find("./address")
+                try:
+                    b2tf.text = item2[1]
+                except:
+                    b2tf.text = "null"
+                b2tf = root.find("./section")
+                try:
+                    b2tf.text = item2[5]
+                except:
+                    b2tf.text = "null"
+                stringHolderElement.append(root)
+                counter += 1
+
+            #             ET.Element.append(parentTree)
+            #             ET.Element.append(parentTree)
+            #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
+            #         ET.dump(parentTree)
+            parentTree.write('myxml.txt')
+
+            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+            parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+            #         print(my_dict)
+            #         tree.write('tree.xml')
+            #         ET.Element.append(subelement)
+
+            xmlUploader.uploadXML(parent_dict)
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
@@ -306,9 +418,14 @@ class AnalysisTab(QWidget):
         global protocolsPOI
         global structuresPOI
 
-        stringsPOI =bina.cmd("f;~str.").splitlines()
+        stringsPOI =bina.cmd("iz").splitlines()
+        self.makeStringTree(stringsPOI)
         protocolsPOI = bina.cmd("ii").splitlines()
         functionsPOI = bina.cmd("aaa;afl").splitlines()
+        self.poiSuperList2.append(stringsPOI)
+
+        self.poiSuperList2.append(functionsPOI)
+
         #structuresPOI = bina.cmd("").splitlines()
         #variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")

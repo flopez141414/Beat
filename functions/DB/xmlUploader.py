@@ -10,7 +10,11 @@ def connection_project_path():
     db = client.beat
     posts = db.Project
     return posts
-
+def connection_poi_path():
+    client = MongoClient('localhost', 27017)
+    db = client.beat
+    posts = db.pointOfInterestDataSet
+    return posts
 
 def connection_plugin_path():
     client = MongoClient('localhost', 27017)
@@ -37,6 +41,14 @@ def retrieve_list_of_projects_plugin():
     for item in projectsList:
         list_of_projects.append(item['Project']['Project_name']['#text']) #NOTE modify
     return list_of_projects
+
+def retrievePoiInProject():
+    poiFileConnection=connection_poi_path()
+    listofPois=poiFileConnection.find()
+    poiList=[]
+    for item in listofPois:
+        poiList.append(item['PointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
+    return poiList
 
 def retrieve_list_of_projects():
     projects = connection_project_path()
