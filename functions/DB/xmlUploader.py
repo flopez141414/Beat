@@ -55,6 +55,13 @@ def retrieve_selected_project(project_name):
         if item['Project']['Project_name']['#text'] == project_name:
             return item
 
+def retrieve_selected_project_path(project_name):
+    projects = connection_project_path()
+    projectsList = projects.find()
+
+    for item in projectsList:
+        if item['Project']['BinaryFilePath']['#text'] == project_name:
+            return item
 
 def delete_selected_project(nameofProject):
     projects = connection_project_path()
