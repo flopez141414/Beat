@@ -224,26 +224,37 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(pSizeLine,3,1)
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-    def makeStringTree(self, lista):
-#             if pname != "" and pdesc != "" and ppath != "":
-                # Adding to XMl
-            for i in lista:  
-                tree = ET.parse('../xml/StringPointOfInterest.xml')
-                root = tree.getroot()
-                b2tf = root.find("./value")
-                b2tf.text = i[3]
-                b2tf = root.find("./address")
-                b2tf.text = i[0]
-                b2tf = root.find("./comment")
-                b2tf.text = ""
-                b2tf = root.find("./section")
-                b2tf.text = i[1]
-                
-                
-            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-            xmlUploader.uploadXML(my_dict)
-            
-            
+
+    def makeStringTree(self, stringsData, parentRoot):
+        stringHolderElement = parentRoot.find('./stringHolder')
+        
+        for index in range(len(stringsData)): # access each string
+            myString = stringsData[index] # this dictionary contains one String POI
+            tree = ET.parse('../xml/StringPointOfInterest.xml')
+            root = tree.getroot()
+            b2tf = root.find("./value")
+            b2tf.text = str(base64.standard_b64decode(myString['string']))
+            b2tf = root.find("./address")
+            b2tf.text = str(hex(myString['vaddr']))
+            b2tf = root.find("./section")
+            b2tf.text = str(myString['section'])
+            stringHolderElement.append(root)          
+        
+    def makeFunctionsTree(self, functionsData, parentRoot):
+        functionHolderElement = parentRoot.find('./functionHolder')
+        
+        for index in range(len(functionsData)): # access each function
+            myFunction = functionsData[index] # this dictionary contains one function POI
+            tree = ET.parse('../xml/FunctionPointOfInterest.xml')
+            root = tree.getroot()
+            b2tf = root.find("./name")
+            b2tf.text = str(myFunction['name'])
+            b2tf = root.find("./address")
+            b2tf.text = str(hex(myFunction['offset']))
+            b2tf = root.find("./parameterType")
+            b2tf.text = str(myFunction['signature'])
+            functionHolderElement.append(root)          
+        
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -307,6 +318,7 @@ class AnalysisTab(QWidget):
             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
         self.displayPOIparam()
         self.parseNetworkItems()
+        
     def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
@@ -321,20 +333,35 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def clickStaticAnalysis(self):
-        bina = r2pipe.open(pt.myFileName)
-        self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI
         global functionsPOI
         global protocolsPOI
         global structuresPOI
-
-        stringsPOI =bina.cmd("f;~str.").splitlines()
-        self.makeStringTree(stringsPOI)
-        protocolsPOI = bina.cmd("ii").splitlines()
-        functionsPOI = bina.cmd("aaa;afl").splitlines()
-        #structuresPOI = bina.cmd("").splitlines()
-        #variablesPOI = bina.cmd("").splitlines()
+        
+        global parentRoot # holds all POIs from static analysis
+        
+        bina = r2pipe.open(pt.myFileName)
+        bina.cmd("aaaa") # analyze binary in Radare2
+        self.terminal.setText("Running Static Analysis..")
+        
+        # extracting POI data from Radare2 and storing as json dictionaries
+        stringsPOI = bina.cmd("izj") 
+        jsonStrings = json.loads(stringsPOI) 
+        functionsPOI = bina.cmd("aflj")
+        jsonFunctions = json.loads(functionsPOI)
+        
+        # get handle to POI holder xml, create POI xmls, and upload them to DB
+        parentTree = ET.parse('../xml/pointOfInterestDataSet.xml')
+        parentRoot = parentTree.getroot()
+        self.makeStringTree(jsonStrings, parentRoot)
+        self.makeFunctionsTree(jsonFunctions, parentRoot)
+        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+        xmlUploader.uploadXML(parent_dict) 
+        
+#       protocolsPOI = bina.cmd("ii").splitlines()
+#       structuresPOI = bina.cmd("").splitlines()
+#       variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
     
     def dynamicAnalysis(self):
@@ -386,18 +413,14 @@ class AnalysisTab(QWidget):
 #                 breakpoints = r2.cmd("db")
 #                 print(breakpoints)
 #                 r2.cmd("dc")
-
-
-        
+       
 #         whie True:
 #             r2.cmd("dso") # step over recv function
 # #         ripAddress = r2.cmd("dr rsi")
 #             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
 #             print(payload)
 #             break
-             
-             
-    
+
     def sendTextToTerminal(self):
 #         binary = r2.open("hello")
 #         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
@@ -406,54 +429,7 @@ class AnalysisTab(QWidget):
 #         myText = binary.cmd(commandToSend)
 #         print(myText)   
 #         
-#         self.connectedClient = True
-
-        r2buffer = r2pipe.open('../../executables/ping')
-        stringInfo = r2buffer.cmd("izj")
-        jsonStrings = json.loads(stringInfo)
-        
-#         print(jsonStrings[0]["vaddr"])
-        
-
-        parentTree = ET.parse('../xml/pointOfInterestDataSet.xml')
-        parentRoot = parentTree.getroot()
-        stringHolderElement = parentRoot.find('./stringHolder')
-        
-        for index in range(len(jsonStrings)):
-#             for key in jsonStrings[index]: # access each string
-            myString = jsonStrings[index] # this dictonary contains one Strint poi
-            tree = ET.parse('../xml/StringPointOfInterest.xml')
-#             ET.Element
-            root = tree.getroot()
-            b2tf = root.find("./value")
-            b2tf.text = str(base64.standard_b64decode(myString['string']))
-            b2tf = root.find("./address")
-            b2tf.text = str(myString['paddr'])
-            b2tf = root.find("./section")
-            b2tf.text = str(myString['section'])
-            stringHolderElement.append(root)
-            
-            
-#             ET.Element.append(parentTree)      
-#             ET.Element.append(parentTree)  
-#         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
-#         ET.dump(parentTree)
-        parentTree.write('myxml.txt')
-          
-                
-        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-#         print(my_dict)
-#         tree.write('tree.xml')
-#         ET.Element.append(subelement)
-        
-            
-        xmlUploader.uploadXML(parent_dict)
-                # TODO: append these elements to the string xml holder
-
-        
- 
-         
+        self.connectedClient = True
         
 
 # Methods to open windows
