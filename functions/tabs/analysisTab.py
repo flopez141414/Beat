@@ -1,5 +1,7 @@
 import sys
 
+from pymongo import MongoClient
+
 import r2pipe
 import pymongo
 import json
@@ -253,8 +255,30 @@ class AnalysisTab(QWidget):
             b2tf.text = str(hex(myFunction['offset']))
             b2tf = root.find("./parameterType")
             b2tf.text = str(myFunction['signature'])
-            functionHolderElement.append(root)          
+            functionHolderElement.append(root)      
+    
+    # TODO: link list item with expanded view of POI      
+    def displayPOI(self,option):
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.pymongo_test # getting an instance of our DB
+        dataCollection = db.dataSet # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
         
+        if option =="Strings":
+            self.poiList.clear()
+            for data in dataSet: # access a cursor object from database
+                stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
+                for i in range(len(stringPois)): # access each individual string POI
+                    self.poiList.addItem(stringPois[i]['value'])
+        if option =="Functions":
+            self.poiList.clear()
+            for data in dataSet: # access a cursor object from database
+                functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
+                for i in range(len(functionPois)): # access each individual function POI
+                    self.poiList.addItem(functionPois[i]['name'])
+            
+
+                
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -268,57 +292,57 @@ class AnalysisTab(QWidget):
                 self.poiList.addItem(item2)
         self.searchedWord = []
         
-    def displayPOI(self,option):
-        global poiSuperList
-        if option=="Strings":
-            poiSuperList=[]
-            self.poiList.clear()
-#            target=['socket','send','rec','ipv','main']
- #           for i in target:
-  #          self.searchedWord.append([s for s in poiSuperList if i in s])
-            for item in stringsPOI:
-                item2=item.split()
-                self.poiList.addItem(item2[2])
-                poiSuperList.append(item2[2])
-            #self.poiContentArea.setText(stringsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.poiSelected)
-        elif option == "Variables":
-            self.poiList.clear()
-            poiSuperList=[]
-            #for item in variablesPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(variablesPOI)
-        elif option == "Functions":
-            self.poiList.clear()
-            poiSuperList=[]
-            for item in functionsPOI:
-                item2=item.split()
-                if item2[3]=="->":
-                    self.poiList.addItem(item2[5])
-                    poiSuperList.append(item2[5])
-                else:
-                    self.poiList.addItem(item2[3])
-                    poiSuperList.append(item2[3])
-            #self.poiContentArea.setText(functionsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Structures":
-            self.poiList.clear()
-            poiSuperList=[]
-            #for item in structuresPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(structuresPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Protocols":
-            self.poiList.clear()
-            poiSuperList=[]
-           # for item in protocolsPOI[2:]:
-            #    item2=item.split()
-             #   self.poiList.addItem(item2[3])
-            #self.poiContentArea.setText(dllsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        self.displayPOIparam()
-        self.parseNetworkItems()
-        
+#     def displayPOI(self,option):
+#         global poiSuperList
+#         if option=="Strings":
+#             poiSuperList=[]
+#             self.poiList.clear()
+# #            target=['socket','send','rec','ipv','main']
+#  #           for i in target:
+#   #          self.searchedWord.append([s for s in poiSuperList if i in s])
+#             for item in stringsPOI:
+#                 item2=item.split()
+#                 self.poiList.addItem(item2[2])
+#                 poiSuperList.append(item2[2])
+#             #self.poiContentArea.setText(stringsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+#         elif option == "Variables":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in variablesPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(variablesPOI)
+#         elif option == "Functions":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             for item in functionsPOI:
+#                 item2=item.split()
+#                 if item2[3]=="->":
+#                     self.poiList.addItem(item2[5])
+#                     poiSuperList.append(item2[5])
+#                 else:
+#                     self.poiList.addItem(item2[3])
+#                     poiSuperList.append(item2[3])
+#             #self.poiContentArea.setText(functionsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Structures":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in structuresPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(structuresPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Protocols":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#            # for item in protocolsPOI[2:]:
+#             #    item2=item.split()
+#              #   self.poiList.addItem(item2[3])
+#             #self.poiContentArea.setText(dllsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         self.displayPOIparam()
+#         self.parseNetworkItems()
+#         
     def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
@@ -357,7 +381,7 @@ class AnalysisTab(QWidget):
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        xmlUploader.uploadXML(parent_dict) 
+        xmlUploader.uploadDataSet(parent_dict) 
         
 #       protocolsPOI = bina.cmd("ii").splitlines()
 #       structuresPOI = bina.cmd("").splitlines()
