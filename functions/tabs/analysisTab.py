@@ -298,6 +298,7 @@ class AnalysisTab(QWidget):
             for data in dataSet: # access a cursor object from database
                 stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
                 for i in range(len(stringPois)): # access each individual string POI
+#                     self.poiList.addItem(stringPois[i]['value'])
                     self.poiList.addItem(stringPois[i]['value'])
         if option =="Functions":
             self.poiList.clear()
@@ -388,99 +389,99 @@ class AnalysisTab(QWidget):
             self.poiDropdown.clear()
             self.poiDropdown.addItem("opps")
 
-    def makeStringTree(self, lista):
-        counter=0
-        parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
-        parentRoot = parentTree.getroot()
-        stringHolderElement = parentRoot.find('./stringHolder')
-        for item in lista:
-            #             for key in jsonStrings[index]: # access each string
-              # this dictonary contains one Strint poi
-            tree = ET.parse('../xml/StringPointOfInterest.xml')
-            #             ET.Element\
-            item2= item.split()
+#     def makeStringTree(self, lista):
+#         counter=0
+#         parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
+#         parentRoot = parentTree.getroot()
+#         stringHolderElement = parentRoot.find('./stringHolder')
+#         for item in lista:
+#             #             for key in jsonStrings[index]: # access each string
+#               # this dictonary contains one Strint poi
+#             tree = ET.parse('../xml/StringPointOfInterest.xml')
+#             #             ET.Element\
+#             item2= item.split()
+# 
+#             root = tree.getroot()
+#             root.set('id','String: {}'.format(counter))
+#             # b2tf.text='String {}'.format(counter+1)
+#             b2tf = root.find("./value")
+#             try:
+#                 b2tf.text = ' '.join(item2[7:])
+#             except:
+#                 continue
+#             b2tf = root.find("./address")
+#             try:
+#                 b2tf.text = item2[1]
+#             except:
+#                 b2tf.text="null"
+#             b2tf = root.find("./section")
+#             try:
+#                 b2tf.text =item2[5]
+#             except:
+#                 b2tf.text = "null"
+#             stringHolderElement.append(root)
+#             counter+=1
+# 
+#         #             ET.Element.append(parentTree)
+#         #             ET.Element.append(parentTree)
+#         #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
+#         #         ET.dump(parentTree)
+#         parentTree.write('myxml.txt')
+# 
+#         my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+#         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+#         #         print(my_dict)
+#         #         tree.write('tree.xml')
+#         #         ET.Element.append(subelement)
+# 
+#         xmlUploader.uploadXML(parent_dict)
 
-            root = tree.getroot()
-            root.set('id','String: {}'.format(counter))
-            # b2tf.text='String {}'.format(counter+1)
-            b2tf = root.find("./value")
-            try:
-                b2tf.text = ' '.join(item2[7:])
-            except:
-                continue
-            b2tf = root.find("./address")
-            try:
-                b2tf.text = item2[1]
-            except:
-                b2tf.text="null"
-            b2tf = root.find("./section")
-            try:
-                b2tf.text =item2[5]
-            except:
-                b2tf.text = "null"
-            stringHolderElement.append(root)
-            counter+=1
-
-        #             ET.Element.append(parentTree)
-        #             ET.Element.append(parentTree)
-        #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
-        #         ET.dump(parentTree)
-        parentTree.write('myxml.txt')
-
-        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        #         print(my_dict)
-        #         tree.write('tree.xml')
-        #         ET.Element.append(subelement)
-
-        xmlUploader.uploadXML(parent_dict)
-
-        def makeFunctionsTree(self, lista):
-            counter = 0
-            parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
-            parentRoot = parentTree.getroot()
-            stringHolderElement = parentRoot.find('./functionHolder')
-            for item in lista:
-                #             for key in jsonStrings[index]: # access each string
-                # this dictonary contains one Strint poi
-                tree = ET.parse('../xml/FunctionPointOfInterest.xml')
-                #             ET.Element\
-                item2 = item.split()
-
-                root = tree.getroot()
-                root.set('id', 'Function: {}'.format(counter))
-                # b2tf.text='String {}'.format(counter+1)
-                b2tf = root.find("./value")
-                try:
-                    b2tf.text = ' '.join(item2[7:])
-                except:
-                    continue
-                b2tf = root.find("./address")
-                try:
-                    b2tf.text = item2[1]
-                except:
-                    b2tf.text = "null"
-                b2tf = root.find("./section")
-                try:
-                    b2tf.text = item2[5]
-                except:
-                    b2tf.text = "null"
-                stringHolderElement.append(root)
-                counter += 1
-
-            #             ET.Element.append(parentTree)
-            #             ET.Element.append(parentTree)
-            #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
-            #         ET.dump(parentTree)
-            parentTree.write('myxml.txt')
-
-            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-            parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-            #         print(my_dict)
-            #         tree.write('tree.xml')
-            #         ET.Element.append(subelement)
-
-            xmlUploader.uploadXML(parent_dict)
+#         def makeFunctionsTree(self, lista):
+#             counter = 0
+#             parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
+#             parentRoot = parentTree.getroot()
+#             stringHolderElement = parentRoot.find('./functionHolder')
+#             for item in lista:
+#                 #             for key in jsonStrings[index]: # access each string
+#                 # this dictonary contains one Strint poi
+#                 tree = ET.parse('../xml/FunctionPointOfInterest.xml')
+#                 #             ET.Element\
+#                 item2 = item.split()
+# 
+#                 root = tree.getroot()
+#                 root.set('id', 'Function: {}'.format(counter))
+#                 # b2tf.text='String {}'.format(counter+1)
+#                 b2tf = root.find("./value")
+#                 try:
+#                     b2tf.text = ' '.join(item2[7:])
+#                 except:
+#                     continue
+#                 b2tf = root.find("./address")
+#                 try:
+#                     b2tf.text = item2[1]
+#                 except:
+#                     b2tf.text = "null"
+#                 b2tf = root.find("./section")
+#                 try:
+#                     b2tf.text = item2[5]
+#                 except:
+#                     b2tf.text = "null"
+#                 stringHolderElement.append(root)
+#                 counter += 1
+# 
+#             #             ET.Element.append(parentTree)
+#             #             ET.Element.append(parentTree)
+#             #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
+#             #         ET.dump(parentTree)
+#             parentTree.write('myxml.txt')
+# 
+#             my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+#             parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+#             #         print(my_dict)
+#             #         tree.write('tree.xml')
+#             #         ET.Element.append(subelement)
+# 
+#             xmlUploader.uploadXML(parent_dict)
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
