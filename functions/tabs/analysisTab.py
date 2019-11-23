@@ -284,7 +284,7 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def clickStaticAnalysis(self):
-        bina = r2pipe.open(pt.myFileName)
+        bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
         self.terminal.setText("Running Static Analysis..")
         global stringsPOI
         global variablesPOI

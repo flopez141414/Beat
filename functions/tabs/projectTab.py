@@ -24,7 +24,7 @@ projectNameHolder = ''
 projectDescHolder = ''
 projectPathHolder = ''
 fileProperties = []
-
+project=[]
 projectSelected = False
 
 #sscess finished with exit code 0
@@ -57,7 +57,12 @@ class ProjectTab(QWidget):
         leftLayout.addWidget(newButton, 6, 0)
 
         # Right panel
+        self.projectNameLabel = QLabel('')
         self.rightPanelLabel = QLabel('Detailed Project View')
+
+        self.projectNameLabel2 = QLabel('')
+
+
         #rightPanelLabel.hide()
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
@@ -73,9 +78,9 @@ class ProjectTab(QWidget):
         self.binaryFileProp.horizontalHeader().setVisible(False)
         self.binaryFileProp.setAlternatingRowColors(True)
         self.browseButton = QPushButton('Browse')
-        self.LoadButton = QPushButton('Load Current PM')
+        #self.LoadButton = QPushButton('Load Current PM')
 
-        self.LoadButton.clicked.connect(self.setCurrentProject)
+    #    self.LoadButton.clicked.connect(self.setCurrentProject)
         self.browseButton.clicked.connect(self.OpenFile)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
@@ -132,13 +137,14 @@ class ProjectTab(QWidget):
             colNum += 1
         self.updateProjectList()
 
+
     # global.py
     myFileName = ""
     def OpenFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(self, "Open file", "",
-                                                  "All Files (*);;Python Files (*.py)", options=options)
+                                                  "All Files ();;Python Files (.py)", options=options)
         if fileName:
             self.binaryFilePath.setText(fileName)
             self.staticAnalysis(fileName)
@@ -161,6 +167,7 @@ class ProjectTab(QWidget):
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
+
 
         if pname != "" and pdesc != "" and ppath != "":
             # Adding to XMl
@@ -211,16 +218,23 @@ class ProjectTab(QWidget):
 
     #loads right side
     def loadRightLayout(self):
+     # current_project = QLabel("")
+     # projectName = self.select_project()
+
+
+        self.projectNameLabel.setText('')
+        self.rightLayout.addWidget(self.projectNameLabel, 0,10)
         self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 14)
         self.rightLayout.addWidget(self.projNameArea, 1, 2, 10, 10)
         self.rightLayout.addWidget(self.projDescriptionArea, 2, 2, 5, 10)
         self.rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
         self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
         self.rightLayout.addWidget(self.browseButton, 4, 12)
-        self.rightLayout.addWidget(self.LoadButton, 4, 12)
-        self.LoadButton.hide()
-        self.deleteButton.show()
+       #current_project.clearLabel(current_project, projectName )
+       #self.rightLayout.addWidget(self.LoadButton, 4, 12)
 
+       #self.LoadButton.hide()
+        self.deleteButton.show()
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
         self.rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
         self.rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
@@ -228,14 +242,19 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.saveButton, 15, 8)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
 
+    def clear_label(self):
+        global project
+        self.projectNameLabel.setText("Project"+ project['Project']['Project_name']['#text'])
+
     def select_project(self):
+        global project
         #for this mode we will load the right layout
         self.loadRightLayout()
         #disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
-        self.LoadButton.show()
-
+       # self.LoadButton.show()
+        #self.rightLayout.addWidget(QLabel(current_project), 0, 10)
         project = [item.text() for item in self.searchList.selectedItems()]
         projectName = ' '.join([str(elem) for elem in project])
         project = xmlUploader.retrieve_selected_project(projectName)
@@ -256,7 +275,16 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(10, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relocs']))
         self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
         self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
+
+     #   current_project = "Current Project:  " + projectName
+        #current_project_label = QLabel()
+        #current_project_label.clear()
+        #current_project_label.setText(current_project)
+        #self.rightLayout.addWidget(current_project_label, 0, 10)
+      #  self.rightLayout.addWidget(current_project, 0, 10)
+        #projectName = " "
         self.updateProjectList()
+      #  return current_project
 
 
     def createNew(self):
@@ -332,4 +360,3 @@ class ProjectTab(QWidget):
         xml2 = tree.getroot()
         xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
     '''''
-
