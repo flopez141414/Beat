@@ -12,6 +12,12 @@ def uploadXML(xml):
     posts = db.posts
     result = posts.insert_one(my_dict)
 
+def uploadDataSet(xml):
+    client = MongoClient('localhost', 27017)
+    db = client.pymongo_test
+    my_dict = xmltodict.parse(xml)
+    dataSet = db.dataSet
+    result = dataSet.insert_one(my_dict)
 
 def retrieve_list_of_projects():
     client = MongoClient('localhost', 27017)
