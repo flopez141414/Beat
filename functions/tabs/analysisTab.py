@@ -276,9 +276,11 @@ class AnalysisTab(QWidget):
                 functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
                 for i in range(len(functionPois)): # access each individual function POI
                     self.poiList.addItem(functionPois[i]['name'])
-            
 
-                
+    def expandPOI(self):
+        stuff = self.poiList.currentIndex()()
+        print(type(stuff))
+        
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -383,9 +385,6 @@ class AnalysisTab(QWidget):
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
         xmlUploader.uploadDataSet(parent_dict) 
         
-#       protocolsPOI = bina.cmd("ii").splitlines()
-#       structuresPOI = bina.cmd("").splitlines()
-#       variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
     
     def dynamicAnalysis(self):
