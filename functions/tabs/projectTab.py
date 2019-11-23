@@ -348,4 +348,3 @@ class ProjectTab(QWidget):
         xml2 = tree.getroot()
         xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
     '''''
-
