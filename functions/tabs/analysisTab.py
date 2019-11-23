@@ -1,5 +1,7 @@
 import sys
 
+from pymongo import MongoClient
+
 import r2pipe
 import pymongo
 import json
@@ -21,6 +23,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
+
+#XML libraries
+import xml.etree.ElementTree as ET
+import xmltodict
+import pprint
+import json
+
+sys.path.append("../DB")
+sys.path.append("../windows")
+import xmlUploader
+import errorMessageGnerator
+# from xmlUploader import uploadXml
+
+import base64
+
+import xml.dom.minidom
 
 
 class AnalysisTab(QWidget):
@@ -237,6 +255,61 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(pSizeLine,3,1)
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
+
+    def makeStringTree(self, stringsData, parentRoot):
+        stringHolderElement = parentRoot.find('./stringHolder')
+        
+        for index in range(len(stringsData)): # access each string
+            myString = stringsData[index] # this dictionary contains one String POI
+            tree = ET.parse('../xml/StringPointOfInterest.xml')
+            root = tree.getroot()
+            b2tf = root.find("./value")
+            b2tf.text = str(base64.standard_b64decode(myString['string']))
+            b2tf = root.find("./address")
+            b2tf.text = str(hex(myString['vaddr']))
+            b2tf = root.find("./section")
+            b2tf.text = str(myString['section'])
+            stringHolderElement.append(root)          
+        
+    def makeFunctionsTree(self, functionsData, parentRoot):
+        functionHolderElement = parentRoot.find('./functionHolder')
+        
+        for index in range(len(functionsData)): # access each function
+            myFunction = functionsData[index] # this dictionary contains one function POI
+            tree = ET.parse('../xml/FunctionPointOfInterest.xml')
+            root = tree.getroot()
+            b2tf = root.find("./name")
+            b2tf.text = str(myFunction['name'])
+            b2tf = root.find("./address")
+            b2tf.text = str(hex(myFunction['offset']))
+            b2tf = root.find("./parameterType")
+            b2tf.text = str(myFunction['signature'])
+            functionHolderElement.append(root)      
+    
+    # TODO: link list item with expanded view of POI      
+    def displayPOI(self,option):
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.pymongo_test # getting an instance of our DB
+        dataCollection = db.dataSet # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
+        
+        if option =="Strings":
+            self.poiList.clear()
+            for data in dataSet: # access a cursor object from database
+                stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
+                for i in range(len(stringPois)): # access each individual string POI
+                    self.poiList.addItem(stringPois[i]['value'])
+        if option =="Functions":
+            self.poiList.clear()
+            for data in dataSet: # access a cursor object from database
+                functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
+                for i in range(len(functionPois)): # access each individual function POI
+                    self.poiList.addItem(functionPois[i]['name'])
+
+    def expandPOI(self):
+        stuff = self.poiList.currentIndex()()
+        print(type(stuff))
+        
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -249,58 +322,59 @@ class AnalysisTab(QWidget):
             for item2 in items:
                 self.poiList.addItem(item2)
         self.searchedWord = []
+        
+#     def displayPOI(self,option):
+#         global poiSuperList
+#         if option=="Strings":
+#             poiSuperList=[]
+#             self.poiList.clear()
+# #            target=['socket','send','rec','ipv','main']
+#  #           for i in target:
+#   #          self.searchedWord.append([s for s in poiSuperList if i in s])
+#             for item in stringsPOI:
+#                 item2=item.split()
+#                 self.poiList.addItem(item2[2])
+#                 poiSuperList.append(item2[2])
+#             #self.poiContentArea.setText(stringsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+#         elif option == "Variables":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in variablesPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(variablesPOI)
+#         elif option == "Functions":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             for item in functionsPOI:
+#                 item2=item.split()
+#                 if item2[3]=="->":
+#                     self.poiList.addItem(item2[5])
+#                     poiSuperList.append(item2[5])
+#                 else:
+#                     self.poiList.addItem(item2[3])
+#                     poiSuperList.append(item2[3])
+#             #self.poiContentArea.setText(functionsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Structures":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in structuresPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(structuresPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Protocols":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#            # for item in protocolsPOI[2:]:
+#             #    item2=item.split()
+#              #   self.poiList.addItem(item2[3])
+#             #self.poiContentArea.setText(dllsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         self.displayPOIparam()
+#         self.parseNetworkItems()
+#         
 
-    def displayPOI(self,option):
-        global poiSuperList
-        if option=="Strings":
-            poiSuperList=[]
-            self.poiList.clear()
-#            target=['socket','send','rec','ipv','main']
- #           for i in target:
-  #          self.searchedWord.append([s for s in poiSuperList if i in s])
-            for item in stringsPOI:
-                item2=item.split()
-                self.poiList.addItem(' '.join(item2[7:]))
-                poiSuperList.append(' '.join(item2[7:]))
-            #self.poiContentArea.setText(stringsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.poiSelected)
-
-        elif option == "Variables":
-            self.poiList.clear()
-            poiSuperList=[]
-            #for item in variablesPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(variablesPOI)
-        elif option == "Functions":
-            self.poiList.clear()
-            poiSuperList=[]
-            for item in functionsPOI:
-                item2=item.split()
-                if item2[3]=="->":
-                    self.poiList.addItem(item2[5])
-                    poiSuperList.append(item2[5])
-                else:
-                    self.poiList.addItem(item2[3])
-                    poiSuperList.append(item2[3])
-            #self.poiContentArea.setText(functionsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Structures":
-            self.poiList.clear()
-            poiSuperList=[]
-            #for item in structuresPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(structuresPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Protocols":
-            self.poiList.clear()
-            poiSuperList=[]
-           # for item in protocolsPOI[2:]:
-            #    item2=item.split()
-             #   self.poiList.addItem(item2[3])
-            #self.poiContentArea.setText(dllsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        self.displayPOIparam()
-        self.parseNetworkItems()
     def onActivated(self,option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
@@ -417,17 +491,27 @@ class AnalysisTab(QWidget):
         global functionsPOI
         global protocolsPOI
         global structuresPOI
-
-        stringsPOI =bina.cmd("iz").splitlines()
-        self.makeStringTree(stringsPOI)
-        protocolsPOI = bina.cmd("ii").splitlines()
-        functionsPOI = bina.cmd("aaa;afl").splitlines()
-        self.poiSuperList2.append(stringsPOI)
-
-        self.poiSuperList2.append(functionsPOI)
-
-        #structuresPOI = bina.cmd("").splitlines()
-        #variablesPOI = bina.cmd("").splitlines()
+        
+        global parentRoot # holds all POIs from static analysis
+        
+        bina = r2pipe.open(pt.myFileName)
+        bina.cmd("aaaa") # analyze binary in Radare2
+        self.terminal.setText("Running Static Analysis..")
+        
+        # extracting POI data from Radare2 and storing as json dictionaries
+        stringsPOI = bina.cmd("izj") 
+        jsonStrings = json.loads(stringsPOI) 
+        functionsPOI = bina.cmd("aflj")
+        jsonFunctions = json.loads(functionsPOI)
+        
+        # get handle to POI holder xml, create POI xmls, and upload them to DB
+        parentTree = ET.parse('../xml/pointOfInterestDataSet.xml')
+        parentRoot = parentTree.getroot()
+        self.makeStringTree(jsonStrings, parentRoot)
+        self.makeFunctionsTree(jsonFunctions, parentRoot)
+        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+        xmlUploader.uploadDataSet(parent_dict) 
+        
         self.terminal.append("Static Analysis done!")
     
     def dynamicAnalysis(self):
@@ -479,18 +563,14 @@ class AnalysisTab(QWidget):
 #                 breakpoints = r2.cmd("db")
 #                 print(breakpoints)
 #                 r2.cmd("dc")
-
-
-        
+       
 #         whie True:
 #             r2.cmd("dso") # step over recv function
 # #         ripAddress = r2.cmd("dr rsi")
 #             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
 #             print(payload)
 #             break
-             
-             
-    
+
     def sendTextToTerminal(self):
 #         binary = r2.open("hello")
 #         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
@@ -500,8 +580,6 @@ class AnalysisTab(QWidget):
 #         print(myText)   
 #         
         self.connectedClient = True
-
-        
         
 
 # Methods to open windows

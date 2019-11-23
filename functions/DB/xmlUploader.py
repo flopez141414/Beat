@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import xmltodict
 import pprint
 import json
+import xml.etree.ElementTree as ET
 
 
 # sets path to connect to DB
@@ -28,6 +29,12 @@ def uploadXML(xml):
     posts = connection_project_path()
     result = posts.insert_one(my_dict)
 
+def uploadDataSet(xml):
+    client = MongoClient('localhost', 27017)
+    db = client.pymongo_test
+    my_dict = xmltodict.parse(xml)
+    dataSet = db.dataSet
+    result = dataSet.insert_one(my_dict)
 
 def uploadPlugin(xml):
     my_dict = xmltodict.parse(xml)
@@ -79,8 +86,7 @@ def delete_selected_project(nameofProject):
     projects = connection_project_path()
     myquery = {"Project.Project_name.#text": nameofProject}
     projects.delete_one(myquery)
-
-
+    
 # holder element of where to place xml2
 def xmlmerger(holder, xml1, xml2):
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
@@ -89,3 +95,4 @@ def xmlmerger(holder, xml1, xml2):
     ET.dump(xml1)
     print(xml1)
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
+

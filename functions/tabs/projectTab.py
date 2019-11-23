@@ -167,7 +167,7 @@ class ProjectTab(QWidget):
 
         if pname != "" and pdesc != "" and ppath != "":
             # Adding to XMl
-            tree = ET.parse('../xml/practiceXml.xml')
+            tree = ET.parse('../xml/Project.xml')
             root = tree.getroot()
             b2tf = root.find("./Project_name")
             b2tf.text = pname

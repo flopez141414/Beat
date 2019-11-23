@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project> 
+  <Project_name required="true"></Project_name>
+  <projectDescription required="true"> </projectDescription>
+  <BinaryFilePath required="true"> </BinaryFilePath>
+
+  <StaticDataSet>
+    <OS> </OS>
+    <BinaryType> </BinaryType>
+    <Machine> </Machine>
+    <Class> </Class>
+    <Bits> </Bits>
+    <Language> </Language>
+    <Canary> </Canary>
+    <Crypto> </Crypto>
+    <NX> </NX>
+    <Pic> </Pic>
+    <Relocs> </Relocs>
+    <Relro> </Relro>
+    <Stripped> </Stripped>
+  </StaticDataSet>
+  <Plugin>
+  </Plugin>
+</Project>
