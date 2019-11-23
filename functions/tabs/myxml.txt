@@ -1,0 +1,72 @@
+<pointOfInterestDataSet id="">
+	<stringHolder><stringPointOfInterest id="String: 0">
+	<value>Usage: ip_address port</value>
+	<address>0x00001824</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 1">
+	<value>Error connecting to socket!</value>
+	<address>0x0000183b</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 2">
+	<value>Connected to the server!</value>
+	<address>0x00001857</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 3">
+	<value>exit</value>
+	<address>0x00001872</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 4">
+	<value>Awaiting server response...</value>
+	<address>0x00001877</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 5">
+	<value>Server has quit the session</value>
+	<address>0x00001893</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 6">
+	<value>Server:</value>
+	<address>0x000018af</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 7">
+	<value>********Session********</value>
+	<address>0x000018b8</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 8">
+	<value>Bytes written:</value>
+	<address>0x000018d0</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 9">
+	<value>Bytes read:</value>
+	<address>0x000018e0</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 10">
+	<value>Elapsed time:</value>
+	<address>0x000018ee</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 11">
+	<value>secs</value>
+	<address>0x000018fd</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 12">
+	<value>Connection closed</value>
+	<address>0x00001903</address>
+	<comment />
+	<section>(.rodata)</section>
+</stringPointOfInterest></stringHolder>
+	<functionHolder />
+	<variableHolder />
+	<structHolder />
+	<protocolHolder />
+</pointOfInterestDataSet>
