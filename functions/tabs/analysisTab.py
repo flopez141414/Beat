@@ -298,7 +298,6 @@ class AnalysisTab(QWidget):
             for data in dataSet: # access a cursor object from database
                 stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
                 for i in range(len(stringPois)): # access each individual string POI
-#                     self.poiList.addItem(stringPois[i]['value'])
                     self.poiList.addItem(stringPois[i]['value'])
         if option =="Functions":
             self.poiList.clear()
@@ -495,7 +494,7 @@ class AnalysisTab(QWidget):
         
         global parentRoot # holds all POIs from static analysis
         
-        bina = r2pipe.open(pt.myFileName)
+#         bina = r2pipe.open(pt.myFileName)
         bina.cmd("aaaa") # analyze binary in Radare2
         self.terminal.setText("Running Static Analysis..")
         
