@@ -52,7 +52,7 @@ def retrievePoiInProject():
     listofPois=poiFileConnection.find()
     poiList=[]
     for item in listofPois:
-        poiList.append(item['PointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
+        poiList.append(item['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
     return poiList
 
 def retrieve_list_of_projects():
