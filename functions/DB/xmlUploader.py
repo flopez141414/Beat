@@ -34,6 +34,11 @@ def uploadPlugin(xml):
     posts = connection_plugin_path()
     result = posts.insert_one(my_dict)
 
+def uploadPOI(xml):
+    my_dict = xmltodict.parse(xml)
+    posts = connection_poi_path()
+    result = posts.insert_one(my_dict)
+
 def retrieve_list_of_projects_plugin():
     projects = connection_plugin_path()
     projectsList = projects.find()
@@ -47,7 +52,7 @@ def retrievePoiInProject():
     listofPois=poiFileConnection.find()
     poiList=[]
     for item in listofPois:
-        poiList.append(item['PointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
+        poiList.append(item['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
     return poiList
 
 def retrieve_list_of_projects():

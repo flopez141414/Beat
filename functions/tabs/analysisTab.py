@@ -131,7 +131,7 @@ class AnalysisTab(QWidget):
             self.poiList.addItem(items)
     ##########################################################################333
     ########################################
-    #working on display
+    #working on displaybbbbbbbb
     def clickedPOI(self):
         current=[item.text() for item in self.poiList.selectedItems()]
         print(' '.join(current))
@@ -142,6 +142,7 @@ class AnalysisTab(QWidget):
         print(searchedPoi)
         if option=="Strings":
             self.valueLine.setText(' '.join(searchedPoi[7:]))
+
 
 
     def displayPOIparam(self):
@@ -359,7 +360,7 @@ class AnalysisTab(QWidget):
         #         tree.write('tree.xml')
         #         ET.Element.append(subelement)
 
-        xmlUploader.uploadXML(parent_dict)
+        xmlUploader.uploadPOI(parent_dict)
 
         def makeFunctionsTree(self, lista):
             counter = 0
@@ -406,7 +407,7 @@ class AnalysisTab(QWidget):
             #         tree.write('tree.xml')
             #         ET.Element.append(subelement)
 
-            xmlUploader.uploadXML(parent_dict)
+            xmlUploader.uploadPOI(parent_dict)
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
