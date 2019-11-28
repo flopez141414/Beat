@@ -94,3 +94,13 @@ def xmlmerger(holder, xml1, xml2):
     ET.dump(xml1)
     print(xml1)
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
+
+
+def project_exists(new_project_name):
+    projects = connection_project_path()
+    projectsList = projects.find()
+
+    for item in projectsList:
+        if item['Project']['BinaryFilePath']['#text'] == project_name:
+            print("already exists")
+            return false

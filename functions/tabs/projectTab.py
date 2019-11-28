@@ -165,6 +165,9 @@ class ProjectTab(QWidget):
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
 
+        exists = xmlUploader.project_exists(pname)
+        print(exists)
+
         if pname != "" and pdesc != "" and ppath != "":
             # Adding to XMl
             tree = ET.parse('../xml/practiceXml.xml')
