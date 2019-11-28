@@ -151,7 +151,7 @@ class AnalysisTab(QWidget):
         layoutForPOI= QGridLayout(content_widget)
         self.poiContentArea.setWidgetResizable(True)
         option= self.poiDropdown.currentText()
-        if option=="Strings":
+        if option == "Strings":
             #stringsDatabase=xmlUploader.retrieve_selected_project(pt.project['Project']['Project_name']['#text'])
             poiDatabase=xmlUploader.retrievePoiInProject()
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
@@ -164,7 +164,7 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(self.valueLine,1,1)
             layoutForPOI.addWidget(sectionInBinary,2,0)
             layoutForPOI.addWidget(self.sectionInBinaryLine,2,1)
-        elif option=="Functions":
+        elif option == "Functions":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
         
             order= QLabel('Order of Parameters:')
@@ -190,7 +190,7 @@ class AnalysisTab(QWidget):
             layoutForPOI.addWidget(fRelativeOrder,4,0)
             layoutForPOI.addWidget(self.fRelativeOrderLine,4,1)
 
-        elif option=="Variables":
+        elif option == "Variables":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
             variableType=QLabel('Variable Type:')
             value= QLabel('Value:')

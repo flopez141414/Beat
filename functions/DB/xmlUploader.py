@@ -10,11 +10,14 @@ def connection_project_path():
     db = client.beat
     posts = db.Project
     return posts
+
+
 def connection_poi_path():
     client = MongoClient('localhost', 27017)
     db = client.beat
     posts = db.pointOfInterestDataSet
     return posts
+
 
 def connection_plugin_path():
     client = MongoClient('localhost', 27017)
@@ -34,26 +37,30 @@ def uploadPlugin(xml):
     posts = connection_plugin_path()
     result = posts.insert_one(my_dict)
 
+
 def uploadPOI(xml):
     my_dict = xmltodict.parse(xml)
     posts = connection_poi_path()
     result = posts.insert_one(my_dict)
+
 
 def retrieve_list_of_projects_plugin():
     projects = connection_plugin_path()
     projectsList = projects.find()
     list_of_projects = []
     for item in projectsList:
-        list_of_projects.append(item['Project']['Project_name']['#text']) #NOTE modify
+        list_of_projects.append(item['Project']['Project_name']['#text'])  # NOTE modify
     return list_of_projects
 
+
 def retrievePoiInProject():
-    poiFileConnection=connection_poi_path()
-    listofPois=poiFileConnection.find()
-    poiList=[]
+    poiFileConnection = connection_poi_path()
+    listofPois = poiFileConnection.find()
+    poiList = []
     for item in listofPois:
         poiList.append(item['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
     return poiList
+
 
 def retrieve_list_of_projects():
     projects = connection_project_path()
@@ -72,6 +79,7 @@ def retrieve_selected_project(project_name):
         if item['Project']['Project_name']['#text'] == project_name:
             return item
 
+
 def retrieve_selected_project_path(project_name):
     projects = connection_project_path()
     projectsList = projects.find()
@@ -79,6 +87,7 @@ def retrieve_selected_project_path(project_name):
     for item in projectsList:
         if item['Project']['BinaryFilePath']['#text'] == project_name:
             return item
+
 
 def delete_selected_project(nameofProject):
     projects = connection_project_path()
@@ -101,6 +110,6 @@ def project_exists(new_project_name):
     projectsList = projects.find()
 
     for item in projectsList:
-        if item['Project']['BinaryFilePath']['#text'] == project_name:
-            print("already exists")
-            return false
+        if item['Project']['Project_name']['#text'] == new_project_name:
+            return True
+    return False
