@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
-
+sys.path.append("../windows")
+import pdfViewer
 
 class DocumentationTab(QWidget):
     def __init__(self):
@@ -84,14 +85,4 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/SetMongo.txt')
 
     def fileOpener(self,File_object):
-        cwd = os.getcwd()
-        self.docContentArea.setText("test")
-        print(cwd)
-        try:
-            file = open(File_object, "r")
-            doc = file.read()
-            self.docContentArea.setText(doc)
-            self.docContentArea.setEnabled(False)
-            print(file.read())
-        except:
-             print(File_object, " Not Found.")
+        pdfViewer.display_pdf(File_object)
