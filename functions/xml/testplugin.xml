@@ -8,5 +8,9 @@
 	<pointOfInterest>PacketProtocol</pointOfInterest>
 	<pointOfInterest>Struct</pointOfInterest>
 	<output>
+	  <name>
+	    <hello>
+	    </hello>
+	  </name>
 	</output>
 </plugin>

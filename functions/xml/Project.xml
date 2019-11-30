@@ -3,7 +3,6 @@
   <Project_name required="true"></Project_name>
   <projectDescription required="true"> </projectDescription>
   <BinaryFilePath required="true"> </BinaryFilePath>
-
   <StaticDataSet>
     <OS> </OS>
     <BinaryType> </BinaryType>
@@ -19,6 +18,17 @@
     <Relro> </Relro>
     <Stripped> </Stripped>
   </StaticDataSet>
-  <Plugin>
-  </Plugin>
+  <AllData> </AllData>
+  <StaticAnalysis>
+    <pointOfInterestDataSet id="">
+    </pointOfInterestDataSet>
+  </StaticAnalysis>
+  <DynamicAnalysis>
+    <Run id="">
+      <DynamicData runID="">
+      </DynamicData>
+    </Run>
+  </DynamicAnalysis>
+  <Output>
+  </Output>
 </Project>
