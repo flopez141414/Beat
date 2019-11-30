@@ -8,5 +8,7 @@ app = QApplication(sys.argv)
 web = QWebView()
 web.settings().setAttribute(QWebSettings.PluginsEnabled, True)
 web.show()
-web.load(QUrl('file:///C:\Users\begv1\Desktop\Beat-Team-12\documentation\BEAT-doc.df)) # Path to actual file.
+print("line before path")
+web.load(QUrl('file:///C:/Users/begv1/Desktop/Beat-Team-12/documentation/BEAT-doc.pdf')) # Path to actual file.
+print("line after path")
 sys.exit(app.exec_())

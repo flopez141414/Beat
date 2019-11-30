@@ -217,6 +217,9 @@ class ProjectTab(QWidget):
                 errorMessageGnerator.showDialog("Enter a description for the project", "Project File Error")
             elif ppath == "":
                 errorMessageGnerator.showDialog("Cannot create a project without a binary file", "Binary File Error")
+            #new line for path
+            elif ppath != "(*.exe)":
+                errorMessageGnerator.showDialog("Cannot create a project with this file", "Not Acceptable Binary File")
             self.updateProjectList()
             self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
             self.searchList.item(listCounter)

@@ -2,6 +2,7 @@ import sys
 import r2pipe
 import pymongo
 import os
+#import webbrowser as wb #--new line to import pdf
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
@@ -71,6 +72,8 @@ class DocumentationTab(QWidget):
             current = currentQTableWidgetItem.text()
         print(current)
         if current == 'About BEAT':
+            #self.fileOpener
+            #wb.open_new(r'../../documentation/BEAT-doc.pdf'))#new line for pdf display
             self.fileOpener('../../documentation/About.txt')
         elif current == 'Add Plugin':
             self.fileOpener('../../documentation/AddPlugin.txt')
