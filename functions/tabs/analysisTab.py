@@ -13,8 +13,10 @@ sys.path.append("../DB")
 sys.path.append("../windows")
 import xmlUploader
 import errorMessageGnerator
-from PyQt5.QtWidgets import QMainWindow,QLabel, QApplication,QFormLayout, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
-    QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout,QScrollArea, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QFormLayout, QWidget, QPushButton, QAction, QLabel, \
+    QFileDialog, QSplitter, \
+    QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QScrollArea, QHBoxLayout, QComboBox, QLineEdit, \
+    QListWidget, QTextEdit
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -32,13 +34,13 @@ class AnalysisTab(QWidget):
         variablesPOI = []
         protocolsPOI = []
         structuresPOI = []
-        poiSuperList= []
-        self.poiSuperList2=[]
+        poiSuperList = []
+        self.poiSuperList2 = []
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         rightLayout = QGridLayout()
-        topLayout = QGridLayout()
-        mainlayout.addLayout(topLayout, 0, 0, 1, 6)
+        self.topLayout = QGridLayout()
+        mainlayout.addLayout(self.topLayout, 0, 0, 1, 6)
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
         mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
 
@@ -50,30 +52,29 @@ class AnalysisTab(QWidget):
         self.stopDynamic = QPushButton('Stop')
 
         # TODO: Using this button to test terminal temporarily: remove comment from setEnabled call after finished
-#         self.stopDynamic.setEnabled(False)
+        #         self.stopDynamic.setEnabled(False)
         # TODO: Disable this connection after testing is finished and create a new button to grab input from terminal 
         self.stopDynamic.clicked.connect(self.sendTextToTerminal)
 
-        topLayout.addWidget(QLabel('Plugin'), 0, 0)
-        topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
-        topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
-        topLayout.addWidget(runStatic, 1, 1, 1, 1)
-        topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
-        topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
-        topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
-        topLayout.addWidget(runDynamic, 1, 6)
-        topLayout.addWidget(self.stopDynamic, 1, 7)
-        topLayout.addWidget(QLabel(), 0, 3, 1, 15)
+        self.topLayout.addWidget(QLabel('Plugin'), 0, 0)
+        self.topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
+        self.topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
+        self.topLayout.addWidget(runStatic, 1, 1, 1, 1)
+        self.topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
+        self.topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
+        self.topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
+        self.topLayout.addWidget(runDynamic, 1, 6)
+        self.topLayout.addWidget(self.stopDynamic, 1, 7)
+        self.topLayout.addWidget(QLabel(), 0, 3, 1, 15)
 
         # Left panel
         self.searchBox = QLineEdit()
         self.searchButton = QPushButton('Search')
-        self.searchedWord=[]
-        
-        
+        self.searchedWord = []
+
         self.poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
-#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
@@ -84,7 +85,7 @@ class AnalysisTab(QWidget):
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
-#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.poiContentArea = QScrollArea()
@@ -92,6 +93,7 @@ class AnalysisTab(QWidget):
         self.commentButton = QPushButton('Comments')
         self.outputButton = QPushButton('Output')
         self.analysisButton = QPushButton('Analysis')
+        self.current_project = QLabel('Current Project: ')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(self.poiContentArea, 1, 0, 10, 8)
@@ -100,7 +102,7 @@ class AnalysisTab(QWidget):
         rightLayout.addWidget(self.outputButton, 2, 9)
         rightLayout.addWidget(self.commentButton, 2, 8)
 
-        #Functionality
+        # Functionality
         self.commentButton.clicked.connect(self.openCommentWindow)
         self.analysisButton.clicked.connect(self.openAnalysisWindow)
         self.outputButton.clicked.connect(self.openOutputWindow)
@@ -110,199 +112,211 @@ class AnalysisTab(QWidget):
         pluginDropdown.addItem("Network Plugin")
         pluginDropdown.addItem("dummy")
         pluginDropdown.activated[str].connect(self.onActivated)
-        
-        #dynamic analysis run event listener
+
+        # dynamic analysis run event listener
         runDynamic.clicked.connect(self.dynamicAnalysis)
-        self.connectedClient = False # flag to continue step into dynamic analysis
-        self.initialized = False # flag to see if we have already initiated dynamic analysis
+        self.connectedClient = False  # flag to continue step into dynamic analysis
+        self.initialized = False  # flag to see if we have already initiated dynamic analysis
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
         self.poiList.clicked.connect(self.clickedPOI)
+
         self.setLayout(mainlayout)
+
+    # def clear_label(self):
+    #     self.topLayout.addWidget(QLabel('Current Project: '), 0, 20)
+
+    def display_current_project(self, project_name):
+        self.current_project.clear()
+        self.topLayout.addWidget(self.current_project, 0, 20)
+        current = 'Current Project:  ' + project_name
+        self.current_project = QLabel(current)
+        self.topLayout.addWidget(self.current_project, 0, 20)
 
     def clickedSearch(self):
         global poiSuperList
-        target=self.searchBox.text()
-        self.searchedWord=[s for s in poiSuperList if target in s]
+        target = self.searchBox.text()
+        self.searchedWord = [s for s in poiSuperList if target in s]
         self.poiList.clear()
         for items in self.searchedWord:
             self.poiList.addItem(items)
+
     ##########################################################################333
     ########################################
-    #working on displaybbbbbbbb
+    # working on display
     def clickedPOI(self):
-        current=[item.text() for item in self.poiList.selectedItems()]
+        current = [item.text() for item in self.poiList.selectedItems()]
         print(' '.join(current))
         print(self.poiSuperList2)
-        current=' '.join(current)
-        option=self.poiDropdown.currentText()
-        searchedPoi=[s for s in self.poiSuperList2 if current[0] in s]
+        current = ' '.join(current)
+        option = self.poiDropdown.currentText()
+        searchedPoi = [s for s in self.poiSuperList2 if current[0] in s]
         print(searchedPoi)
-        if option=="Strings":
+        if option == "Strings":
             self.valueLine.setText(' '.join(searchedPoi[7:]))
 
-
-
     def displayPOIparam(self):
-        content_widget=QWidget()
+        content_widget = QWidget()
         self.poiContentArea.setWidget(content_widget)
-        layoutForPOI= QGridLayout(content_widget)
+        layoutForPOI = QGridLayout(content_widget)
         self.poiContentArea.setWidgetResizable(True)
-        option= self.poiDropdown.currentText()
+        option = self.poiDropdown.currentText()
         if option == "Strings":
-            #stringsDatabase=xmlUploader.retrieve_selected_project(pt.project['Project']['Project_name']['#text'])
-            poiDatabase=xmlUploader.retrievePoiInProject()
+            # stringsDatabase=xmlUploader.retrieve_selected_project(pt.project['Project']['Project_name']['#text'])
+            poiDatabase = xmlUploader.retrievePoiInProject()
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-            value= QLabel('Value:')
-            sectionInBinary=QLabel('Section In Binary:')
-            self.valueLine=QLineEdit()
-            self.sectionInBinaryLine= QLineEdit()
-            #self.valueLine.setText(poiDatabase)
-            layoutForPOI.addWidget(value,1,0)
-            layoutForPOI.addWidget(self.valueLine,1,1)
-            layoutForPOI.addWidget(sectionInBinary,2,0)
-            layoutForPOI.addWidget(self.sectionInBinaryLine,2,1)
+            value = QLabel('Value:')
+            sectionInBinary = QLabel('Section In Binary:')
+            self.valueLine = QLineEdit()
+            self.sectionInBinaryLine = QLineEdit()
+            # self.valueLine.setText(poiDatabase)
+            layoutForPOI.addWidget(value, 1, 0)
+            layoutForPOI.addWidget(self.valueLine, 1, 1)
+            layoutForPOI.addWidget(sectionInBinary, 2, 0)
+            layoutForPOI.addWidget(self.sectionInBinaryLine, 2, 1)
         elif option == "Functions":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-        
-            order= QLabel('Order of Parameters:')
-            fpType=QLabel('Parameter Type:')
-            fpValue=QLabel('Parameter Value:')
-            frType=QLabel('Return Type:')
-            frValue=QLabel('Return Value:')
-            fRelativeOrder=QLabel('Order in Relation to :')
-            
-            self.orderLine=QLineEdit()
-            self.fpTypeLine= QLineEdit()
-            self.fpValueLine=QLineEdit()
-            self.frValueLine= QLineEdit()
-            self.frTypeLine=QLineEdit()
-            self.fRelativeOrderLine= QLineEdit()
-            
-            layoutForPOI.addWidget(order,1,0)
-            layoutForPOI.addWidget(self.orderLine,1,1)
-            layoutForPOI.addWidget(fpType,2,0)
-            layoutForPOI.addWidget(self.fpTypeLine,2,1)
-            layoutForPOI.addWidget(frValue,3,0)
-            layoutForPOI.addWidget(self.frValueLine,3,1)
-            layoutForPOI.addWidget(fRelativeOrder,4,0)
-            layoutForPOI.addWidget(self.fRelativeOrderLine,4,1)
+
+            order = QLabel('Order of Parameters:')
+            fpType = QLabel('Parameter Type:')
+            fpValue = QLabel('Parameter Value:')
+            frType = QLabel('Return Type:')
+            frValue = QLabel('Return Value:')
+            fRelativeOrder = QLabel('Order in Relation to :')
+
+            self.orderLine = QLineEdit()
+            self.fpTypeLine = QLineEdit()
+            self.fpValueLine = QLineEdit()
+            self.frValueLine = QLineEdit()
+            self.frTypeLine = QLineEdit()
+            self.fRelativeOrderLine = QLineEdit()
+
+            layoutForPOI.addWidget(order, 1, 0)
+            layoutForPOI.addWidget(self.orderLine, 1, 1)
+            layoutForPOI.addWidget(fpType, 2, 0)
+            layoutForPOI.addWidget(self.fpTypeLine, 2, 1)
+            layoutForPOI.addWidget(frValue, 3, 0)
+            layoutForPOI.addWidget(self.frValueLine, 3, 1)
+            layoutForPOI.addWidget(fRelativeOrder, 4, 0)
+            layoutForPOI.addWidget(self.fRelativeOrderLine, 4, 1)
 
         elif option == "Variables":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-            variableType=QLabel('Variable Type:')
-            value= QLabel('Value:')
-            sectionInBinary=QLabel('Section In Binary:')
-            variableTypeLine=QLineEdit()
-            valueLine=QLineEdit()
-            sectionInBinaryLine= QLineEdit()
-            layoutForPOI.addWidget(variableType,1,0)
-            layoutForPOI.addWidget(variableTypeLine,1,1)
-            layoutForPOI.addWidget(value,2,0)
-            layoutForPOI.addWidget(valueLine,2,1)
-            layoutForPOI.addWidget(sectionInBinary,3,0)
-            layoutForPOI.addWidget(sectionInBinaryLine,3,1)
-        elif option=="Structures":
+            variableType = QLabel('Variable Type:')
+            value = QLabel('Value:')
+            sectionInBinary = QLabel('Section In Binary:')
+            variableTypeLine = QLineEdit()
+            valueLine = QLineEdit()
+            sectionInBinaryLine = QLineEdit()
+            layoutForPOI.addWidget(variableType, 1, 0)
+            layoutForPOI.addWidget(variableTypeLine, 1, 1)
+            layoutForPOI.addWidget(value, 2, 0)
+            layoutForPOI.addWidget(valueLine, 2, 1)
+            layoutForPOI.addWidget(sectionInBinary, 3, 0)
+            layoutForPOI.addWidget(sectionInBinaryLine, 3, 1)
+        elif option == "Structures":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-            memberOrder=QLabel('Member Order:')
-            memberType= QLabel('Value:')
-            sectionInBinary=QLabel('Section In Binary:')
-            memberValue=QLabel('Member Value:')
-            memberOrderLine=QLineEdit()
-            memberTypeLine=QLineEdit()
-            sectionInBinaryLine= QLineEdit()
-            memberValueLine=QLineEdit()
-            layoutForPOI.addWidget(sectionInBinary,1,0)
-            layoutForPOI.addWidget(sectionInBinaryLine,1,1)
-            layoutForPOI.addWidget(memberOrder,2,0)
-            layoutForPOI.addWidget(memberOrderLine,2,1)
-            layoutForPOI.addWidget(memberType,3,0)
-            layoutForPOI.addWidget(memberTypeLine,3,1)
-            layoutForPOI.addWidget(memberValue,4,0)
-            layoutForPOI.addWidget(memberValueLine,4,1)
-        elif option=="Protocols":
+            memberOrder = QLabel('Member Order:')
+            memberType = QLabel('Value:')
+            sectionInBinary = QLabel('Section In Binary:')
+            memberValue = QLabel('Member Value:')
+            memberOrderLine = QLineEdit()
+            memberTypeLine = QLineEdit()
+            sectionInBinaryLine = QLineEdit()
+            memberValueLine = QLineEdit()
+            layoutForPOI.addWidget(sectionInBinary, 1, 0)
+            layoutForPOI.addWidget(sectionInBinaryLine, 1, 1)
+            layoutForPOI.addWidget(memberOrder, 2, 0)
+            layoutForPOI.addWidget(memberOrderLine, 2, 1)
+            layoutForPOI.addWidget(memberType, 3, 0)
+            layoutForPOI.addWidget(memberTypeLine, 3, 1)
+            layoutForPOI.addWidget(memberValue, 4, 0)
+            layoutForPOI.addWidget(memberValueLine, 4, 1)
+        elif option == "Protocols":
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
-            pStructure=QLabel('Structure')
-            pSize= QLabel('Size')
-            sectionInBinary=QLabel('Section In Binary:')
-            pSizeLine=QLineEdit()
-            pStructureLine=QLineEdit()
-            sectionInBinaryLine= QLineEdit()
-            layoutForPOI.addWidget(sectionInBinary,1,0)
-            layoutForPOI.addWidget(sectionInBinaryLine,1,1)
-            layoutForPOI.addWidget(pStructure,2,0)
-            layoutForPOI.addWidget(pStructureLine,2,1)
-            layoutForPOI.addWidget(pSize,3,0)
-            layoutForPOI.addWidget(pSizeLine,3,1)
+            pStructure = QLabel('Structure')
+            pSize = QLabel('Size')
+            sectionInBinary = QLabel('Section In Binary:')
+            pSizeLine = QLineEdit()
+            pStructureLine = QLineEdit()
+            sectionInBinaryLine = QLineEdit()
+            layoutForPOI.addWidget(sectionInBinary, 1, 0)
+            layoutForPOI.addWidget(sectionInBinaryLine, 1, 1)
+            layoutForPOI.addWidget(pStructure, 2, 0)
+            layoutForPOI.addWidget(pStructureLine, 2, 1)
+            layoutForPOI.addWidget(pSize, 3, 0)
+            layoutForPOI.addWidget(pSizeLine, 3, 1)
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
+
     def parseNetworkItems(self):
         global poiSuperList
-        target=['socket','send','rec','ipv','main']
+        target = ['socket', 'send', 'rec', 'ipv', 'main']
         for i in target:
             self.searchedWord.append([s for s in poiSuperList if i in s])
-            
+
         self.poiList.clear()
-        poiSuperList=[]
+        poiSuperList = []
         for items in self.searchedWord:
             for item2 in items:
                 self.poiList.addItem(item2)
         self.searchedWord = []
 
-    def displayPOI(self,option):
+    def displayPOI(self, option):
         global poiSuperList
-        if option=="Strings":
-            poiSuperList=[]
+        if option == "Strings":
+            poiSuperList = []
             self.poiList.clear()
-#            target=['socket','send','rec','ipv','main']
- #           for i in target:
-  #          self.searchedWord.append([s for s in poiSuperList if i in s])
+            #            target=['socket','send','rec','ipv','main']
+            #           for i in target:
+            #          self.searchedWord.append([s for s in poiSuperList if i in s])
             for item in stringsPOI:
-                item2=item.split()
+                item2 = item.split()
                 self.poiList.addItem(' '.join(item2[7:]))
                 poiSuperList.append(' '.join(item2[7:]))
-            #self.poiContentArea.setText(stringsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+            # self.poiContentArea.setText(stringsPOI)
+            # self.poiList.itemSelectionChanged.connect(self.poiSelected)
 
         elif option == "Variables":
             self.poiList.clear()
-            poiSuperList=[]
-            #for item in variablesPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(variablesPOI)
+            poiSuperList = []
+            # for item in variablesPOI:
+            #   self.poiList.addItem(item)
+            # self.poiContentArea.setText(variablesPOI)
         elif option == "Functions":
             self.poiList.clear()
-            poiSuperList=[]
+            poiSuperList = []
             for item in functionsPOI:
-                item2=item.split()
-                if item2[3]=="->":
+                item2 = item.split()
+                if item2[3] == "->":
                     self.poiList.addItem(item2[5])
                     poiSuperList.append(item2[5])
                 else:
                     self.poiList.addItem(item2[3])
                     poiSuperList.append(item2[3])
-            #self.poiContentArea.setText(functionsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+            # self.poiContentArea.setText(functionsPOI)
+            # self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
         elif option == "Structures":
             self.poiList.clear()
-            poiSuperList=[]
-            #for item in structuresPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(structuresPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+            poiSuperList = []
+            # for item in structuresPOI:
+            #   self.poiList.addItem(item)
+            # self.poiContentArea.setText(structuresPOI)
+            # self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
         elif option == "Protocols":
             self.poiList.clear()
-            poiSuperList=[]
-           # for item in protocolsPOI[2:]:
-            #    item2=item.split()
-             #   self.poiList.addItem(item2[3])
-            #self.poiContentArea.setText(dllsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+            poiSuperList = []
+        # for item in protocolsPOI[2:]:
+        #    item2=item.split()
+        #   self.poiList.addItem(item2[3])
+        # self.poiContentArea.setText(dllsPOI)
+        # self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
         self.displayPOIparam()
         self.parseNetworkItems()
-    def onActivated(self,option):
+
+    def onActivated(self, option):
         if option == "Network Plugin":
             self.poiDropdown.clear()
             self.poiDropdown.addItem("Select POI to display")
@@ -316,19 +330,19 @@ class AnalysisTab(QWidget):
             self.poiDropdown.addItem("opps")
 
     def makeStringTree(self, lista):
-        counter=0
+        counter = 0
         parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
         parentRoot = parentTree.getroot()
         stringHolderElement = parentRoot.find('./stringHolder')
         for item in lista:
             #             for key in jsonStrings[index]: # access each string
-              # this dictonary contains one Strint poi
+            # this dictonary contains one Strint poi
             tree = ET.parse('../xml/StringPointOfInterest.xml')
             #             ET.Element\
-            item2= item.split()
+            item2 = item.split()
 
             root = tree.getroot()
-            root.set('id','String: {}'.format(counter))
+            root.set('id', 'String: {}'.format(counter))
             # b2tf.text='String {}'.format(counter+1)
             b2tf = root.find("./value")
             try:
@@ -339,14 +353,14 @@ class AnalysisTab(QWidget):
             try:
                 b2tf.text = item2[1]
             except:
-                b2tf.text="null"
+                b2tf.text = "null"
             b2tf = root.find("./section")
             try:
-                b2tf.text =item2[5]
+                b2tf.text = item2[5]
             except:
                 b2tf.text = "null"
             stringHolderElement.append(root)
-            counter+=1
+            counter += 1
 
         #             ET.Element.append(parentTree)
         #             ET.Element.append(parentTree)
@@ -408,9 +422,13 @@ class AnalysisTab(QWidget):
             #         ET.Element.append(subelement)
 
             xmlUploader.uploadPOI(parent_dict)
+
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
+        project_name = pt.project['Project']['Project_name']['#text']
+        # self.clear_label()
+        self.display_current_project(project_name)
         bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
 
         global stringsPOI
@@ -419,7 +437,7 @@ class AnalysisTab(QWidget):
         global protocolsPOI
         global structuresPOI
 
-        stringsPOI =bina.cmd("iz").splitlines()
+        stringsPOI = bina.cmd("iz").splitlines()
         self.makeStringTree(stringsPOI)
         protocolsPOI = bina.cmd("ii").splitlines()
         functionsPOI = bina.cmd("aaa;afl").splitlines()
@@ -427,85 +445,79 @@ class AnalysisTab(QWidget):
 
         self.poiSuperList2.append(functionsPOI)
 
-        #structuresPOI = bina.cmd("").splitlines()
-        #variablesPOI = bina.cmd("").splitlines()
+        # structuresPOI = bina.cmd("").splitlines()
+        # variablesPOI = bina.cmd("").splitlines()
         self.terminal.append("Static Analysis done!")
-    
+
     def dynamicAnalysis(self):
         # only do the initializing of breakpoints/opening file/running in debug mode once
-        if(self.initialized is False):
+        if (self.initialized is False):
             programToAnalyze = "server.out"
             functionName = "sym.imp.recv"
             global r2
-            r2 = r2pipe.open("server.out") # Open program to be analyzed by radare2
-            r2.cmd("aaa") # Perform static analysis on program 
-            r2.cmd("doo 12344") # Re open program in debug/background mode
+            r2 = r2pipe.open("server.out")  # Open program to be analyzed by radare2
+            r2.cmd("aaa")  # Perform static analysis on program
+            r2.cmd("doo 12344")  # Re open program in debug/background mode
             self.initialized = True
             print("initialized dynamic analysis; connect the client now")
-#         references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
+        #         references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
 
-#         r2.cmd("db 0x401548") # hardcoded breakpoint to sym.imp.recv reference in main
-#         print(references)
-# #         for i in range(len(references)):
-# #             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
-        
-#         for i in range(len(references)):
-#             breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
-#             r2.cmd(breakpoint) # Add breakpoints at references locations
-# #             print(breakpoint)
+        #         r2.cmd("db 0x401548") # hardcoded breakpoint to sym.imp.recv reference in main
+        #         print(references)
+        # #         for i in range(len(references)):
+        # #             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
+
+        #         for i in range(len(references)):
+        #             breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
+        #             r2.cmd(breakpoint) # Add breakpoints at references locations
+        # #             print(breakpoint)
         else:
-            if(self.connectedClient):
+            if (self.connectedClient):
                 debugData = r2.cmdj('axtj sym.imp.recv')
-                
+
                 breakpoint = 'db ' + hex(debugData[0]["from"])
-                
+
                 r2.cmd(breakpoint)
                 self.terminal.append("set breakpoint at %s" % breakpoint)
-                
-                terminalData = r2.cmd("dc") # this will pause the program till you connect the client
+
+                terminalData = r2.cmd("dc")  # this will pause the program till you connect the client
                 self.terminal.append(terminalData)
 
-                terminalData = r2.cmd("dso") # once client is connected, proceed to step over the function
+                terminalData = r2.cmd("dso")  # once client is connected, proceed to step over the function
                 self.terminal.append(terminalData)
-                
+
                 # retreive data that server.out recieved
                 messageAddr = r2.cmd("dr rsi")
                 getPayloadCommand = "psz @" + messageAddr
                 payload = r2.cmd(getPayloadCommand)
-                
+
                 # r2 output
                 self.terminal.append("found payload: %s" % payload)
                 self.terminal.append("at: %s" % messageAddr)
-# 
-#                 breakpoints = r2.cmd("db")
-#                 print(breakpoints)
-#                 r2.cmd("dc")
 
+    #
+    #                 breakpoints = r2.cmd("db")
+    #                 print(breakpoints)
+    #                 r2.cmd("dc")
 
-        
-#         whie True:
-#             r2.cmd("dso") # step over recv function
-# #         ripAddress = r2.cmd("dr rsi")
-#             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
-#             print(payload)
-#             break
-             
-             
-    
+    #         whie True:
+    #             r2.cmd("dso") # step over recv function
+    # #         ripAddress = r2.cmd("dr rsi")
+    #             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
+    #             print(payload)
+    #             break
+
     def sendTextToTerminal(self):
-#         binary = r2.open("hello")
-#         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
-#         print(commandToSend)
-        
-#         myText = binary.cmd(commandToSend)
-#         print(myText)   
-#         
+        #         binary = r2.open("hello")
+        #         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
+        #         print(commandToSend)
+
+        #         myText = binary.cmd(commandToSend)
+        #         print(myText)
+        #
         self.connectedClient = True
 
-        
-        
-
-# Methods to open windows
+    # Methods to open windows
     def openCommentWindow(self):
         self.window = QtWidgets.QDialog()
         self.ui = comment_window()

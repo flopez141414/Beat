@@ -38,7 +38,7 @@ class DocumentationTab(QWidget):
         leftLayout.addWidget(self.searchDocList, 2, 0, 1, 5)
 
         # Right panel
-        rightPanelLabel = QLabel('Detail Document View')
+        rightPanelLabel = QLabel('Detailed Document View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
 #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))

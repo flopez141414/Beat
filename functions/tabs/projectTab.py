@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import json
 import r2pipe
 import sys
@@ -29,9 +31,6 @@ project = []  # type: Any
 projectSelected = False
 listCounter = 0
 
-
-# sscess finished with exit code 0
-
 class ProjectTab(QWidget):
     def __init__(self):
         super().__init__()
@@ -51,9 +50,10 @@ class ProjectTab(QWidget):
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
         self.searchList = QListWidget()
-        leftPanelLabel = QLabel('Project View')
-        leftPanelLabel.setAlignment(Qt.AlignCenter)
-        leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
+        self.leftPanelLabel = QLabel('Project View')
+        self.leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
+        self.leftPanelLabel.setAlignment(Qt.AlignCenter)
+        leftLayout.addWidget(self.leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
@@ -61,6 +61,7 @@ class ProjectTab(QWidget):
 
         # Right panel
         self.rightPanelLabel = QLabel('Detailed Project View')
+        self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         # rightPanelLabel.hide()
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
@@ -211,6 +212,7 @@ class ProjectTab(QWidget):
                 xmlUploader.uploadXML(my_dict)
                 project = xmlUploader.retrieve_selected_project(pname)
                 self.disableEditing()
+                self.browseButton.hide()
             elif pname == "":
                 errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
             elif pdesc == "":
@@ -220,6 +222,7 @@ class ProjectTab(QWidget):
             self.updateProjectList()
             self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
             self.searchList.item(listCounter)
+            return pname
 
     # loads right side
     def loadRightLayout(self):
