@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <Plugin  id='1'>
+ <Plugin nameOfPlugin="">
       <Plugin_name required="true"></Plugin_name>
    <Plugin_Desc required="true"></Plugin_Desc>
 	<structure_path required="true"></structure_path>

@@ -130,8 +130,6 @@ class AnalysisTab(QWidget):
         self.setLayout(mainlayout)
         self.populate_plugin_dropdown()
 
-    # def clear_label(self):
-    #     self.topLayout.addWidget(QLabel('Current Project: '), 0, 20)
 
     def populate_plugin_dropdown(self):
         pluginList = xmlUploader.retrieve_list_of_plugins()

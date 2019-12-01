@@ -82,7 +82,7 @@ class PluginManagementTab(QWidget):
         self.searchList.doubleClicked.connect(self.disableEditing)
 
         # retrieve plugin titles and display on list
-        pluginList = xmlUploader.retrieve_list_of_plugin()
+        pluginList = xmlUploader.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
 
@@ -105,17 +105,19 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(QLabel('Points of Interest'), 6, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 7)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
-        self.browseButton1.clicked.connect(self.browse1)
+        self.browseButton1.clicked.connect(self.browse1())
         self.browseButton2.clicked.connect(self.browse2)
-        self.saveButton.clicked.connect(self.savexml)
+        self.saveButton.clicked.connect(self.save_plugin)
         self.deleteButton.clicked.connect(self.deletePluggin)
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
+        print('browse1')
         self.openFile(1)
 
     def browse2(self):
         self.openFile(2)
+        print('browse2')
 
     def select_plugin(self):
         # for this mode we will load the right layout
@@ -125,15 +127,14 @@ class PluginManagementTab(QWidget):
         self.browseButton1.hide()
         self.browseButton2.hide()
         self.saveButton.hide()
-        # aqui
         plugins = [item.text() for item in self.searchList.selectedItems()]
         pluginName = ' '.join([str(elem) for elem in plugins])
         plugin = xmlUploader.retrieve_selected_plugin(pluginName)
 
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
-        # self.pluginStructArea.setText(project['Plugin']['Plugin_name']['#text'])
-        # self.pluginDataSet.setText(project['Plugin']['Plugin_name']['#text'])
+        self.pluginStructArea.setText(project['Plugin']['Plugin_name']['#text'])
+        self.pluginDataSet.setText(project['Plugin']['Plugin_name']['#text'])
 
         self.updatePluginList()
 
@@ -158,7 +159,6 @@ class PluginManagementTab(QWidget):
             return fileName
 
         self.updatePluginList()
-        return "not found"
 
     # stores xml1 and xml2 from browse buttons
     def pluginxmlhandler(self, filePath, caller):
@@ -175,7 +175,7 @@ class PluginManagementTab(QWidget):
 
     def updatePluginList(self):
         self.searchList.clear()
-        pluginList = xmlUploader.retrieve_list_of_plugin()
+        pluginList = xmlUploader.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
 
@@ -221,10 +221,8 @@ class PluginManagementTab(QWidget):
         self.updatePluginList()
         # self.createNew()
 
-    def clickEvent(self):
-        print("Clicked")
 
-    def savexml(self):
+    def save_plugin(self):
         global xml1
         global xml2
 
@@ -234,25 +232,24 @@ class PluginManagementTab(QWidget):
         pname = nameH.toPlainText()
         pdesc = descH.toPlainText()
 
-        if pname != "" and pdesc != "":
-            b2tf = xml1.find("./Plugin_name")
-            b2tf.text = pname
-            b2tf = xml1.find("./Plugin_Desc")
-            b2tf.text = pdesc
+        if xmlUploader.plugin_exists(pname):
+            errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
+        else:
+            if pname != "" and pdesc != "":
+                b2tf = xml1.find("./Plugin_name")
+                b2tf.text = pname
+                b2tf = xml1.find("./Plugin_Desc")
+                b2tf.text = pdesc
 
-            # xml3 = xmlUploader.xmlmerger("Data", xml1, xml2)  # !!!!!!!!!!!!!!!
-            my_dict = ET.tostring(xml1, encoding='utf8').decode('utf8')
-            xmlUploader.uploadPlugin(my_dict)
-
-            self.updatePluginList()
-            self.disableEditing()
-            #self.save_xml_local()
-
-        elif pname == "":
-            errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
-
-        elif pdesc == "":
-            errorMessageGnerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
+                my_dict = ET.tostring(xml1, encoding='utf8').decode('utf8')
+                xmlUploader.uploadPlugin(my_dict)
+                self.updatePluginList()
+                self.disableEditing()
+                #self.save_xml_local()
+            elif pname == "":
+                errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
+            elif pdesc == "":
+                errorMessageGnerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
 
 
 def save_xml_local(self):
