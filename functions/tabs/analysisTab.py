@@ -45,7 +45,7 @@ class AnalysisTab(QWidget):
         mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
 
         # Top layout elements
-        pluginDropdown = QComboBox()
+        self.pluginDropdown = QComboBox()
         runStatic = QPushButton('Run')
         self.poiDropdown = QComboBox()
         runDynamic = QPushButton('Run')
@@ -57,7 +57,7 @@ class AnalysisTab(QWidget):
         self.stopDynamic.clicked.connect(self.sendTextToTerminal)
 
         self.topLayout.addWidget(QLabel('Plugin'), 0, 0)
-        self.topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
+        self.topLayout.addWidget(self.pluginDropdown, 0, 1, 1, 2)
         self.topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
         self.topLayout.addWidget(runStatic, 1, 1, 1, 1)
         self.topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
@@ -108,10 +108,10 @@ class AnalysisTab(QWidget):
         self.outputButton.clicked.connect(self.openOutputWindow)
 
         # set Plugin name
-        pluginDropdown.addItem("Select Plugin")
-        pluginDropdown.addItem("Network Plugin")
-        pluginDropdown.addItem("dummy")
-        pluginDropdown.activated[str].connect(self.onActivated)
+        self.pluginDropdown.addItem("Select Plugin")
+        # pluginDropdown.addItem("Network Plugin")
+        # pluginDropdown.addItem("dummy")
+        self.pluginDropdown.activated[str].connect(self.onActivated)
 
         # dynamic analysis run event listener
         runDynamic.clicked.connect(self.dynamicAnalysis)
@@ -128,9 +128,15 @@ class AnalysisTab(QWidget):
         else:
             self.display_current_project("No Project Selected")
         self.setLayout(mainlayout)
+        self.populate_plugin_dropdown()
 
     # def clear_label(self):
     #     self.topLayout.addWidget(QLabel('Current Project: '), 0, 20)
+
+    def populate_plugin_dropdown(self):
+        pluginList = xmlUploader.retrieve_list_of_plugins()
+        for plugin in pluginList:
+            self.pluginDropdown.addItem(plugin)
 
     def display_current_project(self, project_name):
         self.current_project.clear()

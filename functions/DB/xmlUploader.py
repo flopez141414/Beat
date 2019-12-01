@@ -37,14 +37,23 @@ def uploadPlugin(xml):
     posts = connection_plugin_path()
     result = posts.insert_one(my_dict)
 
-
 def uploadPOI(xml):
     my_dict = xmltodict.parse(xml)
     posts = connection_poi_path()
     result = posts.insert_one(my_dict)
 
 
-def retrieve_list_of_projects_plugin():
+def retrieve_list_of_plugins():
+    # plugins = connection_plugin_path()
+    # pluginsList = plugins.find()
+    # list_of_plugins = []
+    # for item in pluginsList:
+    #     list_of_plugins.append(item['Plugin']['Plugin_name']['#text'])  # NOTE modify
+    list_of_plugins = ['Red', 'Green', 'Orange']
+    return list_of_plugins
+
+
+def retrieve_list_of_projects():
     projects = connection_plugin_path()
     projectsList = projects.find()
     list_of_projects = []
