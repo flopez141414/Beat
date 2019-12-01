@@ -26,6 +26,8 @@ xml1 = []
 xml2 = []
 nameH = ""
 descH = ""
+pathH = ""
+datasetH = ""
 listCounter = 0
 project = []
 
@@ -36,6 +38,8 @@ class PluginManagementTab(QWidget):
 
         global nameH
         global descH
+        global pathH
+        global datasetH
 
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
@@ -63,7 +67,9 @@ class PluginManagementTab(QWidget):
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         self.pluginStructArea = QTextEdit()
+        pathH = self.pluginStructArea
         self.pluginDataSet = QTextEdit()
+        datasetH = self.pluginDataSet
         self.pluginName = QTextEdit()
         nameH = self.pluginName
         self.pluginDesc = QTextEdit()
@@ -75,8 +81,10 @@ class PluginManagementTab(QWidget):
         newButton.clicked.connect(self.createNew)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
+        self.updateButton = QPushButton('Update Description')
         button = QPushButton("My Button")
         self.setLayout(mainlayout)
+        self.updateButton.clicked.connect(self.edit_existing_plugin)
 
         self.searchList.doubleClicked.connect(self.select_plugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
@@ -105,10 +113,13 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(QLabel('Points of Interest'), 6, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 7)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
-        self.browseButton1.clicked.connect(self.browse1())
+        self.rightLayout.addWidget(self.updateButton, 15, 7)
+        self.updateButton.hide()
+        self.browseButton1.clicked.connect(self.browse1)
         self.browseButton2.clicked.connect(self.browse2)
         self.saveButton.clicked.connect(self.save_plugin)
         self.deleteButton.clicked.connect(self.deletePluggin)
+
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
@@ -121,20 +132,21 @@ class PluginManagementTab(QWidget):
 
     def select_plugin(self):
         # for this mode we will load the right layout
-        global project
+        global plugin
         self.loadRightLayout()
         self.deleteButton.show()
         self.browseButton1.hide()
         self.browseButton2.hide()
         self.saveButton.hide()
+        self.updateButton.show()
         plugins = [item.text() for item in self.searchList.selectedItems()]
         pluginName = ' '.join([str(elem) for elem in plugins])
         plugin = xmlUploader.retrieve_selected_plugin(pluginName)
 
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
-        self.pluginStructArea.setText(project['Plugin']['Plugin_name']['#text'])
-        self.pluginDataSet.setText(project['Plugin']['Plugin_name']['#text'])
+        self.pluginStructArea.setText(plugin['Plugin']['structure_path']['#text'])
+        self.pluginDataSet.setText(plugin['Plugin']['predefined_dataset_path']['#text'])
 
         self.updatePluginList()
 
@@ -183,13 +195,13 @@ class PluginManagementTab(QWidget):
         self.pluginStructArea.setEnabled(True)
         self.pluginDataSet.setEnabled(True)
         self.pluginName.setEnabled(True)
-        self.pluginDesc.setEnabled(True)
+        #self.pluginDesc.setEnabled(True)
 
     def disableEditing(self):
         self.pluginStructArea.setEnabled(False)
         self.pluginDataSet.setEnabled(False)
         self.pluginName.setEnabled(False)
-        self.pluginDesc.setEnabled(False)
+        #self.pluginDesc.setEnabled(False)
 
     def createNew(self):
         # load buttons and Layout
@@ -210,16 +222,12 @@ class PluginManagementTab(QWidget):
     def deletePluggin(self):
         global nameH
         toErase = nameH.toPlainText()
-        print(toErase)
-
         if not toErase:
             errorMessageGnerator.showDialog("Please select a Plugin to delete", 'Delete plugin')
-
         xmlUploader.delete_selected_plugin(toErase)
         for item in self.searchList.selectedItems():
             self.searchList.takeItem(self.searchList.row(item))
         self.updatePluginList()
-        # self.createNew()
 
 
     def save_plugin(self):
@@ -228,9 +236,13 @@ class PluginManagementTab(QWidget):
 
         global nameH
         global descH
+        global pathH
+        global datasetH
 
         pname = nameH.toPlainText()
         pdesc = descH.toPlainText()
+        plugpath = pathH.toPlainText()
+        data = datasetH.toPlainText()
 
         if xmlUploader.plugin_exists(pname):
             errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
@@ -240,16 +252,31 @@ class PluginManagementTab(QWidget):
                 b2tf.text = pname
                 b2tf = xml1.find("./Plugin_Desc")
                 b2tf.text = pdesc
+                b2tf = xml1.find("./structure_path")
+                b2tf.text = plugpath
+                b2tf = xml1.find("./predefined_dataset_path")
+                b2tf.text = data
 
                 my_dict = ET.tostring(xml1, encoding='utf8').decode('utf8')
                 xmlUploader.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
+                errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin", "Success")
                 #self.save_xml_local()
             elif pname == "":
                 errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
             elif pdesc == "":
                 errorMessageGnerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
+
+
+    def edit_existing_plugin(self):
+        global plugin
+        global descH
+        pdesc = descH.toPlainText()
+        print(pdesc)
+        description = plugin['Plugin']['Plugin_Desc']['#text']
+        xmlUploader.update_plugin_description(description, pdesc)
+        errorMessageGnerator.showDialog("Description updated successfully", "Success")
 
 
 def save_xml_local(self):

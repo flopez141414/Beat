@@ -171,8 +171,9 @@ def plugin_exists(new_plugin_name):
             return True
     return False
 
+
 def update_plugin_description(old_description, new_description):
-    projects = connection_project_path()
-    myquery = {"Project.projectDescription.#text": old_description}
-    new_values = {"$set": {"Project.projectDescription.#text": new_description}}
-    projects.update_one(myquery, new_values)
+    plugins = connection_plugin_path()
+    myquery = {"Plugin.Plugin_Desc.#text": old_description}
+    new_values = {"$set": {"Plugin.Plugin_Desc.#text": new_description}}
+    plugins.update_one(myquery, new_values)

@@ -350,9 +350,9 @@ class ProjectTab(QWidget):
         global project
         global projectDescHolder
         pdesc = projectDescHolder.toPlainText()
-        name = project['Project']['Project_name']['#text']
         description = project['Project']['projectDescription']['#text']
         xmlUploader.update_proj_description(description, pdesc)
+        errorMessageGnerator.showDialog("Description updated successfully", "Success")
 
     '''''
     We want to store the current project name.

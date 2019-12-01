@@ -1,5 +1,13 @@
 <pointOfInterestDataSet id="">
-	<stringHolder><stringPointOfInterest id="String: 0">
+	<fileName required="true" />
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value />
+	<address />
+	<comment />
+	<section />
+    </stringPointOfInterest>
+  <stringPointOfInterest id="String: 0">
 	<value>Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\n [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\n [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\n [-w deadline] [-W timeout] [hop1 ...] destination\n</value>
 	<address>0x0000b4a8</address>
 	<comment />
@@ -1285,8 +1293,48 @@
 	<comment />
 	<section>(.rodata)</section>
 </stringPointOfInterest></stringHolder>
-	<functionHolder />
-	<variableHolder />
-	<structHolder />
-	<protocolHolder />
+  <functionHolder>
+    <functionPointOfInterest>
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+    </protocolPointOfInterest>
+  </protocolHolder>
 </pointOfInterestDataSet>
