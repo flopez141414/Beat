@@ -9,7 +9,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
 sys.path.append("../windows")
-import pdfViewer
 
 class DocumentationTab(QWidget):
     def __init__(self):

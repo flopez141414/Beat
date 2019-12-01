@@ -122,7 +122,11 @@ class AnalysisTab(QWidget):
         runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
         self.poiList.clicked.connect(self.clickedPOI)
-
+        if pt.projectSelected:
+            project_name = pt.project['Project']['Project_name']['#text']
+            self.display_current_project(project_name)
+        else:
+            self.display_current_project("No Project Selected")
         self.setLayout(mainlayout)
 
     # def clear_label(self):

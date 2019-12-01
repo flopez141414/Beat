@@ -224,6 +224,7 @@ class ProjectTab(QWidget):
             self.updateProjectList()
             self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
             self.searchList.item(listCounter)
+            projectSelected = True
             return pname
 
     # loads right side
@@ -311,9 +312,6 @@ class ProjectTab(QWidget):
         self.binaryFilePath.setEnabled(True)
         self.binaryFileProp.setEnabled(True)
         self.updateProjectList()
-        # self.deleteButton.setEnabled(False)
-
-    # self.turnOn()
 
     def deleteProject(self):
         global projectNameHolder
@@ -355,7 +353,6 @@ class ProjectTab(QWidget):
         name = project['Project']['Project_name']['#text']
         description = project['Project']['projectDescription']['#text']
         xmlUploader.update_proj_description(description, pdesc)
-
 
     '''''
     We want to store the current project name.

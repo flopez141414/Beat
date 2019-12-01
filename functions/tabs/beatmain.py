@@ -20,12 +20,13 @@ from analysisTab import AnalysisTab
 from projectTab import ProjectTab
 from PointsOfInterestTab import PointsOfInterestTab
 project=""
+
+
 def main():
     # initialize stuff
     app = QApplication([])
     mainWindow = QMainWindow()
 
-    
     # dark theme
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53,53,53))
@@ -59,5 +60,5 @@ def main():
     mainWindow.show()
     sys.exit(app.exec())
 
-
-main()
+if __name__ == '__main__':
+    main()
