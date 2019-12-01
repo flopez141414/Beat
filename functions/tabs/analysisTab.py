@@ -39,8 +39,8 @@ class AnalysisTab(QWidget):
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         rightLayout = QGridLayout()
-        topLayout = QGridLayout()
-        mainlayout.addLayout(topLayout, 0, 0, 1, 6)
+        self.topLayout = QGridLayout()
+        mainlayout.addLayout(self.topLayout, 0, 0, 1, 6)
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
         mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
 
@@ -56,16 +56,16 @@ class AnalysisTab(QWidget):
         # TODO: Disable this connection after testing is finished and create a new button to grab input from terminal 
         self.stopDynamic.clicked.connect(self.sendTextToTerminal)
 
-        topLayout.addWidget(QLabel('Plugin'), 0, 0)
-        topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
-        topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
-        topLayout.addWidget(runStatic, 1, 1, 1, 1)
-        topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
-        topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
-        topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
-        topLayout.addWidget(runDynamic, 1, 6)
-        topLayout.addWidget(self.stopDynamic, 1, 7)
-        topLayout.addWidget(QLabel(), 0, 3, 1, 15)
+        self.topLayout.addWidget(QLabel('Plugin'), 0, 0)
+        self.topLayout.addWidget(pluginDropdown, 0, 1, 1, 2)
+        self.topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
+        self.topLayout.addWidget(runStatic, 1, 1, 1, 1)
+        self.topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
+        self.topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
+        self.topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
+        self.topLayout.addWidget(runDynamic, 1, 6)
+        self.topLayout.addWidget(self.stopDynamic, 1, 7)
+        self.topLayout.addWidget(QLabel(), 0, 3, 1, 15)
 
         # Left panel
         self.searchBox = QLineEdit()
@@ -94,6 +94,7 @@ class AnalysisTab(QWidget):
         self.commentButton = QPushButton('Comments')
         self.outputButton = QPushButton('Output')
         self.analysisButton = QPushButton('Analysis')
+        self.current_project = QLabel('Current Project: ')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(self.poiContentArea, 1, 0, 10, 8)
@@ -125,7 +126,14 @@ class AnalysisTab(QWidget):
         self.searchButton.clicked.connect(self.clickedSearch)
         self.poiList.clicked.connect(self.clickedPOI)
         self.setLayout(mainlayout)
-
+        
+    def display_current_project(self, project_name):
+        self.current_project.clear()
+        self.topLayout.addWidget(self.current_project, 0, 20)
+        current = 'Current Project:  ' + project_name
+        self.current_project = QLabel(current)
+        self.topLayout.addWidget(self.current_project, 0, 20)
+        
     def clickedSearch(self):
         global poiSuperList
         target=self.searchBox.text()
@@ -420,6 +428,9 @@ class AnalysisTab(QWidget):
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
+        project_name = pt.project['Project']['Project_name']['#text']
+        # self.clear_label()
+        self.display_current_project(project_name)
         bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
 
         global stringsPOI

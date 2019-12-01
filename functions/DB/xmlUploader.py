@@ -125,8 +125,21 @@ def delete_selected_project(nameofProject):
     myquery = {"Project.Project_name.#text": nameofProject}
     projects.delete_one(myquery)
 
+def update_proj_description(old_description, new_description):
+    projects = connection_project_path()
+    myquery = {"Project.projectDescription.#text": old_description}
+    new_values = {"$set": {"Project.projectDescription.#text": new_description}}
+    projects.update_one(myquery, new_values)
 
-# holder element of where to place xml2
+def project_exists(new_project_name):
+    projects = connection_project_path()
+    projectsList = projects.find()
+
+    for item in projectsList:
+        if item['Project']['Project_name']['#text'] == new_project_name:
+            return True
+    return False
+    # holder element of where to place xml2
 def xmlmerger(holder, xml, xml2):
     tree=ET.parse(xml)
     xml= tree.getroot()

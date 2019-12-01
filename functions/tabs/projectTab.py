@@ -50,9 +50,10 @@ class ProjectTab(QWidget):
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
         self.searchList = QListWidget()
-        leftPanelLabel = QLabel('Project View')
-        leftPanelLabel.setAlignment(Qt.AlignCenter)
-        leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
+        self.leftPanelLabel = QLabel('Project View')
+        self.leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
+        self.leftPanelLabel.setAlignment(Qt.AlignCenter)
+        leftLayout.addWidget(self.leftPanelLabel, 0, 0, 1, 4)
         leftLayout.addWidget(self.searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
@@ -60,6 +61,7 @@ class ProjectTab(QWidget):
 
         # Right panel
         self.rightPanelLabel = QLabel('Detailed Project View')
+        self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         #rightPanelLabel.hide()
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
@@ -78,8 +80,10 @@ class ProjectTab(QWidget):
         self.browseButton.clicked.connect(self.OpenFile)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
+        self.updateButton = QPushButton('Update Description')
         self.saveButton.toggle()
         self.saveButton.clicked.connect(self.saveFile)
+        self.updateButton.clicked.connect(self.edit_existing_project)
         searchButton.clicked.connect(self.clickedSearch)
         newButton.clicked.connect(self.createNew)
 
@@ -172,56 +176,62 @@ class ProjectTab(QWidget):
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
-
-        if pname != "" and pdesc != "" and ppath != "":
-            # Adding to XMl
-            tree = ET.parse('../xml/Project.xml')
-            root = tree.getroot()
-            b2tf = root.find("./Project_name")
-            b2tf.text = pname
-            b2tf = root.find("./projectDescription")
-            b2tf.text = pdesc
-            b2tf = root.find("./BinaryFilePath")
-            b2tf.text = ppath
-            b2tf = root.find("./StaticDataSet/OS")
-            b2tf.text = fileProperties[0]
-            b2tf = root.find("./StaticDataSet/BinaryType")
-            b2tf.text = fileProperties[1]
-            b2tf = root.find("./StaticDataSet/Machine")
-            b2tf.text = fileProperties[2]
-            b2tf = root.find("./StaticDataSet/Class")
-            b2tf.text = fileProperties[3]
-            b2tf = root.find("./StaticDataSet/Bits")
-            b2tf.text = fileProperties[4]
-            b2tf = root.find("./StaticDataSet/Language")
-            b2tf.text = fileProperties[5]
-            b2tf = root.find("./StaticDataSet/Canary")
-            b2tf.text = fileProperties[6]
-            b2tf = root.find("./StaticDataSet/Crypto")
-            b2tf.text = fileProperties[7]
-            b2tf = root.find("./StaticDataSet/NX")
-            b2tf.text = fileProperties[8]
-            b2tf = root.find("./StaticDataSet/Pic")
-            b2tf.text = fileProperties[9]
-            b2tf = root.find("./StaticDataSet/Relocs")
-            b2tf.text = fileProperties[10]
-            b2tf = root.find("./StaticDataSet/Relro")
-            b2tf.text = fileProperties[11]
-            b2tf = root.find("./StaticDataSet/Stripped")
-            b2tf.text = fileProperties[12]
-            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-            xmlUploader.uploadXML(my_dict)
-            project = xmlUploader.retrieve_selected_project(pname)
-            self.disableEditing()
-        elif pname == "":
-            errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
-        elif pdesc == "":
-            errorMessageGnerator.showDialog("Enter a description for the project","Project File Error")
-        elif ppath == "":
-            errorMessageGnerator.showDialog("Cannot create a project without a binary file","Binary File Error")
-        self.updateProjectList()
+        if xmlUploader.project_exists(pname):
+            errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
+        else:
+            if pname != "" and pdesc != "" and ppath != "":
+                # Adding to XMl
+                tree = ET.parse('../xml/Project.xml')
+                root = tree.getroot()
+                b2tf = root.find("./Project_name")
+                b2tf.text = pname
+                b2tf = root.find("./projectDescription")
+                b2tf.text = pdesc
+                b2tf = root.find("./BinaryFilePath")
+                b2tf.text = ppath
+                b2tf = root.find("./StaticDataSet/OS")
+                b2tf.text = fileProperties[0]
+                b2tf = root.find("./StaticDataSet/BinaryType")
+                b2tf.text = fileProperties[1]
+                b2tf = root.find("./StaticDataSet/Machine")
+                b2tf.text = fileProperties[2]
+                b2tf = root.find("./StaticDataSet/Class")
+                b2tf.text = fileProperties[3]
+                b2tf = root.find("./StaticDataSet/Bits")
+                b2tf.text = fileProperties[4]
+                b2tf = root.find("./StaticDataSet/Language")
+                b2tf.text = fileProperties[5]
+                b2tf = root.find("./StaticDataSet/Canary")
+                b2tf.text = fileProperties[6]
+                b2tf = root.find("./StaticDataSet/Crypto")
+                b2tf.text = fileProperties[7]
+                b2tf = root.find("./StaticDataSet/NX")
+                b2tf.text = fileProperties[8]
+                b2tf = root.find("./StaticDataSet/Pic")
+                b2tf.text = fileProperties[9]
+                b2tf = root.find("./StaticDataSet/Relocs")
+                b2tf.text = fileProperties[10]
+                b2tf = root.find("./StaticDataSet/Relro")
+                b2tf.text = fileProperties[11]
+                b2tf = root.find("./StaticDataSet/Stripped")
+                b2tf.text = fileProperties[12]
+                my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+                xmlUploader.uploadXML(my_dict)
+                project = xmlUploader.retrieve_selected_project(pname)
+                self.disableEditing()
+                self.browseButton.hide()
+            elif pname == "":
+                errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
+            elif pdesc == "":
+                errorMessageGnerator.showDialog("Enter a description for the project","Project File Error")
+            elif ppath == "":
+                errorMessageGnerator.showDialog("Cannot create a project without a binary file","Binary File Error")
+                self.updateProjectList()
         self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
         self.searchList.item(listCounter)
+        return pname
+
+
 
 
     def clickedSearch(self):
@@ -250,6 +260,8 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 8)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
+        self.rightLayout.addWidget(self.updateButton, 15, 8)
+        self.updateButton.hide()
 
     def select_project(self):
         global project
@@ -258,6 +270,7 @@ class ProjectTab(QWidget):
         #disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
+        self.updateButton.show()
         self.searchBox.setText("")
 
         project = [item.text() for item in self.searchList.selectedItems()]
@@ -287,6 +300,8 @@ class ProjectTab(QWidget):
             self.binaryFileProp.setItem(c, 1, QTableWidgetItem(project['Project']['StaticDataSet'][item]))
             c+=1
         self.updateProjectList()
+        self.updateButton.show()
+        return True
         
 
     def createNew(self):
@@ -329,14 +344,25 @@ class ProjectTab(QWidget):
         toErase = projectNameHolder.toPlainText()
         if not toErase:
             errorMessageGnerator.showDialog("Please select a project to delete")
-        xmlUploader.delete_selected_project(toErase)
-        for item in self.searchList.selectedItems():
-            self.searchList.takeItem(self.searchList.row(item))
-        self.updateProjectList()
-        self.createNew()
+            delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project","Delete confirmation")
+        if delete:
+            xmlUploader.delete_selected_project(toErase)
+            for item in self.searchList.selectedItems():
+                self.searchList.takeItem(self.searchList.row(item))
+            self.updateProjectList()
+            self.createNew()
+        else:
+            pass
 
     def turnOn(self):
         self.saveButton.show()
+    def edit_existing_project(self):
+        global project
+        global projectDescHolder
+        pdesc = projectDescHolder.toPlainText()
+        name = project['Project']['Project_name']['#text']
+        description = project['Project']['projectDescription']['#text']
+        xmlUploader.update_proj_description(description, pdesc)
 
     def turnOff(self):
         self.saveButton.hide()

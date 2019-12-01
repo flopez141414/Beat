@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAc
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
-
+sys.path.append("../windows")
+#import pdfViewer
 
 class DocumentationTab(QWidget):
     def __init__(self):
@@ -38,7 +39,7 @@ class DocumentationTab(QWidget):
         leftLayout.addWidget(self.searchDocList, 2, 0, 1, 5)
 
         # Right panel
-        rightPanelLabel = QLabel('Detail Document View')
+        rightPanelLabel = QLabel('Detailed Document View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
 #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
