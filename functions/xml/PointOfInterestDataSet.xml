@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pointOfInterestDataSet id="">
-	<stringHolder></stringHolder>
-	<functionHolder></functionHolder>
-	<variableHolder></variableHolder>
-	<structHolder></structHolder>
-	<protocolHolder></protocolHolder>
+	<fileName required="true"></fileName>
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value></value>
+	<address></address>
+	<comment></comment>
+	<section></section>
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest>
+	<name></name>
+	<address></address>
+	<orderOfParameters></orderOfParameters>
+	<parameterType></parameterType>
+	<parameterValue></parameterValue>
+	<returnType></returnType>
+	<returnValue></returnValue>
+	<callOrder></callOrder>
+	<comment></comment>
+	<section></section>
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type></type>
+	<value></value>
+	<address></address>
+	<comment></comment>
+	<section></section>
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value></value>
+	<order></order>
+	<type></type>
+	<address></address>
+	<comment></comment>
+	<section></section>
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure></structure>
+	<size></size>
+	<value></value>
+	<section></section>
+	<address></address>
+	<comment></comment>
+	<section></section>
+    </protocolPointOfInterest>
+  </protocolHolder>
 </pointOfInterestDataSet>
