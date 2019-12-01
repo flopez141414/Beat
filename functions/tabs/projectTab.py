@@ -7,6 +7,7 @@ import xmltodict
 import pprint
 import json
 import analysisTab as aT
+import os
 from typing import Any
 
 sys.path.append("../DB")
@@ -108,7 +109,7 @@ class ProjectTab(QWidget):
         #self.binaryFileProp.doubleClicked.connect(self.on_click)
         self.searchList.doubleClicked.connect(self.select_project)
         self.searchList.doubleClicked.connect(self.disableEditing)
-
+        #Ready
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
@@ -147,6 +148,9 @@ class ProjectTab(QWidget):
             #             self.myFilename = fileName
             global myFileName
             myFileName = fileName
+            print('ZZZZZZZZZZZZZZZZZZZZZ')
+            print(os.getcwd())
+            print(fileName)
             return fileName
         self.updateProjectList()
         return "not found"
@@ -160,6 +164,7 @@ class ProjectTab(QWidget):
         global projectPathHolder
         global projectSelected
         global project
+
         #self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
@@ -217,7 +222,6 @@ class ProjectTab(QWidget):
 
 
 
-
     #loads right side
     def loadRightLayout(self):
         self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 14)
@@ -227,7 +231,8 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
         self.rightLayout.addWidget(self.browseButton, 4, 12)
         self.rightLayout.addWidget(self.LoadButton, 4, 12)
-        self.LoadButton.hide()
+        self.LoadButton.hide(
+)
         self.deleteButton.show()
 
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
@@ -328,9 +333,6 @@ class ProjectTab(QWidget):
         for item in projectList:
             self.searchList.addItem(item)
             listCounter +=1
-
-
-
     '''''
     We want to store the current project name.
     Using the current project name we can retrieve the project XML from the DB
@@ -338,7 +340,19 @@ class ProjectTab(QWidget):
     def setCurrentProject(self):
         global projectNameHolder
         toStore = projectNameHolder.toPlainText()
-        errorMessageGnerator.infoToast(' Current Project is ' + toStore ,'Current Project' )
+        #errorMessageGnerator.infoToast('Current Project is ' + toStore ,'Current Project' )
+        ###################################################
+        tree = ET.parse('../xml/practiceXml.xml')
+        xml1 = tree.getroot()
+        for elem in xml1:
+            for subelem in elem:
+                print(subelem.text)
+        ###################################################
+        tree = ET.parse('../xml/testplugin.xml')
+        xml2 = tree.getroot()
+        xml3 = xmlUploader.xmlmerger("./title/name[@id='2']", xml1, xml2)
+        print(xml3)
+        #./title/name/[id='2']
 
     '''''
     This is to test merger
