@@ -38,7 +38,7 @@ class ProjectTab(QWidget):
         global projectNameHolder
         global projectDescHolder
         global projectPathHolder
-
+        global project
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
         self.rightLayout = QGridLayout()
@@ -46,14 +46,14 @@ class ProjectTab(QWidget):
         mainlayout.addLayout(self.rightLayout, 1, 1, 6, 5)
 
         # Left panel
-        searchBox = QLineEdit()
+        self.searchBox = QLineEdit()
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
         self.searchList = QListWidget()
         leftPanelLabel = QLabel('Project View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 4)
-        leftLayout.addWidget(searchBox, 1, 0, 1, 3)
+        leftLayout.addWidget(self.searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 3, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 4)
         leftLayout.addWidget(newButton, 6, 0)
@@ -75,15 +75,12 @@ class ProjectTab(QWidget):
         self.binaryFileProp.horizontalHeader().setVisible(False)
         self.binaryFileProp.setAlternatingRowColors(True)
         self.browseButton = QPushButton('Browse')
-        self.LoadButton = QPushButton('Load Current PM')
-
-        self.LoadButton.clicked.connect(self.setCurrentProject)
         self.browseButton.clicked.connect(self.OpenFile)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
         self.saveButton.toggle()
         self.saveButton.clicked.connect(self.saveFile)
-
+        searchButton.clicked.connect(self.clickedSearch)
         newButton.clicked.connect(self.createNew)
 
         self.deleteButton.clicked.connect(self.deleteProject)
@@ -91,28 +88,39 @@ class ProjectTab(QWidget):
 
         self.binaryFileProp.setRowCount(13)
         self.binaryFileProp.setColumnCount(2)
-        self.binaryFileProp.setItem(0, 0, QTableWidgetItem("OS"))
-        self.binaryFileProp.setItem(1, 0, QTableWidgetItem("Binary Type"))
-        self.binaryFileProp.setItem(2, 0, QTableWidgetItem("Machine"))
-        self.binaryFileProp.setItem(3, 0, QTableWidgetItem("Class"))
-        self.binaryFileProp.setItem(4, 0, QTableWidgetItem("Bits"))
-        self.binaryFileProp.setItem(5, 0, QTableWidgetItem("Language"))
-        self.binaryFileProp.setItem(6, 0, QTableWidgetItem("Canary"))
-        self.binaryFileProp.setItem(7, 0, QTableWidgetItem("Crypto"))
-        self.binaryFileProp.setItem(8, 0, QTableWidgetItem("Nx"))
-        self.binaryFileProp.setItem(9, 0, QTableWidgetItem("Pic"))
-        self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relocs"))
-        self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Relro"))
-        self.binaryFileProp.setItem(12, 0, QTableWidgetItem("Stripped"))
+        self.fillBinaryFileProperties()
         self.binaryFileProp.setEnabled(False)
         #self.binaryFileProp.doubleClicked.connect(self.on_click)
         self.searchList.doubleClicked.connect(self.select_project)
         self.searchList.doubleClicked.connect(self.disableEditing)
-
+                        
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
-
+        #self.binaryFileProp.setItem(0, 0, QTableWidgetItem("OS"))
+        #self.binaryFileProp.setItem(1, 0, QTableWidgetItem("Binary Type"))
+        #self.binaryFileProp.setItem(2, 0, QTableWidgetItem("Machine"))
+        #self.binaryFileProp.setItem(3, 0, QTableWidgetItem("Class"))
+        #self.binaryFileProp.setItem(4, 0, QTableWidgetItem("Bits"))
+        #self.binaryFileProp.setItem(5, 0, QTableWidgetItem("Language"))
+        #self.binaryFileProp.setItem(6, 0, QTableWidgetItem("Canary"))
+        #self.binaryFileProp.setItem(7, 0, QTableWidgetItem("Crypto"))
+        #self.binaryFileProp.setItem(8, 0, QTableWidgetItem("Nx"))
+        #self.binaryFileProp.setItem(9, 0, QTableWidgetItem("Pic"))
+        #self.binaryFileProp.setItem(10, 0, QTableWidgetItem("Relocs"))
+        #self.binaryFileProp.setItem(11, 0, QTableWidgetItem("Relro"))
+        #self.binaryFileProp.setItem(12, 0, QTableWidgetItem("Stripped"))
+    def fillBinaryFileProperties(self):
+        tree = ET.parse('../xml/Project.xml')
+        project = tree.getroot()
+        projectProperties=project.find('StaticDataSet')
+        c=0
+        for item in projectProperties.iter():
+            if(item.tag!='StaticDataSet'):
+                
+                self.binaryFileProp.setItem(c, 0, QTableWidgetItem(item.tag))
+                c+=1
+                
     def disableEditing(self):
         self.browseButton.setEnabled(False)
         self.projNameArea.setEnabled(False)
@@ -167,7 +175,7 @@ class ProjectTab(QWidget):
 
         if pname != "" and pdesc != "" and ppath != "":
             # Adding to XMl
-            tree = ET.parse('../xml/practiceXml.xml')
+            tree = ET.parse('../xml/Project.xml')
             root = tree.getroot()
             b2tf = root.find("./Project_name")
             b2tf.text = pname
@@ -216,7 +224,13 @@ class ProjectTab(QWidget):
         self.searchList.item(listCounter)
 
 
-
+    def clickedSearch(self):
+        target=self.searchBox.text()
+        projectList = xmlUploader.retrieve_list_of_projects()
+        self.searchedWord=[s for s in projectList if target in s]
+        self.searchList.clear()
+        for items in self.searchedWord:
+            self.searchList.addItem(items)
 
     #loads right side
     def loadRightLayout(self):
@@ -226,8 +240,8 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
         self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
         self.rightLayout.addWidget(self.browseButton, 4, 12)
-        self.rightLayout.addWidget(self.LoadButton, 4, 12)
-        self.LoadButton.hide()
+    
+    
         self.deleteButton.show()
 
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
@@ -244,30 +258,36 @@ class ProjectTab(QWidget):
         #disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
-        self.LoadButton.show()
+        self.searchBox.setText("")
 
         project = [item.text() for item in self.searchList.selectedItems()]
         projectName = ' '.join([str(elem) for elem in project])
+        print(projectName)
         project = xmlUploader.retrieve_selected_project(projectName)
-
         self.projNameArea.setText(project['Project']['Project_name']['#text'])
         self.projDescriptionArea.setText(project['Project']['projectDescription']['#text'])
         self.binaryFilePath.setText(project['Project']['BinaryFilePath']['#text'])
-        self.binaryFileProp.setItem(0, 1, QTableWidgetItem(project['Project']['StaticDataSet']['OS']))
-        self.binaryFileProp.setItem(1, 1, QTableWidgetItem(project['Project']['StaticDataSet']['BinaryType']))
-        self.binaryFileProp.setItem(2, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Machine']))
-        self.binaryFileProp.setItem(3, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Class']))
-        self.binaryFileProp.setItem(4, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Bits']))
-        self.binaryFileProp.setItem(5, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Language']))
-        self.binaryFileProp.setItem(6, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Canary']))
-        self.binaryFileProp.setItem(7, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Crypto']))
-        self.binaryFileProp.setItem(8, 1, QTableWidgetItem(project['Project']['StaticDataSet']['NX']))
-        self.binaryFileProp.setItem(9, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Pic']))
-        self.binaryFileProp.setItem(10, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relocs']))
-        self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
-        self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
-        self.updateProjectList()
 
+        
+        #self.binaryFileProp.setItem(0, 1, QTableWidgetItem(project['Project']['StaticDataSet']['OS']))
+        #self.binaryFileProp.setItem(1, 1, QTableWidgetItem(project['Project']['StaticDataSet']['BinaryType']))
+        #self.binaryFileProp.setItem(2, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Machine']))
+        #self.binaryFileProp.setItem(3, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Class']))
+        #self.binaryFileProp.setItem(4, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Bits']))
+        #self.binaryFileProp.setItem(5, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Language']))
+        #self.binaryFileProp.setItem(6, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Canary']))
+        #self.binaryFileProp.setItem(7, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Crypto']))
+        #self.binaryFileProp.setItem(8, 1, QTableWidgetItem(project['Project']['StaticDataSet']['NX']))
+        #self.binaryFileProp.setItem(9, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Pic']))
+        #self.binaryFileProp.setItem(10, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relocs']))
+        #self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
+        #self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
+        c=0
+        for item in project['Project']['StaticDataSet']:
+            self.binaryFileProp.setItem(c, 1, QTableWidgetItem(project['Project']['StaticDataSet'][item]))
+            c+=1
+        self.updateProjectList()
+        
 
     def createNew(self):
         #enable buttons
@@ -280,19 +300,21 @@ class ProjectTab(QWidget):
         self.projDescriptionArea.clear()
         self.projNameArea.clear()
         self.binaryFilePath.clear()
-        self.binaryFileProp.setItem(0, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(1, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(2, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(3, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(4, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(5, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(6, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(7, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(8, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(9, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(10, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(11, 1, QTableWidgetItem(""))
-        self.binaryFileProp.setItem(12, 1, QTableWidgetItem(""))
+        i=0
+        for i in range(13):
+            self.binaryFileProp.setItem(i, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(1, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(2, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(3, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(4, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(5, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(6, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(7, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(8, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(9, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(10, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(11, 1, QTableWidgetItem(""))
+        #self.binaryFileProp.setItem(12, 1, QTableWidgetItem(""))
         self.browseButton.setEnabled(True)
         self.projNameArea.setEnabled(True)
         self.binaryFilePath.setEnabled(True)

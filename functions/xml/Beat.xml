@@ -5,7 +5,7 @@
     </Project>
   </Projects>
   <Plugins>
-    <Plugin id='1'>
+    <Plugin name='Network' id='1'>
       <Plugin_name>Network</Plugin_name>
       <Filters>
 	<Filter id="1">main</Filter>
@@ -50,7 +50,7 @@
 	</Protocols>
       </DataInPlugin>
     </Plugin>
-    <Plugin id='2'>
+    <Plugin name='hello' id='2'>
       <Plugin_name>hello</Plugin_name>
       <DataInPlugin>
 	<Fake name='Fake'></Fake>

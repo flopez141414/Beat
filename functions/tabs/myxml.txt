@@ -1,5 +1,12 @@
 <pointOfInterestDataSet id="">
-	<stringHolder><stringPointOfInterest id="String: 0">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value />
+	<address />
+	<comment />
+	<section />
+    </stringPointOfInterest>
+  <stringPointOfInterest id="String: 0">
 	<value />
 	<address>null</address>
 	<comment />
@@ -1300,8 +1307,48 @@
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest></stringHolder>
-	<functionHolder />
-	<variableHolder />
-	<structHolder />
-	<protocolHolder />
+  <functionHolder>
+    <functionPointOfInterest>
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+    </protocolPointOfInterest>
+  </protocolHolder>
 </pointOfInterestDataSet>

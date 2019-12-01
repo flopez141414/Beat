@@ -11,9 +11,10 @@ import json
 
 sys.path.append("../DB")
 sys.path.append("../windows")
+sys.path.append("../xml")
 import xmlUploader
 import errorMessageGnerator
-from PyQt5.QtWidgets import QMainWindow,QLabel, QApplication,QFormLayout, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
+from PyQt5.QtWidgets import QMainWindow,QLabel, QApplication,QFormLayout, QWidget, QPushButton, QAction, QLabel, QCheckBox,QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout,QScrollArea, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -21,7 +22,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from CommentView import Ui_Dialog as comment_window
 from AnalysisResultView import Ui_Dialog as analysis_window
 from OutputFieldView import Ui_Dialog as output_Field_Window
-
 
 class AnalysisTab(QWidget):
 
@@ -33,6 +33,8 @@ class AnalysisTab(QWidget):
         protocolsPOI = []
         structuresPOI = []
         poiSuperList= []
+        self.BeatTree = ET.parse('../xml/Beat.xml')
+        self.BeatRoot = self.BeatTree.getroot()
         self.poiSuperList2=[]
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
@@ -107,8 +109,10 @@ class AnalysisTab(QWidget):
 
         # set Plugin name
         pluginDropdown.addItem("Select Plugin")
-        pluginDropdown.addItem("Network Plugin")
-        pluginDropdown.addItem("dummy")
+        for element1 in self.BeatRoot.findall("./Plugins/Plugin/Plugin_name"):
+            print(element1.text)
+            pluginDropdown.addItem(element1.text)
+    
         pluginDropdown.activated[str].connect(self.onActivated)
         
         #dynamic analysis run event listener
@@ -135,7 +139,7 @@ class AnalysisTab(QWidget):
     def clickedPOI(self):
         current=[item.text() for item in self.poiList.selectedItems()]
         print(' '.join(current))
-        print(self.poiSuperList2)
+        #print(self.poiSuperList2)
         current=' '.join(current)
         option=self.poiDropdown.currentText()
         searchedPoi=[s for s in self.poiSuperList2 if current[0] in s]
@@ -303,30 +307,35 @@ class AnalysisTab(QWidget):
         self.displayPOIparam()
         self.parseNetworkItems()
     def onActivated(self,option):
-        if option == "Network Plugin":
-            self.poiDropdown.clear()
-            self.poiDropdown.addItem("Select POI to display")
-            self.poiDropdown.addItem("Strings")
-            self.poiDropdown.addItem("Functions")
-            self.poiDropdown.addItem("Variables")
-            self.poiDropdown.addItem("Protocols")
-            self.poiDropdown.addItem("Structures")
-        elif option == "dummy":
-            self.poiDropdown.clear()
-            self.poiDropdown.addItem("opps")
-
+        data=[]
+        BeatTree=ET.parse("../xml/Beat.xml")
+        root=BeatTree.getroot()
+        pluginData=root.find('./Plugins/Plugin/DataInPlugin')
+        pluginName=root.findall('./Plugins/Plugin/Plugin_name')
+        self.poiDropdown.clear()
+        self.poiDropdown.addItem("Select POI to display")
+        self.poiDropdown.addItem("Display All for {}".format(option))
+        for item in pluginName:
+            data.append(item.text)
+            if item.text==option:
+                pluginData=root.find('./Plugins/Plugin[@name="{}"]/DataInPlugin'.format(option))
+                #print(pluginData.tag)
+                for element in pluginData:
+                    plugin= element.get('name')
+                    print(plugin)        
+                    self.poiDropdown.addItem(plugin)
+            
     def makeStringTree(self, lista):
         counter=0
         parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
         parentRoot = parentTree.getroot()
         stringHolderElement = parentRoot.find('./stringHolder')
         for item in lista:
-            #             for key in jsonStrings[index]: # access each string
+            # for key in jsonStrings[index]: # access each string
               # this dictonary contains one Strint poi
             tree = ET.parse('../xml/StringPointOfInterest.xml')
-            #             ET.Element\
+            #ET.Element\
             item2= item.split()
-
             root = tree.getroot()
             root.set('id','String: {}'.format(counter))
             # b2tf.text='String {}'.format(counter+1)
