@@ -5,7 +5,7 @@
     </Project>
   </Projects>
   <Plugins>
-    <Plugin id="1">
+    <Plugin id='1'>
       <Plugin_name>Network</Plugin_name>
       <Filters>
 	<Filter id="1">main</Filter>
@@ -17,7 +17,7 @@
 	<Filter id="7">ipv4</Filter>
 	<Filter id="8">ipv6</Filter>
       </Filters>
-      <Data>
+      <DataInPlugin>
 	<Strings name="Strings">
 	  <StaticRadare2Instruction>izz</StaticRadare2Instruction>
 	  <DynamicRadare2Instructions>
@@ -37,7 +37,7 @@
 	  </DynamicRadare2Instructions>
 	</Variables>
 	<Structures name = "Structures">
-      	  <StaticRadare2Instruction></StaticRadare2Instruction>
+	  <StaticRadare2Instruction></StaticRadare2Instruction>
 	  <DynamicRadare2Instructions>
 	    <Instruction id=""></Instruction>
 	  </DynamicRadare2Instructions>
@@ -48,7 +48,13 @@
 	    <Instruction id=""></Instruction>
 	  </DynamicRadare2Instructions>
 	</Protocols>
-      </Data>
+      </DataInPlugin>
+    </Plugin>
+    <Plugin id='2'>
+      <Plugin_name>hello</Plugin_name>
+      <DataInPlugin>
+	<Fake name='Fake'></Fake>
+      </DataInPlugin>
     </Plugin>
   </Plugins>
 </System>
