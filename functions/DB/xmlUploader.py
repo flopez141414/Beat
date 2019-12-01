@@ -95,6 +95,13 @@ def delete_selected_project(nameofProject):
     projects.delete_one(myquery)
 
 
+def update_proj_description(old_description, new_description):
+    projects = connection_project_path()
+    myquery = {"Project.projectDescription.#text": old_description}
+    new_values = {"$set": {"Project.projectDescription.#text": new_description}}
+    projects.update_one(myquery, new_values)
+
+
 # holder element of where to place xml2
 def xmlmerger(holder, xml1, xml2):
     print("+++++++++++++++++++++++++++++++++++++++++++++++")

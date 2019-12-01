@@ -83,8 +83,10 @@ class ProjectTab(QWidget):
         self.browseButton.clicked.connect(self.OpenFile)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
+        self.updateButton = QPushButton('Update Description')
         self.saveButton.toggle()
         self.saveButton.clicked.connect(self.saveFile)
+        self.updateButton.clicked.connect(self.edit_existing_project)
 
         newButton.clicked.connect(self.createNew)
 
@@ -242,6 +244,9 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 8)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
+        self.rightLayout.addWidget(self.updateButton, 15, 8)
+        self.updateButton.hide()
+
 
     def select_project(self):
         global project
@@ -251,6 +256,7 @@ class ProjectTab(QWidget):
         self.saveButton.hide()
         self.browseButton.hide()
         self.LoadButton.show()
+        self.updateButton.show()
 
         project = [item.text() for item in self.searchList.selectedItems()]
         projectName = ' '.join([str(elem) for elem in project])
@@ -273,6 +279,8 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setItem(11, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Relro']))
         self.binaryFileProp.setItem(12, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Stripped']))
         self.updateProjectList()
+        self.updateButton.show()
+        return True
 
     def createNew(self):
         # enable buttons
@@ -315,7 +323,6 @@ class ProjectTab(QWidget):
 
         delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project",
                                                        "Delete confirmation")
-        print("delete", delete)
         if delete:
             xmlUploader.delete_selected_project(toErase)
             for item in self.searchList.selectedItems():
@@ -340,6 +347,15 @@ class ProjectTab(QWidget):
         for item in projectList:
             self.searchList.addItem(item)
             listCounter += 1
+
+    def edit_existing_project(self):
+        global project
+        global projectDescHolder
+        pdesc = projectDescHolder.toPlainText()
+        name = project['Project']['Project_name']['#text']
+        description = project['Project']['projectDescription']['#text']
+        xmlUploader.update_proj_description(description, pdesc)
+
 
     '''''
     We want to store the current project name.
