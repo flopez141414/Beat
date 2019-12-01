@@ -44,7 +44,7 @@ def main():
 
     tabWidget = QTabWidget()
     tabWidget.addTab(ProjectTab(), "Project tab")
-    tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
+    tabWidget.addTab(PluginManagementTab(), "Plugin Management Tab")
     tabWidget.addTab(AnalysisTab(), "Analysis Tab")
     tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
     tabWidget.addTab(DocumentationTab(), "Documentation Tab")
