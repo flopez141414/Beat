@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import xmltodict
 import pprint
 import json
+from _ctypes_test import func
 
 sys.path.append("../DB")
 sys.path.append("../windows")
@@ -137,7 +138,7 @@ class AnalysisTab(QWidget):
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
-        self.poiList.clicked.connect(self.clickedPOI)
+        self.poiList.clicked.connect(self.expandPOI)
         self.setLayout(mainlayout)
 
     def clickedSearch(self):
@@ -269,10 +270,12 @@ class AnalysisTab(QWidget):
             b2tf.text = str(hex(myString['vaddr']))
             b2tf = root.find("./section")
             b2tf.text = str(myString['section'])
-            stringHolderElement.append(root)          
+            stringHolderElement.append(root)       
         
-    def makeFunctionsTree(self, functionsData, parentRoot):
+    def makeFunctionsTree(self, functionsData, parentRoot, r2buffer):
         functionHolderElement = parentRoot.find('./functionHolder')
+        r2buffer.cmd('doo')
+        
         
         for index in range(len(functionsData)): # access each function
             myFunction = functionsData[index] # this dictionary contains one function POI
@@ -284,6 +287,18 @@ class AnalysisTab(QWidget):
             b2tf.text = str(hex(myFunction['offset']))
             b2tf = root.find("./parameterType")
             b2tf.text = str(myFunction['signature'])
+            
+            breakpoints = [] # this will hold a list of our breakpoints
+            breakpointElement = root.find('./breakpoints')
+            jsonReferences = json.loads(r2buffer.cmd('axtj '+ myFunction['name']))
+            breakpoints.clear()
+            
+            
+            for i in range(len(jsonReferences)):
+                breakpoints.append(str(hex(jsonReferences[i]['from'])))
+            for bp in breakpoints:
+                tempElement = ET.SubElement(breakpointElement, 'breakpoint')    
+                tempElement.text = bp
             functionHolderElement.append(root)      
     
     # TODO: link list item with expanded view of POI      
@@ -307,9 +322,24 @@ class AnalysisTab(QWidget):
                     self.poiList.addItem(functionPois[i]['name'])
 
     def expandPOI(self):
-        stuff = self.poiList.currentIndex()()
-        print(type(stuff))
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.pymongo_test # getting an instance of our DB
+        dataCollection = db.dataSet # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
         
+        currentItem = self.poiList.currentItem().text()
+        
+        for data in dataSet: # access a cursor object from database
+            stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
+            for i in range(len(stringPois)): # access each individual function POI
+                poi = stringPois[i]
+                if currentItem == poi['value']:
+                    print('------------------------------')
+                    print('name: ' + poi['value'])
+                    print('section: ' + poi['section'])
+                    print('address: ' + poi['address'])
+
+                
     def parseNetworkItems(self):
         global poiSuperList
         target=['socket','send','rec','ipv','main']
@@ -508,11 +538,44 @@ class AnalysisTab(QWidget):
         parentTree = ET.parse('../xml/pointOfInterestDataSet.xml')
         parentRoot = parentTree.getroot()
         self.makeStringTree(jsonStrings, parentRoot)
-        self.makeFunctionsTree(jsonFunctions, parentRoot)
+        self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
+#         self.addBreakpoints(parentRoot)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
         xmlUploader.uploadDataSet(parent_dict) 
         
         self.terminal.append("Static Analysis done!")
+        
+    def addBreakpoints(self, parentRoot):
+        self.terminal.setText("Adding Breakpoints..")
+        r2buffer = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
+        r2buffer.cmd('aaa')
+        r2buffer.cmd('doo')
+        
+        functionsToAnalyze = [] # this shall hold the functions which have breakpoints
+        breakpoints = [] # this will hold a list of our breakpoints
+        
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.pymongo_test # getting an instance of our DB
+        dataCollection = db.dataSet # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
+        
+        functionHolderElement = parentRoot.find('./functionHolder')
+
+        
+        for data in dataSet: # access a cursor object from database
+            functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
+            for i in range(len(functionPois)): # access each individual function POI
+                functionsToAnalyze.append(functionPois[i])
+                
+        for i in range(len(functionsToAnalyze)):
+            print('finding references for ' + functionsToAnalyze[i]['name'] )
+            jsonReferences = json.loads(r2buffer.cmd('axtj ' + functionsToAnalyze[i]['name']))
+            
+            for i in range(len(jsonReferences)):
+#                 breakpoints.append('db ' + hex(jsonReferences[i]['from']))
+#                 r2buffer.cmd(breakpoints[i])
+#                 dataSet.get
+                print('set breakpoint at: ' + breakpoints[i])
     
     def dynamicAnalysis(self):
         # only do the initializing of breakpoints/opening file/running in debug mode once
