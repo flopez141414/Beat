@@ -22,68 +22,1288 @@
 	<comment />
 	<section>null</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 3">
-	<value>Usage: ip_address port</value>
-	<address>0x00001824</address>
+	<value>Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\n [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\n [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\n [-w deadline] [-W timeout] [hop1 ...] destination\n</value>
+	<address>0x0000b4a8</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 4">
-	<value>Error connecting to socket!</value>
-	<address>0x0000183b</address>
+	<value>socktype == SOCK_DGRAM || socktype == SOCK_RAW</value>
+	<address>0x0000b5c8</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 5">
-	<value>Connected to the server!</value>
-	<address>0x00001857</address>
+	<value>ping: socket: %s, attempting raw socket...\n</value>
+	<address>0x0000b5f8</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 6">
-	<value>exit</value>
-	<address>0x00001872</address>
+	<value>WARNING: failed to install socket filter\n</value>
+	<address>0x0000b628</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 7">
-	<value>Awaiting server response...</value>
-	<address>0x00001877</address>
+	<value>Warning: error setting QOS sockopts</value>
+	<address>0x0000b658</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 8">
-	<value>Server has quit the session</value>
-	<address>0x00001893</address>
+	<value>Do you want to ping broadcast? Then -b. If not, check your local firewall rules.\n</value>
+	<address>0x0000b680</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 9">
-	<value>Server:</value>
-	<address>0x000018af</address>
+	<value>WARNING: pinging broadcast address\n</value>
+	<address>0x0000b6d8</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 10">
-	<value>********Session********</value>
-	<address>0x000018b8</address>
+	<value>ping: broadcast ping with too short interval.\n</value>
+	<address>0x0000b700</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 11">
-	<value>Bytes written:</value>
-	<address>0x000018d0</address>
+	<value>ping: broadcast ping does not fragment.\n</value>
+	<address>0x0000b730</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 12">
-	<value>Bytes read:</value>
-	<address>0x000018e0</address>
+	<value>WARNING: setsockopt(ICMP_FILTER)</value>
+	<address>0x0000b760</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 13">
-	<value>Elapsed time:</value>
-	<address>0x000018ee</address>
+	<value>WARNING: your kernel is veeery old. No problems.\n</value>
+	<address>0x0000b788</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 14">
-	<value>secs</value>
-	<address>0x000018fd</address>
+	<value>WARNING: setsockopt(IP_RECVTTL)</value>
+	<address>0x0000b7c0</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest><stringPointOfInterest id="String: 15">
-	<value>Connection closed</value>
-	<address>0x00001903</address>
+	<value>WARNING: setsockopt(IP_RETOPTS)</value>
+	<address>0x0000b7e0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 16">
+	<value>ping: can't disable multicast loopback</value>
+	<address>0x0000b800</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 17">
+	<value>ping: can't set multicast time-to-live</value>
+	<address>0x0000b828</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 18">
+	<value>ping: can't set unicast time-to-live</value>
+	<address>0x0000b850</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 19">
+	<value>Error: packet size %d is too large. Maximum is %d\n</value>
+	<address>0x0000b878</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 20">
+	<value>ping: Warning: source address might be selected on device other than %s.\n</value>
+	<address>0x0000b8b0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 21">
+	<value>ping: Only one -4 or -6 option may be specified\n</value>
+	<address>0x0000b900</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 22">
+	<value>Only one of -T or -R may be used\n</value>
+	<address>0x0000b938</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 23">
+	<value>ping: bad number of packets to transmit.\n</value>
+	<address>0x0000b960</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 24">
+	<value>ping: invalid source address %s\n</value>
+	<address>0x0000b990</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 25">
+	<value>ping: bad preload value, should be 1..%d\n</value>
+	<address>0x0000b9b8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 26">
+	<value>ping: cannot set preload to value &gt; 3\n</value>
+	<address>0x0000b9e8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 27">
+	<value>ping: wrong value for -M: do, dont, want are valid ones.\n</value>
+	<address>0x0000ba10</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 28">
+	<value>ping: the decimal value of TOS bits must be 0-254 (or zero)\n</value>
+	<address>0x0000ba50</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 29">
+	<value>ping: illegal negative packet size %d.\n</value>
+	<address>0x0000ba90</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 30">
+	<value>ping: packet size too large: %d\n</value>
+	<address>0x0000bab8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 31">
+	<value>h?4bRT:6F:N:aABc:dDfi:I:l:Lm:M:nOp:qQ:rs:S:t:UvVw:W:</value>
+	<address>0x0000bae0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 32">
+	<value>ping: unknown protocol family: %d\n</value>
+	<address>0x0000bb18</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 33">
+	<value>Vr HL TOS Len ID Flg off TTL Pro cks Src Dst Data</value>
+	<address>0x0000bb40</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 34">
+	<value>Destination Protocol Unreachable</value>
+	<address>0x0000bb88</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 35">
+	<value>Frag needed and DF set (mtu = %u)\n</value>
+	<address>0x0000bbb0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 36">
+	<value>Destination Net Unreachable for Type of Service</value>
+	<address>0x0000bbd8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 37">
+	<value>Destination Host Unreachable for Type of Service</value>
+	<address>0x0000bc08</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 38">
+	<value>Dest Unreachable, Bad Code: %d\n</value>
+	<address>0x0000bc40</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 39">
+	<value>Redirect Type of Service and Network</value>
+	<address>0x0000bc60</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 40">
+	<value>Redirect Type of Service and Host</value>
+	<address>0x0000bc88</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 41">
+	<value>Parameter problem: pointer = %u\n</value>
+	<address>0x0000bcb0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 42">
+	<value>ping: local error: Message too long, mtu=%u\n</value>
+	<address>0x0000bcd8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 43">
+	<value>\rWARNING: setsockopt(ICMP_FILTER)</value>
+	<address>0x0000bd08</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 44">
+	<value>ping: packet too short (%d bytes) from %s\n</value>
+	<address>0x0000bd30</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 45">
+	<value>ping.c</value>
+	<address>0x0000bd5b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 46">
+	<value>sock-&gt;fd == -1</value>
+	<address>0x0000bd62</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 47">
+	<value>ping: socket: %s\n</value>
+	<address>0x0000bd71</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 48">
+	<value>icmp_seq=%u</value>
+	<address>0x0000bd83</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 49">
+	<value>ping: setsockopt: %s\n</value>
+	<address>0x0000bd90</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 50">
+	<value>ping: %s: %s\n</value>
+	<address>0x0000bda6</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 51">
+	<value>ping: unknown iface %s\n</value>
+	<address>0x0000bdb4</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 52">
+	<value>ping: IP_MULTICAST_IF</value>
+	<address>0x0000bdcc</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 53">
+	<value>ping: SO_BINDTODEVICE</value>
+	<address>0x0000bde2</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 54">
+	<value>connect</value>
+	<address>0x0000bdf8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 55">
+	<value>getsockname</value>
+	<address>0x0000be00</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 56">
+	<value>gatifaddrs() failed.\n</value>
+	<address>0x0000be0c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 57">
+	<value>ping: IP_MTU_DISCOVER</value>
+	<address>0x0000be22</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 58">
+	<value>bind</value>
+	<address>0x0000be38</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 59">
+	<value>ping: record route</value>
+	<address>0x0000be3d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 60">
+	<value>ping: ts option</value>
+	<address>0x0000be50</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 61">
+	<value>ping: can't set broadcasting</value>
+	<address>0x0000be60</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 62">
+	<value>ping: out of memory.\n</value>
+	<address>0x0000be7d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 63">
+	<value>PING %s (%s)</value>
+	<address>0x0000be93</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 64">
+	<value>from %s %s:</value>
+	<address>0x0000bea1</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 65">
+	<value>%d(%d) bytes of data.\n</value>
+	<address>0x0000beae</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 66">
+	<value>tsonly</value>
+	<address>0x0000bec5</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 67">
+	<value>tsandaddr</value>
+	<address>0x0000becc</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 68">
+	<value>tsprespec</value>
+	<address>0x0000bed6</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 69">
+	<value>Invalid timestamp type\n</value>
+	<address>0x0000bee0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 70">
+	<value>ping: Invalid flowinfo %s\n</value>
+	<address>0x0000bef8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 71">
+	<value>ping: bad timing interval\n</value>
+	<address>0x0000bf13</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 72">
+	<value>ping: out of memory\n</value>
+	<address>0x0000bf2e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 73">
+	<value>mark cannot be negative\n</value>
+	<address>0x0000bf43</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 74">
+	<value>dont</value>
+	<address>0x0000bf5f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 75">
+	<value>want</value>
+	<address>0x0000bf64</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 76">
+	<value>ping: "%s" bad value for TOS\n</value>
+	<address>0x0000bf69</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 77">
+	<value>ping: Invalid tclass %s\n</value>
+	<address>0x0000bf87</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 78">
+	<value>ping: bad sndbuf value.\n</value>
+	<address>0x0000bfa0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 79">
+	<value>ping: ttl %u out of range\n</value>
+	<address>0x0000bfb9</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 80">
+	<value>s20161105</value>
+	<address>0x0000bfd4</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 81">
+	<value>ping utility, iputils-%s\n</value>
+	<address>0x0000bfde</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 82">
+	<value>ping: bad wait time.\n</value>
+	<address>0x0000bff8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 83">
+	<value>ping: bad linger time.\n</value>
+	<address>0x0000c00e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 84">
+	<value>%s (%s)</value>
+	<address>0x0000c026</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 85">
+	<value>\nNOP</value>
+	<address>0x0000c02e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 86">
+	<value>\n%cSRR:</value>
+	<address>0x0000c033</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 87">
+	<value>\t0.0.0.0</value>
+	<address>0x0000c03c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 88">
+	<value>\t(same route)</value>
+	<address>0x0000c049</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 89">
+	<value>\nRR:</value>
+	<address>0x0000c057</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 90">
+	<value>\nTS:</value>
+	<address>0x0000c05d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 91">
+	<value>\t%ld absolute not-standard</value>
+	<address>0x0000c063</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 92">
+	<value>\t%ld not-standard</value>
+	<address>0x0000c07e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 93">
+	<value>\t%ld absolute</value>
+	<address>0x0000c090</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 94">
+	<value>\t%ld</value>
+	<address>0x0000c09e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 95">
+	<value>Unrecorded hops: %d\n</value>
+	<address>0x0000c0a3</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 96">
+	<value>\nunknown option %x</value>
+	<address>0x0000c0b8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 97">
+	<value>%1x %1x %02x %04x %04x</value>
+	<address>0x0000c0cb</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 98">
+	<value>%1x %04x</value>
+	<address>0x0000c0e5</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 99">
+	<value>%02x %02x %04x</value>
+	<address>0x0000c0f1</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 100">
+	<value>%s</value>
+	<address>0x0000c103</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 101">
+	<value>Echo Reply</value>
+	<address>0x0000c108</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 102">
+	<value>Destination Net Unreachable</value>
+	<address>0x0000c113</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 103">
+	<value>Destination Host Unreachable</value>
+	<address>0x0000c12f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 104">
+	<value>Destination Port Unreachable</value>
+	<address>0x0000c14c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 105">
+	<value>Source Route Failed</value>
+	<address>0x0000c169</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 106">
+	<value>Destination Net Unknown</value>
+	<address>0x0000c17d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 107">
+	<value>Destination Host Unknown</value>
+	<address>0x0000c195</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 108">
+	<value>Source Host Isolated</value>
+	<address>0x0000c1ae</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 109">
+	<value>Destination Net Prohibited</value>
+	<address>0x0000c1c3</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 110">
+	<value>Destination Host Prohibited</value>
+	<address>0x0000c1de</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 111">
+	<value>Packet filtered</value>
+	<address>0x0000c1fa</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 112">
+	<value>Precedence Violation</value>
+	<address>0x0000c20a</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 113">
+	<value>Precedence Cutoff</value>
+	<address>0x0000c21f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 114">
+	<value>Source Quench</value>
+	<address>0x0000c231</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 115">
+	<value>Redirect Network</value>
+	<address>0x0000c23f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 116">
+	<value>Redirect Host</value>
+	<address>0x0000c250</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 117">
+	<value>Redirect, Bad Code: %d</value>
+	<address>0x0000c25e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 118">
+	<value>(New nexthop: %s)\n</value>
+	<address>0x0000c275</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 119">
+	<value>Echo Request</value>
+	<address>0x0000c288</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 120">
+	<value>Time to live exceeded</value>
+	<address>0x0000c295</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 121">
+	<value>Frag reassembly time exceeded</value>
+	<address>0x0000c2ab</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 122">
+	<value>Time exceeded, Bad Code: %d\n</value>
+	<address>0x0000c2c9</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 123">
+	<value>Timestamp</value>
+	<address>0x0000c2e6</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 124">
+	<value>Timestamp Reply</value>
+	<address>0x0000c2f0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 125">
+	<value>Information Request</value>
+	<address>0x0000c300</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 126">
+	<value>Information Reply</value>
+	<address>0x0000c314</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 127">
+	<value>Address Mask Request</value>
+	<address>0x0000c326</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 128">
+	<value>Address Mask Reply</value>
+	<address>0x0000c33b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 129">
+	<value>Bad ICMP type: %d\n</value>
+	<address>0x0000c34e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 130">
+	<value>ping: local error: %s\n</value>
+	<address>0x0000c361</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 131">
+	<value>From %s icmp_seq=%u</value>
+	<address>0x0000c37b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 132">
+	<value>From %s: icmp_seq=%u</value>
+	<address>0x0000c390</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 133">
+	<value>(BAD CHECKSUM)</value>
+	<address>0x0000c3a6</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 134">
+	<value>%lu.%06lu</value>
+	<address>0x0000c3bc</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 135">
+	<value>From %s:</value>
+	<address>0x0000c3c7</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 136">
+	<value>create_socket</value>
+	<address>0x0000c5b0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 137">
+	<value>RMb@A</value>
+	<address>0x0000c5db</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 138">
+	<value>@[%lu.%06lu]</value>
+	<address>0x0000c5e7</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 139">
+	<value>ping: cap_get_proc</value>
+	<address>0x0000c5f5</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 140">
+	<value>ping: cap_init</value>
+	<address>0x0000c608</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 141">
+	<value>ping: cap_set_proc</value>
+	<address>0x0000c617</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 142">
+	<value>ping: prctl</value>
+	<address>0x0000c62a</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 143">
+	<value>setuid</value>
+	<address>0x0000c636</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 144">
+	<value>%02x</value>
+	<address>0x0000c63d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 145">
+	<value>PATTERN: 0x</value>
+	<address>0x0000c642</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 146">
+	<value>ping: sendmsg</value>
+	<address>0x0000c650</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 147">
+	<value>%d bytes from %s:</value>
+	<address>0x0000c665</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 148">
+	<value>ttl=%d</value>
+	<address>0x0000c677</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 149">
+	<value>time=%ld ms</value>
+	<address>0x0000c67f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 150">
+	<value>time=%ld.%01ld ms</value>
+	<address>0x0000c68c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 151">
+	<value>time=%ld.%02ld ms</value>
+	<address>0x0000c69f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 152">
+	<value>time=%ld.%03ld ms</value>
+	<address>0x0000c6b2</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 153">
+	<value>(DUP!)</value>
+	<address>0x0000c6c5</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 154">
+	<value>(BAD CHECKSUM!)</value>
+	<address>0x0000c6cd</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 155">
+	<value>\n#%d\t</value>
+	<address>0x0000c6de</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 156">
+	<value>--- %s ping statistics ---\n</value>
+	<address>0x0000c6e8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 157">
+	<value>%ld packets transmitted,</value>
+	<address>0x0000c704</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 158">
+	<value>%ld received</value>
+	<address>0x0000c71e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 159">
+	<value>, +%ld duplicates</value>
+	<address>0x0000c72b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 160">
+	<value>, +%ld corrupted</value>
+	<address>0x0000c73d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 161">
+	<value>, +%ld errors</value>
+	<address>0x0000c74e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 162">
+	<value>, %d%% packet loss</value>
+	<address>0x0000c75c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 163">
+	<value>, time %ldms</value>
+	<address>0x0000c76f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 164">
+	<value>%spipe %d</value>
+	<address>0x0000c77c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 165">
+	<value>%sipg/ewma %d.%03d/%d.%03d ms</value>
+	<address>0x0000c786</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 166">
+	<value>\r%ld/%ld packets, %d%% loss</value>
+	<address>0x0000c7a4</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 167">
+	<value>ping: recvmsg</value>
+	<address>0x0000c7c0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 168">
+	<value>ping: patterns must be specified as hex digits.\n</value>
+	<address>0x0000c7d0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 169">
+	<value>%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x</value>
+	<address>0x0000c808</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 170">
+	<value>no answer yet for icmp_seq=%lu\n</value>
+	<address>0x0000c840</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 171">
+	<value>WARNING: probably, rcvbuf is not enough to hold preload.\n</value>
+	<address>0x0000c860</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 172">
+	<value>ping: cannot flood; minimal interval allowed for user is %dms\n</value>
+	<address>0x0000c8a0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 173">
+	<value>ping: illegal preload and/or interval\n</value>
+	<address>0x0000c8e0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 174">
+	<value>Warning: no SO_TIMESTAMP support, falling back to SIOCGSTAMP\n</value>
+	<address>0x0000c908</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 175">
+	<value>Warning: Failed to set mark %d\n</value>
+	<address>0x0000c948</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 176">
+	<value>Warning: time of day goes back (%ldus), taking countermeasures.\n</value>
+	<address>0x0000c968</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 177">
+	<value>\nwrong data byte #%d should be 0x%x but was 0x%x</value>
+	<address>0x0000c9b0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 178">
+	<value>rtt min/avg/max/mdev = %ld.%03ld/%lu.%03ld/%ld.%03ld/%ld.%03ld ms</value>
+	<address>0x0000c9e8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 179">
+	<value>, min/avg/ewma/max = %ld.%03ld/%lu.%03ld/%d.%03d/%ld.%03ld ms</value>
+	<address>0x0000ca30</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 180">
+	<value>ping6 -N suboptions\n\tHelp:\n\t\thelp\n\tQuery:\n\t\tname,\n\t\tipv6,ipv6-all,ipv6-compatible,ipv6-linklocal,ipv6-sitelocal,ipv6-global,\n\t\tipv4,ipv4-all,\n\tSubject:\n\t\tsubject-ipv6=addr,subject-ipv4=addr,subject-name=name,subject-fqdn=name,\n</value>
+	<address>0x0000ca70</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 181">
+	<value>Beyond scope of source address</value>
+	<address>0x0000cb58</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 182">
+	<value>ping: packet too short (%d bytes)\n</value>
+	<address>0x0000cb78</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 183">
+	<value>unexpeced error in inet_ntop(%s)</value>
+	<address>0x0000cba0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 184">
+	<value>ping6: IDN encoding error: %s\n</value>
+	<address>0x0000cbc8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 185">
+	<value>ping6: Inappropriate subject name: %s\n</value>
+	<address>0x0000cbe8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 186">
+	<value>ping6: dn_comp() returned too long result.\n</value>
+	<address>0x0000cc10</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 187">
+	<value>Usage: %s [-aAbBdDfhLnOqrRUvV] [-c count] [-i interval] [-I interface]\n [-l preload] [-m mark] [-M pmtudisc_option]\n [-N nodeinfo_option] [-p pattern] [-Q tclass] [-s packetsize]\n [-S sndbuf] [-t ttl] [-T timestamp_option] [-w deadline]\n [-W timeout] destination\n</value>
+	<address>0x0000cc40</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 188">
+	<value>ping6: Source routing is deprecated by RFC5095.\n</value>
+	<address>0x0000cd78</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 189">
+	<value>scope discrepancy among the nodes\n</value>
+	<address>0x0000cdb0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 190">
+	<value>ping: multicast ping with too short interval.\n</value>
+	<address>0x0000cdd8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 191">
+	<value>ping: multicast ping does not fragment.\n</value>
+	<address>0x0000ce08</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 192">
+	<value>setsockopt(RAW_CHECKSUM) failed - try to continue.</value>
+	<address>0x0000ce38</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 193">
+	<value>can't disable multicast loopback</value>
+	<address>0x0000ce70</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 194">
+	<value>ping6: Warning: source address might be selected on device other than %s.\n</value>
+	<address>0x0000ce98</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 195">
+	<value>Destination unreachable:</value>
+	<address>0x0000cee8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 196">
+	<value>No route</value>
+	<address>0x0000cf02</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 197">
+	<value>Administratively prohibited</value>
+	<address>0x0000cf0b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 198">
+	<value>Address unreachable</value>
+	<address>0x0000cf27</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 199">
+	<value>Port unreachable</value>
+	<address>0x0000cf3b</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 200">
+	<value>Unknown code %d</value>
+	<address>0x0000cf4c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 201">
+	<value>Packet too big: mtu=%u</value>
+	<address>0x0000cf5c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 202">
+	<value>, code=%d</value>
+	<address>0x0000cf73</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 203">
+	<value>Time exceeded:</value>
+	<address>0x0000cf7d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 204">
+	<value>Hop limit</value>
+	<address>0x0000cf8d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 205">
+	<value>Defragmentation failure</value>
+	<address>0x0000cf97</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 206">
+	<value>Parameter problem:</value>
+	<address>0x0000cfaf</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 207">
+	<value>Wrong header field</value>
+	<address>0x0000cfc3</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 208">
+	<value>Unknown header</value>
+	<address>0x0000cfd7</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 209">
+	<value>Unknown option</value>
+	<address>0x0000cfe7</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 210">
+	<value>code %d</value>
+	<address>0x0000cff7</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 211">
+	<value>at %u</value>
+	<address>0x0000d000</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 212">
+	<value>Echo request</value>
+	<address>0x0000d006</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 213">
+	<value>Echo reply</value>
+	<address>0x0000d013</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 214">
+	<value>MLD Query</value>
+	<address>0x0000d01e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 215">
+	<value>MLD Report</value>
+	<address>0x0000d028</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 216">
+	<value>MLD Reduction</value>
+	<address>0x0000d033</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 217">
+	<value>unknown icmp type: %u</value>
+	<address>0x0000d041</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 218">
+	<value>parse error (too short)</value>
+	<address>0x0000d057</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 219">
+	<value>parse error (truncated)</value>
+	<address>0x0000d070</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 220">
+	<value>Qtype conflict</value>
+	<address>0x0000d08d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 221">
+	<value>Subject type conflict</value>
+	<address>0x0000d09c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 222">
+	<value>ping6: IDN support failed.\n</value>
+	<address>0x0000d0b4</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 223">
+	<value>ping6: too long scope name.\n</value>
+	<address>0x0000d0d0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 224">
+	<value>ping6: out of memory.\n</value>
+	<address>0x0000d0ed</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 225">
+	<value>ff02::2:%02x%02x:%02x%02x%s%s</value>
+	<address>0x0000d104</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 226">
+	<value>ping6: %s: %s\n</value>
+	<address>0x0000d122</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 227">
+	<value />
+	<address>0x0000d131</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 228">
+	<value>unknown qtype(0x%02x)</value>
+	<address>0x0000d137</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 229">
+	<value>refused</value>
+	<address>0x0000d14e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 230">
+	<value>unknown</value>
+	<address>0x0000d157</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 231">
+	<value>unknown code(%02x)</value>
+	<address>0x0000d160</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 232">
+	<value>; seq=%u;</value>
+	<address>0x0000d174</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 233">
+	<value>ping -6</value>
+	<address>0x0000d17e</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 234">
+	<value>ping6</value>
+	<address>0x0000d186</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 235">
+	<value>setsockopt(SO_BINDTODEVICE)</value>
+	<address>0x0000d18c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 236">
+	<value>getifaddrs</value>
+	<address>0x0000d1a8</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 237">
+	<value>ping: IPV6_MTU_DISCOVER</value>
+	<address>0x0000d1b3</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 238">
+	<value>ping: bind icmp socket</value>
+	<address>0x0000d1cb</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 239">
+	<value>setsockopt(ICMP6_FILTER)</value>
+	<address>0x0000d1e2</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 240">
+	<value>can't set multicast hop limit</value>
+	<address>0x0000d1fb</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 241">
+	<value>can't set unicast hop limit</value>
+	<address>0x0000d219</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 242">
+	<value>can't receive hop limit</value>
+	<address>0x0000d235</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 243">
+	<value>setsockopt(IPV6_TCLASS)</value>
+	<address>0x0000d24d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 244">
+	<value>can't set flowlabel</value>
+	<address>0x0000d265</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 245">
+	<value>can't send flowinfo</value>
+	<address>0x0000d279</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 246">
+	<value>PING %s(%s)</value>
+	<address>0x0000d28d</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 247">
+	<value>, flow 0x%05x,</value>
+	<address>0x0000d29a</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 248">
+	<value>%d data bytes\n</value>
+	<address>0x0000d2aa</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 249">
+	<value>ipv6-all</value>
+	<address>0x0000d2b9</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 250">
+	<value>ipv6-compatible</value>
+	<address>0x0000d2c2</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 251">
+	<value>ipv6-linklocal</value>
+	<address>0x0000d2d2</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 252">
+	<value>ipv6-sitelocal</value>
+	<address>0x0000d2e1</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 253">
+	<value>ipv6-global</value>
+	<address>0x0000d2f0</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 254">
+	<value>ipv4-all</value>
+	<address>0x0000d2fc</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 255">
+	<value>subject-ipv6</value>
+	<address>0x0000d305</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 256">
+	<value>subject-ipv4</value>
+	<address>0x0000d312</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 257">
+	<value>subject-name</value>
+	<address>0x0000d31f</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 258">
+	<value>subject-fqdn</value>
+	<address>0x0000d32c</address>
+	<comment />
+	<section>.rodata</section>
+</stringPointOfInterest><stringPointOfInterest id="String: 259">
+	<value>help</value>
+	<address>0x0000d339</address>
 	<comment />
 	<section>.rodata</section>
 </stringPointOfInterest></stringHolder>

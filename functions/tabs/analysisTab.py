@@ -425,14 +425,25 @@ class AnalysisTab(QWidget):
             #         ET.Element.append(subelement)
 
             xmlUploader.uploadPOI(parent_dict)
+
+
+        
     def clickStaticAnalysis(self):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
         project_name = pt.project['Project']['Project_name']['#text']
         # self.clear_label()
+        
+        y=pt.project["_id"]
+        print('ID ')
+        print(y)
+
         self.display_current_project(project_name)
         bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
-
+        root=self.BeatTree.find('./Plugin/DataInPlugin')
+        print(root)
+        for item in root:
+            print(item.attrib)
         global stringsPOI
         global variablesPOI
         global functionsPOI
@@ -444,7 +455,6 @@ class AnalysisTab(QWidget):
         protocolsPOI = bina.cmd("ii").splitlines()
         functionsPOI = bina.cmd("aaa;afl").splitlines()
         self.poiSuperList2.append(stringsPOI)
-
         self.poiSuperList2.append(functionsPOI)
 
         #structuresPOI = bina.cmd("").splitlines()
