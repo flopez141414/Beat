@@ -121,8 +121,7 @@ class ProjectTab(QWidget):
         projectProperties=project.find('StaticDataSet')
         c=0
         for item in projectProperties.iter():
-            if(item.tag!='StaticDataSet'):
-                
+            if item.tag!='StaticDataSet':
                 self.binaryFileProp.setItem(c, 0, QTableWidgetItem(item.tag))
                 c+=1
                 
@@ -336,7 +335,7 @@ class ProjectTab(QWidget):
         toErase = projectNameHolder.toPlainText()
         if not toErase:
             errorMessageGnerator.showDialog("Please select a project to delete")
-            delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project","Delete confirmation")
+        delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project","Delete confirmation")
         if delete:
             xmlUploader.delete_selected_project(toErase)
             for item in self.searchList.selectedItems():

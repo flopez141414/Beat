@@ -398,6 +398,7 @@ class AnalysisTab(QWidget):
 #             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
 #         self.displayPOIparam()
 #         self.parseNetworkItems()
+
     def onActivated(self,option):
         data=[]
         BeatTree=ET.parse("../xml/Beat.xml")
