@@ -1,0 +1,10 @@
+HOW TO MODIFY PROJECT DESCRIPTION:
+
+1. Open BEAT.
+2. Go to Project Tab.
+3. Double click on project from list under Project View.
+4. Update Description button will appear.
+5. Under Detailed Project View:
+	- Modify Project Description.
+	- Click on Update Description button.
+6. Description updated successfully message will appear.
