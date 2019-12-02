@@ -274,16 +274,11 @@ class AnalysisTab(QWidget):
         option= self.poiDropdown.currentText()
 
         if option == 'Strings':
-        
             currentItem = self.poiList.currentItem().text()
             strings = pois['Project']['StaticAnalysis']['stringPointOfInterest']
             for i in range(len(strings)): # access each individual function POI
                 poi = strings[i]
                 if currentItem == poi['value']:
-                    print('------------------------------')
-                    print('name: ' + poi['value'])
-                    print('section: ' + poi['section'])
-                    print('address: ' + poi['address'])
                     self.valueLine.setText(poi['address'])
                     self.sectionInBinaryLine.setText(poi['section'])
                     
@@ -293,9 +288,6 @@ class AnalysisTab(QWidget):
             for i in range(len(functions)): # access each individual function POI
                 poi = functions[i]
                 if currentItem == poi['name']:
-                    print('------------------------------')
-                    print('name: ' + poi['name'])
-                    print('address: ' + poi['address'])
                     self.orderLine.setText(poi['name'])
                     self.fpTypeLine.setText(poi['parameterType'])
                     self.frValueLine.setText(poi['address'])
@@ -307,17 +299,6 @@ class AnalysisTab(QWidget):
         dataCollection = db.Project # accessing a collection of documents in our DB
         dataSet = dataCollection.find()
         pois = dataSet[1]
-        
-        '''
-        if option =="Strings":
-            self.poiList.clear()
-            for data in dataSet: # access a cursor object from database
-                 stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']   
-                stringPois = data['Project']['StaticAnalysis']['stringPointOfInterest']
-
-                for i in range(len(stringPois)): # access each individual string POI
-                    self.poiList.addItem(stringPois[i]['value'])
-        '''
         
         if option =="Strings":
             self.poiList.clear()
@@ -331,10 +312,19 @@ class AnalysisTab(QWidget):
             for i in range(len(functions)):
                 self.poiList.addItem(functions[i]['name'])
         self.displayPOIparam()
-                
         
-    
-                    
+        
+        
+        
+#         if option =="Strings":
+#             self.poiList.clear()
+#             for data in dataSet: # access a cursor object from database
+#                  stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']   
+#                 stringPois = data['Project']['StaticAnalysis']['stringPointOfInterest']
+# 
+#                 for i in range(len(stringPois)): # access each individual string POI
+#                     self.poiList.addItem(stringPois[i]['value'])    
+#  
 #         if option =="Functions":
 #             self.poiList.clear()
 #             for data in dataSet: # access a cursor object from database
