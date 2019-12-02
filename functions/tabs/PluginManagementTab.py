@@ -84,7 +84,8 @@ class PluginManagementTab(QWidget):
         button = QPushButton("My Button")
         self.setLayout(mainlayout)
         self.updateButton.clicked.connect(self.edit_existing_plugin)
-
+        self.browseButton1.clicked.connect(self.browse1)
+        self.browseButton2.clicked.connect(self.browse2)
         self.searchList.doubleClicked.connect(self.select_plugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
 
@@ -114,8 +115,6 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
-        self.browseButton1.clicked.connect(self.browse1)
-        self.browseButton2.clicked.connect(self.browse2)
         self.saveButton.clicked.connect(self.save_plugin)
         self.deleteButton.clicked.connect(self.deletePluggin)
 
@@ -164,10 +163,11 @@ class PluginManagementTab(QWidget):
             elif caller == 2:
                 self.pluginDataSet.setText(fileName)
                 self.pluginxmlhandler(fileName, 2)
+            else:
+                pass
             global myFileName
             myFileName = fileName
             return fileName
-
         self.updatePluginList()
 
     # stores xml1 and xml2 from browse buttons
@@ -213,6 +213,7 @@ class PluginManagementTab(QWidget):
         self.pluginDesc.clear()
         self.pluginStructArea.clear()
         self.pluginDataSet.clear()
+        self.pluginDataSet.setEnabled(True)
 
         self.updatePluginList()
         self.enableEditing()

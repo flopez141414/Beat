@@ -77,9 +77,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.horizontalHeader().setVisible(False)
         self.binaryFileProp.setAlternatingRowColors(True)
         self.browseButton = QPushButton('Browse')
-        self.LoadButton = QPushButton('Load Current PM')
 
-        self.LoadButton.clicked.connect(self.setCurrentProject)
         self.browseButton.clicked.connect(self.OpenFile)
         self.deleteButton = QPushButton('Delete')
         self.saveButton = QPushButton('Save')
@@ -150,12 +148,10 @@ class ProjectTab(QWidget):
         if fileName:
             self.binaryFilePath.setText(fileName)
             self.staticAnalysis(fileName)
-            #             self.myFilename = fileName
             global myFileName
             myFileName = fileName
             return fileName
         self.updateProjectList()
-        return "not found"
 
     def getFileName(self):
         return self.myFilename
@@ -176,7 +172,7 @@ class ProjectTab(QWidget):
         else:
             if pname != "" and pdesc != "" and ppath != "":
                 # Adding to XMl
-                tree = ET.parse('../xml/practiceXml.xml')
+                tree = ET.parse('../xml/Project.xml')
                 root = tree.getroot()
                 b2tf = root.find("./Project_name")
                 b2tf.text = pname
@@ -213,6 +209,7 @@ class ProjectTab(QWidget):
                 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
                 xmlUploader.uploadXML(my_dict)
                 project = xmlUploader.retrieve_selected_project(pname)
+                errorMessageGnerator.showDialog("Project created successfully", "Success")
                 self.disableEditing()
                 self.browseButton.hide()
             elif pname == "":
@@ -225,7 +222,6 @@ class ProjectTab(QWidget):
             self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
             self.searchList.item(listCounter)
             projectSelected = True
-            return pname
 
     # loads right side
     def loadRightLayout(self):
@@ -235,8 +231,6 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
         self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
         self.rightLayout.addWidget(self.browseButton, 4, 12)
-        self.rightLayout.addWidget(self.LoadButton, 4, 12)
-        self.LoadButton.hide()
         self.deleteButton.show()
 
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
@@ -256,7 +250,6 @@ class ProjectTab(QWidget):
         # disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
-        self.LoadButton.show()
         self.updateButton.show()
 
         project = [item.text() for item in self.searchList.selectedItems()]
@@ -354,21 +347,3 @@ class ProjectTab(QWidget):
         xmlUploader.update_proj_description(description, pdesc)
         errorMessageGnerator.showDialog("Description updated successfully", "Success")
 
-    '''''
-    We want to store the current project name.
-    Using the current project name we can retrieve the project XML from the DB
-    '''''
-
-    def setCurrentProject(self):
-        global projectNameHolder
-        toStore = projectNameHolder.toPlainText()
-        errorMessageGnerator.infoToast(' Current Project is ' + toStore, 'Current Project')
-
-    '''''
-    This is to test merger
-        tree = ET.parse('practiceXml.xml')
-        xml1 = tree.getroot()
-        tree = ET.parse('testplugin.xml')
-        xml2 = tree.getroot()
-        xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
-    '''''
