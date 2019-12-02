@@ -13,6 +13,10 @@ Third party software:
                         Radare2 3.2.1
                         MongoDB 4.2
 
+Languages and packages:
+                        Python 3.x
+                        PyQt5 package
+                        
 The BEAT software is a tool designed to provide the capability
 to conduct a targeted binary analysis, with the added capacity
 to modify contents of plugins via a graphical user interface.
