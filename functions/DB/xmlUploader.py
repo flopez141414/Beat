@@ -240,3 +240,4 @@ def update_plugin_description(old_description, new_description):
     myquery = {"Plugin.Plugin_Desc.#text": old_description}
     new_values = {"$set": {"Plugin.Plugin_Desc.#text": new_description}}
     plugins.update_one(myquery, new_values)
+

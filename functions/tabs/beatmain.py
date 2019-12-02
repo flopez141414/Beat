@@ -51,7 +51,7 @@ def main():
     tabWidget.addTab(ProjectTab(), "Project tab")
     tabWidget.addTab(PluginManagementTab(), "PluginManagementTab")
     tabWidget.addTab(AnalysisTab(), "Analysis Tab")
-    tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
+    #tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
     tabWidget.addTab(DocumentationTab(), "Documentation Tab")
 
     mainWindow.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")

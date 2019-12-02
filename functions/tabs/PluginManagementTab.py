@@ -26,10 +26,9 @@ xml1 = []
 xml2 = []
 nameH = ""
 descH = ""
-pathH = ""
-datasetH = ""
+structH = ""
+pdatasetH = ""
 listCounter = 0
-project = []
 
 
 class PluginManagementTab(QWidget):
@@ -38,8 +37,8 @@ class PluginManagementTab(QWidget):
 
         global nameH
         global descH
-        global pathH
-        global datasetH
+        global structH
+        global pdatasetH
 
         mainlayout = QGridLayout()
         leftLayout = QGridLayout()
@@ -67,14 +66,14 @@ class PluginManagementTab(QWidget):
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         self.pluginStructArea = QTextEdit()
-        pathH = self.pluginStructArea
+        structH = self.pluginStructArea
         self.pluginDataSet = QTextEdit()
-        datasetH = self.pluginDataSet
+        pdatasetH = self.pluginDataSet
         self.pluginName = QTextEdit()
         nameH = self.pluginName
         self.pluginDesc = QTextEdit()
         descH = self.pluginDesc
-        self.pointsOI = QTextEdit()
+        self.pointsOI = QListWidget()
         self.browseButton1 = QPushButton('Browse')
         self.browseButton2 = QPushButton('Browse')
         newButton.clicked.connect(self.createNew)
@@ -115,7 +114,7 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
-        self.saveButton.clicked.connect(self.save_plugin)
+        self.saveButton.clicked.connect(self.savexml)
         self.deleteButton.clicked.connect(self.deletePluggin)
 
     # aids in opening a file. Tells which button was clicked
@@ -130,22 +129,29 @@ class PluginManagementTab(QWidget):
     def select_plugin(self):
         # for this mode we will load the right layout
         global plugin
+
         self.loadRightLayout()
         self.deleteButton.show()
         self.browseButton1.hide()
         self.browseButton2.hide()
         self.saveButton.hide()
         self.updateButton.show()
+
         plugins = [item.text() for item in self.searchList.selectedItems()]
         pluginName = ' '.join([str(elem) for elem in plugins])
+
+        #get list from db
         plugin = xmlUploader.retrieve_selected_plugin(pluginName)
 
+        print('*******')
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
         self.pluginStructArea.setText(plugin['Plugin']['structure_path']['#text'])
         self.pluginDataSet.setText(plugin['Plugin']['predefined_dataset_path']['#text'])
-
+        list_of_poi = self.update_poi_list(plugin)
         self.updatePluginList()
+        for item in list_of_poi:
+            self.pointsOI.addItem(item)
 
     # checks which browse button was clicked. Sends address and button number
     myFileName = ""
@@ -157,14 +163,19 @@ class PluginManagementTab(QWidget):
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
             if caller == 1:
-                print('///////////////////////////////////')
                 self.pluginStructArea.setText(fileName)
                 self.pluginxmlhandler(fileName, 1)
+                poi_list = retrieve_poi_list()
+                #add pois to gui list
+                for item in poi_list:
+                    self.pointsOI.addItem(item)
+
             elif caller == 2:
                 self.pluginDataSet.setText(fileName)
                 self.pluginxmlhandler(fileName, 2)
             else:
                 pass
+
             global myFileName
             myFileName = fileName
             return fileName
@@ -175,8 +186,6 @@ class PluginManagementTab(QWidget):
         global xml1
         global xml2
         if caller == 1:
-            print('**************************')
-            print(filePath)
             tree = ET.parse(filePath)
             xml1 = tree.getroot()
         elif caller == 2:
@@ -188,6 +197,26 @@ class PluginManagementTab(QWidget):
         pluginList = xmlUploader.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
+
+    def update_poi_list(self,plugin):
+        self.pointsOI.clear()
+
+        # get poi list
+        list_of_poi = []
+        x = plugin['Plugin']['DataInPlugin']
+        for y in x:
+            print(x)
+            print('///////////////////')
+            print(y)
+            #self.pointsOI.addItem(str(y.attrib['name']))
+            list_of_poi.append(y)
+
+        return list_of_poi
+        '''''
+        # add pois to gui list
+        for item in list_of_poi:
+            self.pointsOI.addItem(item)
+        '''''
 
     def enableEditing(self):
         self.pluginStructArea.setEnabled(True)
@@ -214,6 +243,7 @@ class PluginManagementTab(QWidget):
         self.pluginStructArea.clear()
         self.pluginDataSet.clear()
         self.pluginDataSet.setEnabled(True)
+        self.pointsOI.clear()
 
         self.updatePluginList()
         self.enableEditing()
@@ -232,22 +262,22 @@ class PluginManagementTab(QWidget):
                 self.searchList.takeItem(self.searchList.row(item))
             self.updatePluginList()
 
-    def save_plugin(self):
+
+    def savexml(self):
         global xml1
         global xml2
-
         global nameH
         global descH
-        global pathH
-        global datasetH
+        global structH
+        global pdatasetH
 
         pname = nameH.toPlainText()
         pdesc = descH.toPlainText()
-        plugpath = pathH.toPlainText()
-        data = datasetH.toPlainText()
+        plugpath = structH.toPlainText()
+        data = pdatasetH.toPlainText()
 
         if xmlUploader.plugin_exists(pname):
-            errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
+            errorMessageGnerator.showDialog("A plugin with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and plugpath != "" and data != "":
                 b2tf = xml1.find("./Plugin_name")
@@ -293,3 +323,15 @@ def save_xml_local(self):
     completeName = os.path.join(savePath, name_of_file + ".txt")
 
     print('Saving Locally')
+
+#Returns a list of strings from XML1 only
+def retrieve_poi_list():
+    global xml1
+    x = xml1.find("./DataInPlugin")
+    list_of_poi = []
+
+    for y in x:
+        list_of_poi.append(str(y.attrib['name']))
+        print(str(y.attrib['name']))
+
+    return list_of_poi
