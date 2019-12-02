@@ -215,7 +215,7 @@ class ProjectTab(QWidget):
             elif pname == "":
                 errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
             elif pdesc == "":
-                errorMessageGnerator.showDialog("Enter a description for the project", "Project File Error")
+                errorMessageGnerator.showDialog("Enter a description for the project", "Project Description Error")
             elif ppath == "":
                 errorMessageGnerator.showDialog("Cannot create a project without a binary file", "Binary File Error")
             self.updateProjectList()
