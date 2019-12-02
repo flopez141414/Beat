@@ -1,6 +1,8 @@
 HOW TO DELETE A PLUGIN:
 
-1. Open BEAT
-2. Go to Plugin Management Tab
-3. From Plugin View on left side panel select Plugin to delete
-4. Click `Delete` button
+1. Open BEAT.
+2. Go to Plugin Management Tab.
+3. From Plugin View on left side panel select Plugin to delete.
+4. Click Delete button.
+5. Confirmation message will appear.
+6. Click Ok to continue.
