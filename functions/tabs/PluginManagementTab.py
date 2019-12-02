@@ -75,7 +75,6 @@ class PluginManagementTab(QWidget):
         self.pluginDesc = QTextEdit()
         descH = self.pluginDesc
         self.pointsOI = QTextEdit()
-        self.defaultOutDropdown = QComboBox()
         self.browseButton1 = QPushButton('Browse')
         self.browseButton2 = QPushButton('Browse')
         newButton.clicked.connect(self.createNew)
@@ -101,16 +100,16 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.pluginStructArea, 1, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginDataSet, 2, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginName, 3, 2, 2, 1)
-        self.rightLayout.addWidget(self.pluginDesc, 4, 2, 2, 1)
-        self.rightLayout.addWidget(self.defaultOutDropdown, 5, 2, 1, 1)
-        self.rightLayout.addWidget(self.pointsOI, 6, 2, 4, 1)
+        self.rightLayout.addWidget(self.pluginDesc, 6, 2, 2, 1)
+        # self.rightLayout.addWidget(self.defaultOutDropdown, 5, 2, 1, 1)
+        self.rightLayout.addWidget(self.pointsOI, 8, 2, 4, 1)
 
         self.rightLayout.addWidget(QLabel('Plugin Structure'), 1, 1, 1, 1)
         self.rightLayout.addWidget(QLabel('Plugin Predefined Data Set'), 2, 1, 1, 1)
         self.rightLayout.addWidget(QLabel('Plugin Name'), 3, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Description'), 4, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Points of Interest'), 6, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Plugin Description'), 6, 1, 1, 1)
+        # self.rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
+        self.rightLayout.addWidget(QLabel('Points of Interest'), 8, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 7)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
@@ -119,7 +118,6 @@ class PluginManagementTab(QWidget):
         self.browseButton2.clicked.connect(self.browse2)
         self.saveButton.clicked.connect(self.save_plugin)
         self.deleteButton.clicked.connect(self.deletePluggin)
-
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
@@ -195,13 +193,13 @@ class PluginManagementTab(QWidget):
         self.pluginStructArea.setEnabled(True)
         self.pluginDataSet.setEnabled(True)
         self.pluginName.setEnabled(True)
-        #self.pluginDesc.setEnabled(True)
+        # self.pluginDesc.setEnabled(True)
 
     def disableEditing(self):
         self.pluginStructArea.setEnabled(False)
         self.pluginDataSet.setEnabled(False)
         self.pluginName.setEnabled(False)
-        #self.pluginDesc.setEnabled(False)
+        # self.pluginDesc.setEnabled(False)
 
     def createNew(self):
         # load buttons and Layout
@@ -224,11 +222,14 @@ class PluginManagementTab(QWidget):
         toErase = nameH.toPlainText()
         if not toErase:
             errorMessageGnerator.showDialog("Please select a Plugin to delete", 'Delete plugin')
-        xmlUploader.delete_selected_plugin(toErase)
-        for item in self.searchList.selectedItems():
-            self.searchList.takeItem(self.searchList.row(item))
-        self.updatePluginList()
 
+        delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this plugin",
+                                                       "Delete confirmation")
+        if delete:
+            xmlUploader.delete_selected_plugin(toErase)
+            for item in self.searchList.selectedItems():
+                self.searchList.takeItem(self.searchList.row(item))
+            self.updatePluginList()
 
     def save_plugin(self):
         global xml1
@@ -247,7 +248,7 @@ class PluginManagementTab(QWidget):
         if xmlUploader.plugin_exists(pname):
             errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
         else:
-            if pname != "" and pdesc != "":
+            if pname != "" and pdesc != "" and plugpath != "" and data != "":
                 b2tf = xml1.find("./Plugin_name")
                 b2tf.text = pname
                 b2tf = xml1.find("./Plugin_Desc")
@@ -261,12 +262,17 @@ class PluginManagementTab(QWidget):
                 xmlUploader.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
-                errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin", "Success")
-                #self.save_xml_local()
-            elif pname == "":
+                errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin",
+                                                "Success")
+                # self.save_xml_local()
+            if pname == "":
                 errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
-            elif pdesc == "":
+            if pdesc == "":
                 errorMessageGnerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
+            if plugpath == "":
+                errorMessageGnerator.showDialog("Enter an xml structure file", "Empty plugin structure")
+            if data == "":
+                errorMessageGnerator.showDialog("Enter a plugin dataset", "Missing dataset")
 
 
     def edit_existing_plugin(self):
