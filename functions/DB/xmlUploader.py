@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import xmltodict
 import pprint
 import json
+import xml.etree.ElementTree as ET
 
 
 # sets path to connect to DB
@@ -32,25 +33,18 @@ def uploadXML(xml):
     result = posts.insert_one(my_dict)
 
 
+def uploadDataSet(xml):
+    client = MongoClient('localhost', 27017)
+    db = client.pymongo_test
+    my_dict = xmltodict.parse(xml)
+    dataSet = db.dataSet
+    result = dataSet.insert_one(my_dict)
+
+
 def uploadPlugin(xml):
     my_dict = xmltodict.parse(xml)
     posts = connection_plugin_path()
     result = posts.insert_one(my_dict)
-
-
-def uploadPOI(xml):
-    my_dict = xmltodict.parse(xml)
-    posts = connection_poi_path()
-    result = posts.insert_one(my_dict)
-
-
-def retrieve_list_of_projects_plugin():
-    projects = connection_plugin_path()
-    projectsList = projects.find()
-    list_of_projects = []
-    for item in projectsList:
-        list_of_projects.append(item['Project']['Project_name']['#text'])  # NOTE modify
-    return list_of_projects
 
 
 def retrievePoiInProject():
@@ -58,16 +52,42 @@ def retrievePoiInProject():
     listofPois = poiFileConnection.find()
     poiList = []
     for item in listofPois:
-        poiList.append(item['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
+        poiList.append(item['PointOfInterestDataSet']['stringHolder']['stringPointOfInterest'])
     return poiList
+
+
+#B
+def retrieveSpecificProject(name):
+    projects = connection_project_path()
+    projectsList = projects.find()
+    list_of_projects = []
+    for item in projectsList:
+        if name == item['Project']['Project_name']['#text']:
+            list_of_projects.append(item)
+            # list_of_projects.append(item['Project']['Project_name']['#text']) # gets name of project
+    return list_of_projects
+
+
+#B
+def retrieve_list_of_plugins():
+    plugins = connection_plugin_path()
+    pluginList = plugins.find()
+
+    list_of_plugins = []
+    for item in pluginList:
+        list_of_plugins.append(item['Plugin']['Plugin_name']['#text'])
+    print('hello')
+    return list_of_plugins
 
 
 def retrieve_list_of_projects():
     projects = connection_project_path()
     projectsList = projects.find()
+
     list_of_projects = []
     for item in projectsList:
         list_of_projects.append(item['Project']['Project_name']['#text'])
+
     return list_of_projects
 
 
@@ -77,6 +97,15 @@ def retrieve_selected_project(project_name):
 
     for item in projectsList:
         if item['Project']['Project_name']['#text'] == project_name:
+            return item
+
+
+def retrieve_selected_plugin(plugin_name):
+    plugin = connection_plugin_path()
+    pluginList = plugin.find()
+
+    for item in pluginList:
+        if item['Plugin']['Plugin_name']['#text'] == plugin_name:
             return item
 
 
@@ -95,21 +124,56 @@ def delete_selected_project(nameofProject):
     projects.delete_one(myquery)
 
 
+def delete_selected_plugin(nameofplugin):
+    plugins = connection_plugin_path()
+    myquery = {"Plugin.Plugin_name.#text": nameofplugin}
+    plugins.delete_one(myquery)
+
+
 # holder element of where to place xml2
 def xmlmerger(holder, xml1, xml2):
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
     for element1 in xml1.findall(holder):
         element1.append(xml2)
     ET.dump(xml1)
-    print(xml1)
+    print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa')
+
+    for elem in xml1:
+        for subelem in elem:
+            print(subelem.text)
+
+    print('debuggin')
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
+    return xml1
+
+
+def update_proj_description(old_description, new_description):
+    projects = connection_project_path()
+    myquery = {"Project.projectDescription.#text": old_description}
+    new_values = {"$set": {"Project.projectDescription.#text": new_description}}
+    projects.update_one(myquery, new_values)
 
 
 def project_exists(new_project_name):
     projects = connection_project_path()
     projectsList = projects.find()
-
     for item in projectsList:
         if item['Project']['Project_name']['#text'] == new_project_name:
             return True
     return False
+
+
+def plugin_exists(new_plugin_name):
+    plugins = connection_plugin_path()
+    pluginList = plugins.find()
+    for item in pluginList:
+        if item['Plugin']['Plugin_name']['#text'] == new_plugin_name:
+            return True
+    return False
+
+
+def update_plugin_description(old_description, new_description):
+    plugins = connection_plugin_path()
+    myquery = {"Plugin.Plugin_Desc.#text": old_description}
+    new_values = {"$set": {"Plugin.Plugin_Desc.#text": new_description}}
+    plugins.update_one(myquery, new_values)
