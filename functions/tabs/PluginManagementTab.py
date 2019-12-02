@@ -163,18 +163,19 @@ class PluginManagementTab(QWidget):
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
             if caller == 1:
-                self.pluginStructArea.setText(fileName)
-                self.pluginxmlhandler(fileName, 1)
-                poi_list = retrieve_poi_list()
-                #add pois to gui list
-                for item in poi_list:
-                    self.pointsOI.addItem(item)
-
+                print('1')
+                if(self.pluginxmlhandler(fileName, 1)): # if xml is good
+                    self.pluginStructArea.setText(fileName)
+                    poi_list = retrieve_poi_list()
+                    #add pois to gui list
+                    for item in poi_list:
+                        self.pointsOI.addItem(item)
             elif caller == 2:
-                self.pluginDataSet.setText(fileName)
-                self.pluginxmlhandler(fileName, 2)
-            else:
-                pass
+                print('2')
+                if (self.pluginxmlhandler(fileName, 2)):  # if xml is good
+                    self.pluginDataSet.setText(fileName)
+                    self.pluginxmlhandler(fileName, 2)
+
 
             global myFileName
             myFileName = fileName
@@ -185,12 +186,53 @@ class PluginManagementTab(QWidget):
     def pluginxmlhandler(self, filePath, caller):
         global xml1
         global xml2
-        if caller == 1:
-            tree = ET.parse(filePath)
-            xml1 = tree.getroot()
-        elif caller == 2:
-            tree = ET.parse(filePath)
-            xml2 = tree.getroot()
+        print('Handler')
+        if(self.checkxml(filePath,caller)): # if xml is good
+            if caller == 1:
+                tree = ET.parse(filePath)
+                xml1 = tree.getroot()
+                return True
+            elif caller == 2:
+                tree = ET.parse(filePath)
+                xml2 = tree.getroot()
+                return True
+        return False # if xml is bad return false
+
+    #check for errors on xml
+    def checkxml(self,filePath,caller):
+        #check if its an xml
+        is_xml = True
+        if caller == 1 or caller == 2:
+            try:
+                tree = ET.parse(filePath)
+                xml = tree.getroot()
+            except:
+                errorMessageGnerator.showDialog("Please select a valid Plugin xml", 'Plugin error')
+                return False
+        if(is_xml and caller == 1):
+            # check if it has specific branches
+            try:
+                x = xml.find("./DataInPlugin")
+                if x is None:
+                    errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture",
+                       'Delete plugin')
+                    return False
+            except:
+                errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
+                return False
+            try:
+                x = xml.find("./Filters")
+                if x is None:
+                    errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture",
+                                                    'Delete plugin')
+                    return False
+            except:
+                errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
+                return False
+
+
+        return True
+
 
     def updatePluginList(self):
         self.searchList.clear()
