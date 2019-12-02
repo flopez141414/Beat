@@ -162,3 +162,10 @@ def xmlmergerByAddress(holder, xml1, xml2):
     xml3=ET.dump(xml1)
     print("+++++++++++++++++++++++++++++++++++++++++++++++")
     return xml3
+
+def uploadDataSet(xml):
+    client = MongoClient('localhost', 27017)
+    db = client.beat
+    my_dict = xmltodict.parse(xml)
+    dataSet = db.Project
+    result = dataSet.insert_one(my_dict)

@@ -8,6 +8,9 @@ import xml.etree.ElementTree as ET
 import xmltodict
 import pprint
 import json
+import base64
+from pymongo import MongoClient
+
 
 sys.path.append("../DB")
 sys.path.append("../windows")
@@ -124,7 +127,8 @@ class AnalysisTab(QWidget):
         self.poiDropdown.activated[str].connect(self.displayPOI)
         runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
-        self.poiList.clicked.connect(self.clickedPOI)
+#         self.poiList.clicked.connect(self.clickedPOI)
+        self.poiList.clicked.connect(self.expandPOI)
         self.setLayout(mainlayout)
         
     def display_current_project(self, project_name):
@@ -154,8 +158,6 @@ class AnalysisTab(QWidget):
         print(searchedPoi)
         if option=="Strings":
             self.valueLine.setText(' '.join(searchedPoi[7:]))
-
-
 
     def displayPOIparam(self):
         content_widget=QWidget()
@@ -262,58 +264,137 @@ class AnalysisTab(QWidget):
             for item2 in items:
                 self.poiList.addItem(item2)
         self.searchedWord = []
+        
+    def expandPOI(self):
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.beat # getting an instance of our DB
+        dataCollection = db.Project # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
+        pois = dataSet[1]
+        option= self.poiDropdown.currentText()
 
+        if option == 'Strings':
+        
+            currentItem = self.poiList.currentItem().text()
+            strings = pois['Project']['StaticAnalysis']['stringPointOfInterest']
+            for i in range(len(strings)): # access each individual function POI
+                poi = strings[i]
+                if currentItem == poi['value']:
+                    print('------------------------------')
+                    print('name: ' + poi['value'])
+                    print('section: ' + poi['section'])
+                    print('address: ' + poi['address'])
+                    self.valueLine.setText(poi['address'])
+                    self.sectionInBinaryLine.setText(poi['section'])
+                    
+        if option == 'Functions':
+            currentItem = self.poiList.currentItem().text()
+            functions = pois['Project']['StaticAnalysis']['functionPointOfInterest']
+            for i in range(len(functions)): # access each individual function POI
+                poi = functions[i]
+                if currentItem == poi['name']:
+                    print('------------------------------')
+                    print('name: ' + poi['name'])
+                    print('address: ' + poi['address'])
+                    self.orderLine.setText(poi['name'])
+                    self.fpTypeLine.setText(poi['parameterType'])
+                    self.frValueLine.setText(poi['address'])
+                    self.fRelativeOrderLine.setText(poi['breakpoints']['breakpoint'])
+        
     def displayPOI(self,option):
-        global poiSuperList
-        if option=="Strings":
-            poiSuperList=[]
+        client = MongoClient('localhost', 27017) # client to access database
+        db = client.beat # getting an instance of our DB
+        dataCollection = db.Project # accessing a collection of documents in our DB
+        dataSet = dataCollection.find()
+        pois = dataSet[1]
+        
+        '''
+        if option =="Strings":
             self.poiList.clear()
-#            target=['socket','send','rec','ipv','main']
- #           for i in target:
-  #          self.searchedWord.append([s for s in poiSuperList if i in s])
-            for item in stringsPOI:
-                item2=item.split()
-                self.poiList.addItem(' '.join(item2[7:]))
-                poiSuperList.append(' '.join(item2[7:]))
-            #self.poiContentArea.setText(stringsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+            for data in dataSet: # access a cursor object from database
+                 stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']   
+                stringPois = data['Project']['StaticAnalysis']['stringPointOfInterest']
 
-        elif option == "Variables":
+                for i in range(len(stringPois)): # access each individual string POI
+                    self.poiList.addItem(stringPois[i]['value'])
+        '''
+        
+        if option =="Strings":
             self.poiList.clear()
-            poiSuperList=[]
-            #for item in variablesPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(variablesPOI)
-        elif option == "Functions":
+            strings = pois['Project']['StaticAnalysis']['stringPointOfInterest']
+            for i in range(len(strings)):
+                self.poiList.addItem(strings[i]['value'])
+
+        if option =="Functions":
             self.poiList.clear()
-            poiSuperList=[]
-            for item in functionsPOI:
-                item2=item.split()
-                if item2[3]=="->":
-                    self.poiList.addItem(item2[5])
-                    poiSuperList.append(item2[5])
-                else:
-                    self.poiList.addItem(item2[3])
-                    poiSuperList.append(item2[3])
-            #self.poiContentArea.setText(functionsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Structures":
-            self.poiList.clear()
-            poiSuperList=[]
-            #for item in structuresPOI:
-             #   self.poiList.addItem(item)
-            #self.poiContentArea.setText(structuresPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-        elif option == "Protocols":
-            self.poiList.clear()
-            poiSuperList=[]
-           # for item in protocolsPOI[2:]:
-            #    item2=item.split()
-             #   self.poiList.addItem(item2[3])
-            #self.poiContentArea.setText(dllsPOI)
-            #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+            functions = pois['Project']['StaticAnalysis']['functionPointOfInterest']
+            for i in range(len(functions)):
+                self.poiList.addItem(functions[i]['name'])
         self.displayPOIparam()
-        self.parseNetworkItems()
+                
+        
+    
+                    
+#         if option =="Functions":
+#             self.poiList.clear()
+#             for data in dataSet: # access a cursor object from database
+# #                 functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
+#                 functionPois = data['Project']['StaticAnalysis']['functionPointOfInterest']
+# 
+#                 for i in range(len(functionPois)): # access each individual function POI
+#                     self.poiList.addItem(functionPois[i]['name'])
+                    
+#     def displayPOI(self,option):
+#         global poiSuperList
+#         if option=="Strings":
+#             poiSuperList=[]
+#             self.poiList.clear()
+# #            target=['socket','send','rec','ipv','main']
+#  #           for i in target:
+#   #          self.searchedWord.append([s for s in poiSuperList if i in s])
+#             for item in stringsPOI:
+#                 item2=item.split()
+#                 self.poiList.addItem(' '.join(item2[7:]))
+#                 poiSuperList.append(' '.join(item2[7:]))
+#             #self.poiContentArea.setText(stringsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.poiSelected)
+# 
+#         elif option == "Variables":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in variablesPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(variablesPOI)
+#         elif option == "Functions":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             for item in functionsPOI:
+#                 item2=item.split()
+#                 if item2[3]=="->":
+#                     self.poiList.addItem(item2[5])
+#                     poiSuperList.append(item2[5])
+#                 else:
+#                     self.poiList.addItem(item2[3])
+#                     poiSuperList.append(item2[3])
+#             #self.poiContentArea.setText(functionsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Structures":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#             #for item in structuresPOI:
+#              #   self.poiList.addItem(item)
+#             #self.poiContentArea.setText(structuresPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         elif option == "Protocols":
+#             self.poiList.clear()
+#             poiSuperList=[]
+#            # for item in protocolsPOI[2:]:
+#             #    item2=item.split()
+#              #   self.poiList.addItem(item2[3])
+#             #self.poiContentArea.setText(dllsPOI)
+#             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
+#         self.displayPOIparam()
+#         self.parseNetworkItems()
     def onActivated(self,option):
         data=[]
         BeatTree=ET.parse("../xml/Beat.xml")
@@ -333,124 +414,85 @@ class AnalysisTab(QWidget):
                     print(plugin)        
                     self.poiDropdown.addItem(plugin)
             
-    def makeStringTree(self, lista):
-        counter=0
-        parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
-        parentRoot = parentTree.getroot()
-        stringHolderElement = parentRoot.find('./stringHolder')
-        for item in lista:
-            # for key in jsonStrings[index]: # access each string
-              # this dictonary contains one Strint poi
+    def makeStringTree(self, stringsData, parentRoot):
+#             stringHolderElement = parentRoot.find('./stringHolder')
+        poiHolderElement = parentRoot.find('./StaticAnalysis')
+        
+        for index in range(len(stringsData)): # access each string
+            myString = stringsData[index] # this dictionary contains one String POI
             tree = ET.parse('../xml/StringPointOfInterest.xml')
-            #ET.Element\
-            item2= item.split()
             root = tree.getroot()
-            root.set('id','String: {}'.format(counter))
-            # b2tf.text='String {}'.format(counter+1)
             b2tf = root.find("./value")
-            try:
-                b2tf.text = ' '.join(item2[7:])
-            except:
-                continue
+            b2tf.text = str(base64.standard_b64decode(myString['string']))
             b2tf = root.find("./address")
-            try:
-                b2tf.text = item2[1]
-            except:
-                b2tf.text="null"
+            b2tf.text = str(hex(myString['vaddr']))
             b2tf = root.find("./section")
-            try:
-                b2tf.text =item2[5]
-            except:
-                b2tf.text = "null"
-            stringHolderElement.append(root)
-            counter+=1
+            b2tf.text = str(myString['section'])
+#                 stringHolderElement.append(root)
+            poiHolderElement.append(root)
 
-        #             ET.Element.append(parentTree)
-        #             ET.Element.append(parentTree)
-        #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
-        #         ET.dump(parentTree)
-        parentTree.write('myxml.txt')
-
-        my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        #         print(my_dict)
-        #         tree.write('tree.xml')
-        #         ET.Element.append(subelement)
-
-        xmlUploader.uploadPOI(parent_dict)
-
-        def makeFunctionsTree(self, lista):
-            counter = 0
-            parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
-            parentRoot = parentTree.getroot()
-            stringHolderElement = parentRoot.find('./functionHolder')
-            for item in lista:
-                #             for key in jsonStrings[index]: # access each string
-                # this dictonary contains one Strint poi
-                tree = ET.parse('../xml/FunctionPointOfInterest.xml')
-                #             ET.Element\
-                item2 = item.split()
-
-                root = tree.getroot()
-                root.set('id', 'Function: {}'.format(counter))
-                # b2tf.text='String {}'.format(counter+1)
-                b2tf = root.find("./value")
-                try:
-                    b2tf.text = ' '.join(item2[7:])
-                except:
-                    continue
-                b2tf = root.find("./address")
-                try:
-                    b2tf.text = item2[1]
-                except:
-                    b2tf.text = "null"
-                b2tf = root.find("./section")
-                try:
-                    b2tf.text = item2[5]
-                except:
-                    b2tf.text = "null"
-                stringHolderElement.append(root)
-                counter += 1
-
-            #             ET.Element.append(parentTree)
-            #             ET.Element.append(parentTree)
-            #         xmlUploader.xmlmerger('stringHolder',parentRoot,root)
-            #         ET.dump(parentTree)
-            parentTree.write('myxml.txt')
-
-            my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-            parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-            #         print(my_dict)
-            #         tree.write('tree.xml')
-            #         ET.Element.append(subelement)
-
-            xmlUploader.uploadPOI(parent_dict)
+    def makeFunctionsTree(self, functionsData, parentRoot, r2buffer):
+#         functionHolderElement = parentRoot.find('./StaticAnalysis')
+        poiHolderElement = parentRoot.find('./StaticAnalysis')
+        r2buffer.cmd('doo')
+         
+        for index in range(len(functionsData)): # access each function
+            myFunction = functionsData[index] # this dictionary contains one function POI
+            tree = ET.parse('../xml/FunctionPointOfInterest.xml')
+            root = tree.getroot()
+            b2tf = root.find("./name")
+            b2tf.text = str(myFunction['name'])
+            b2tf = root.find("./address")
+            b2tf.text = str(hex(myFunction['offset']))
+            b2tf = root.find("./parameterType")
+            b2tf.text = str(myFunction['signature'])
+            
+            breakpoints = [] # this will hold a list of our breakpoints
+            breakpointElement = root.find('./breakpoints')
+            jsonReferences = json.loads(r2buffer.cmd('axtj '+ myFunction['name']))
+            breakpoints.clear()
+            
+            for i in range(len(jsonReferences)):
+                breakpoints.append(str(hex(jsonReferences[i]['from'])))
+            for bp in breakpoints:
+                tempElement = ET.SubElement(breakpointElement, 'breakpoint')    
+                tempElement.text = bp
+#             functionHolderElement.append(root)
+            poiHolderElement.append(root)
+            
     def clickStaticAnalysis(self):
-        self.poiList.clear()
-        self.terminal.setText("Running Static Analysis..")
-        project_name = pt.project['Project']['Project_name']['#text']
-        # self.clear_label()
-        self.display_current_project(project_name)
-        bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
-
         global stringsPOI
         global variablesPOI
         global functionsPOI
         global protocolsPOI
         global structuresPOI
-
-        stringsPOI =bina.cmd("iz").splitlines()
-        self.makeStringTree(stringsPOI)
-        protocolsPOI = bina.cmd("ii").splitlines()
-        functionsPOI = bina.cmd("aaa;afl").splitlines()
-        self.poiSuperList2.append(stringsPOI)
-
-        self.poiSuperList2.append(functionsPOI)
-
-        #structuresPOI = bina.cmd("").splitlines()
-        #variablesPOI = bina.cmd("").splitlines()
+        
+        global parentRoot # holds all POIs from static analysis
+        
+        self.poiList.clear()
+        self.terminal.setText("Running Static Analysis..")
+        project_name = pt.project['Project']['Project_name']['#text']
+        self.display_current_project(project_name)
+        
+        bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
+        bina.cmd("aaa") # analyze binary in Radare2
+                
+        # extracting POI data from Radare2 and storing as json dictionaries
+        stringsPOI = bina.cmd("izj") 
+        jsonStrings = json.loads(stringsPOI) 
+        functionsPOI = bina.cmd("aflj")
+        jsonFunctions = json.loads(functionsPOI)
+        
+        # get handle to POI holder xml, create POI xmls, and upload them to DB
+        parentTree = ET.parse('../xml/Project.xml')
+        parentRoot = parentTree.getroot()
+        self.makeStringTree(jsonStrings, parentRoot)
+        self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
+        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
+        xmlUploader.uploadDataSet(parent_dict) 
+        
         self.terminal.append("Static Analysis done!")
-    
+        
     def dynamicAnalysis(self):
         # only do the initializing of breakpoints/opening file/running in debug mode once
         if(self.initialized is False):
@@ -509,9 +551,7 @@ class AnalysisTab(QWidget):
 #             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
 #             print(payload)
 #             break
-             
-             
-    
+
     def sendTextToTerminal(self):
 #         binary = r2.open("hello")
 #         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
@@ -521,9 +561,6 @@ class AnalysisTab(QWidget):
 #         print(myText)   
 #         
         self.connectedClient = True
-
-        
-        
 
 # Methods to open windows
     def openCommentWindow(self):
