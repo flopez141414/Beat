@@ -1,2 +1,11 @@
-import webbrowser as wb
-wb.open_new(r'C:/Users/begv1/esktop/Beat-Team-12/documentation/BEAT-doc.pdf')
+import sys
+from PySide.QtCore import *
+from PySide.QtGui import *
+from PySide.QtWebKit import *
+
+app = QApplication(sys.argv)
+web = QWebView()
+web.settings().setAttribute(QWebSettings.PluginsEnabled, True)
+web.load(QUrl("BEAT-doc.pdf"))
+web.show()
+app.exec_()
