@@ -87,6 +87,7 @@ class PluginManagementTab(QWidget):
         self.browseButton2.clicked.connect(self.browse2)
         self.searchList.doubleClicked.connect(self.select_plugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
+        self.deleteButton.clicked.connect(self.deletePluggin)
 
         # retrieve plugin titles and display on list
         pluginList = xmlUploader.retrieve_list_of_plugins()
@@ -115,7 +116,6 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
         self.saveButton.clicked.connect(self.savexml)
-        self.deleteButton.clicked.connect(self.deletePluggin)
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):

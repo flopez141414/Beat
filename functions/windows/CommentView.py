@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QListWidget
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -16,17 +16,23 @@ class Ui_Dialog(object):
         Dialog.resize(689, 433)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
+
         self.plainTextEdit_CommView = QtWidgets.QPlainTextEdit(Dialog)
         self.plainTextEdit_CommView.setObjectName("plainTextEdit_CommView")
-        self.gridLayout.addWidget(self.plainTextEdit_CommView, 1, 1, 1, 3)
+        self.gridLayout.addWidget(self.plainTextEdit_CommView, 0, 1, 1, 1)
+
+        self.searchDocList = QListWidget()
+        self.gridLayout.addWidget(self.searchDocList, 0, 0, 1, 1)
+
         self.pushButtonSave = QtWidgets.QPushButton(Dialog)
         self.pushButtonSave.setMaximumSize(QtCore.QSize(100, 16777215))
         self.pushButtonSave.setObjectName("pushButtonSave")
-        self.gridLayout.addWidget(self.pushButtonSave, 2, 2, 1, 1)
+        self.gridLayout.addWidget(self.pushButtonSave, 1, 1, 1, 1)
+
         self.pushButtonClear = QtWidgets.QPushButton(Dialog)
         self.pushButtonClear.setMaximumSize(QtCore.QSize(100, 16777215))
         self.pushButtonClear.setObjectName("pushButtonClear")
-        self.gridLayout.addWidget(self.pushButtonClear, 2, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButtonClear, 1, 2, 1, 1)
         self.frame = QtWidgets.QFrame(Dialog)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
