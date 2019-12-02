@@ -2,14 +2,14 @@ import sys
 import r2pipe
 import pymongo
 import os
-#import webbrowser as wb #--new line to import pdf
+# import webbrowser as wb #--new line to import pdf
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5 import QtCore, QtGui
-sys.path.append("../windows")
+
 
 class DocumentationTab(QWidget):
     def __init__(self):
@@ -27,10 +27,10 @@ class DocumentationTab(QWidget):
         self.searchButton = QPushButton('Search')
 
         self.searchDocList = QListWidget()
-        #docList = QTextEdit()
+        # docList = QTextEdit()
         leftPanelLabel = QLabel('Document View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-#         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
 
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -39,9 +39,9 @@ class DocumentationTab(QWidget):
         leftLayout.addWidget(self.searchDocList, 2, 0, 1, 5)
 
         # Right panel
-        rightPanelLabel = QLabel('Detailed Document View')
+        rightPanelLabel = QLabel('Detail Document View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
-#         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         self.docContentArea = QTextEdit()
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
@@ -51,8 +51,8 @@ class DocumentationTab(QWidget):
 
         self.setLayout(mainlayout)
 
-        #display titles for docs
-        self.docTitles = ["About BEAT" , "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Set MongoDB"]
+        # display titles for docs
+        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Set MongoDB"]
         for item in self.docTitles:
             self.searchDocList.addItem(item)
         self.searchButton.clicked.connect(self.searchDocs)
@@ -72,8 +72,8 @@ class DocumentationTab(QWidget):
             current = currentQTableWidgetItem.text()
         print(current)
         if current == 'About BEAT':
-            #self.fileOpener
-            #wb.open_new(r'../../documentation/BEAT-doc.pdf'))#new line for pdf display
+            # self.fileOpener
+            # wb.open_new(r'../../documentation/BEAT-doc.pdf'))#new line for pdf display
             self.fileOpener('../../documentation/About.txt')
         elif current == 'Add Plugin':
             self.fileOpener('../../documentation/AddPlugin.txt')
@@ -83,8 +83,20 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/DelProject.txt')
         elif current == 'Make Project':
             self.fileOpener('../../documentation/MkProject.txt')
+        elif current == 'Modify Project Description':
+            self.fileOpener('../../documentation/ModifyProjDesc.txt')
         elif current == 'Set MongoDB':
             self.fileOpener('../../documentation/SetMongo.txt')
 
-    def fileOpener(self,File_object):
-        pdfViewer.display_pdf(File_object)
+    def fileOpener(self, File_object):
+        cwd = os.getcwd()
+        self.docContentArea.setText("test")
+        print(cwd)
+        try:
+            file = open(File_object, "r")
+            doc = file.read()
+            self.docContentArea.setText(doc)
+            self.docContentArea.setEnabled(False)
+            print(file.read())
+        except:
+            print(File_object, " Not Found.")
