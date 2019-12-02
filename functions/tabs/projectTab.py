@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import json
 import r2pipe
 import sys
-#XML libraries
+# XML libraries
 import xml.etree.ElementTree as ET
 import xmltodict
 import pprint
@@ -20,16 +22,14 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
     QLineEdit, QListWidget, QFileDialog, QMessageBox
 
-#Global Variables to Save Project
+# Global Variables to Save Project
 projectNameHolder = ''
 projectDescHolder = ''
 projectPathHolder = ''
 fileProperties = []
-project=[]  # type: Any
+project = []  # type: Any
 projectSelected = False
-listCounter=0
-
-#sscess finished with exit code 0
+listCounter = 0
 
 class ProjectTab(QWidget):
     def __init__(self):
@@ -65,7 +65,7 @@ class ProjectTab(QWidget):
         #rightPanelLabel.hide()
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
-        projectNameHolder = self.projNameArea # storing global
+        projectNameHolder = self.projNameArea  # storing global
         self.projDescriptionArea = QTextEdit()
         projectDescHolder = self.projDescriptionArea
         self.binaryFilePath = QTextEdit()
@@ -84,6 +84,7 @@ class ProjectTab(QWidget):
         self.saveButton.toggle()
         self.saveButton.clicked.connect(self.saveFile)
         self.updateButton.clicked.connect(self.edit_existing_project)
+        
         searchButton.clicked.connect(self.clickedSearch)
         newButton.clicked.connect(self.createNew)
 
@@ -94,7 +95,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setColumnCount(2)
         self.fillBinaryFileProperties()
         self.binaryFileProp.setEnabled(False)
-        #self.binaryFileProp.doubleClicked.connect(self.on_click)
+        # self.binaryFileProp.doubleClicked.connect(self.on_click)
         self.searchList.doubleClicked.connect(self.select_project)
         self.searchList.doubleClicked.connect(self.disableEditing)
                         
@@ -133,7 +134,8 @@ class ProjectTab(QWidget):
 
     def staticAnalysis(self, filename):
         global fileProperties
-        binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic", "relocs",
+        binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic",
+                             "relocs",
                              "relro", "stripped"]
         rlocal = r2pipe.open(filename)
         colNum = 0
@@ -148,6 +150,7 @@ class ProjectTab(QWidget):
 
     # global.py
     myFileName = ""
+
     def OpenFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -156,12 +159,10 @@ class ProjectTab(QWidget):
         if fileName:
             self.binaryFilePath.setText(fileName)
             self.staticAnalysis(fileName)
-            #             self.myFilename = fileName
             global myFileName
             myFileName = fileName
             return fileName
         self.updateProjectList()
-        return "not found"
 
     def getFileName(self):
         return self.myFilename
@@ -172,10 +173,11 @@ class ProjectTab(QWidget):
         global projectPathHolder
         global projectSelected
         global project
-        #self.turnOff()
+        # self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
+
         if xmlUploader.project_exists(pname):
             errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
         else:
@@ -218,6 +220,7 @@ class ProjectTab(QWidget):
                 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
                 xmlUploader.uploadXML(my_dict)
                 project = xmlUploader.retrieve_selected_project(pname)
+                errorMessageGnerator.showDialog("Project created successfully", "Success")
                 self.disableEditing()
                 self.browseButton.hide()
             elif pname == "":
@@ -230,9 +233,6 @@ class ProjectTab(QWidget):
         self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
         self.searchList.item(listCounter)
         return pname
-
-
-
 
     def clickedSearch(self):
         target=self.searchBox.text()
@@ -250,8 +250,6 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.binaryFilePath, 4, 2, 10, 10)
         self.rightLayout.addWidget(self.binaryFileProp, 6, 2, 8, 10)
         self.rightLayout.addWidget(self.browseButton, 4, 12)
-    
-    
         self.deleteButton.show()
 
         self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
@@ -265,9 +263,9 @@ class ProjectTab(QWidget):
 
     def select_project(self):
         global project
-        #for this mode we will load the right layout
+        # for this mode we will load the right layout
         self.loadRightLayout()
-        #disable buttons not needed
+        # disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
         self.updateButton.show()
@@ -280,8 +278,6 @@ class ProjectTab(QWidget):
         self.projNameArea.setText(project['Project']['Project_name']['#text'])
         self.projDescriptionArea.setText(project['Project']['projectDescription']['#text'])
         self.binaryFilePath.setText(project['Project']['BinaryFilePath']['#text'])
-
-        
         #self.binaryFileProp.setItem(0, 1, QTableWidgetItem(project['Project']['StaticDataSet']['OS']))
         #self.binaryFileProp.setItem(1, 1, QTableWidgetItem(project['Project']['StaticDataSet']['BinaryType']))
         #self.binaryFileProp.setItem(2, 1, QTableWidgetItem(project['Project']['StaticDataSet']['Machine']))
@@ -302,13 +298,12 @@ class ProjectTab(QWidget):
         self.updateProjectList()
         self.updateButton.show()
         return True
-        
 
     def createNew(self):
-        #enable buttons
+        # enable buttons
         self.saveButton.show()
         self.browseButton.show()
-        #disable Button
+        # disable Button
         self.deleteButton.hide()
 
         self.loadRightLayout()
@@ -335,9 +330,6 @@ class ProjectTab(QWidget):
         self.binaryFilePath.setEnabled(True)
         self.binaryFileProp.setEnabled(True)
         self.updateProjectList()
-        #self.deleteButton.setEnabled(False)
-       # self.turnOn()
-
 
     def deleteProject(self):
         global projectNameHolder
@@ -375,24 +367,13 @@ class ProjectTab(QWidget):
         projectList = xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
-            listCounter +=1
+            listCounter += 1
 
+    def edit_existing_project(self):
+        global project
+        global projectDescHolder
+        pdesc = projectDescHolder.toPlainText()
+        description = project['Project']['projectDescription']['#text']
+        xmlUploader.update_proj_description(description, pdesc)
+        errorMessageGnerator.showDialog("Description updated successfully", "Success")
 
-
-    '''''
-    We want to store the current project name.
-    Using the current project name we can retrieve the project XML from the DB
-    '''''
-    def setCurrentProject(self):
-        global projectNameHolder
-        toStore = projectNameHolder.toPlainText()
-        errorMessageGnerator.infoToast(' Current Project is ' + toStore ,'Current Project' )
-
-    '''''
-    This is to test merger
-        tree = ET.parse('practiceXml.xml')
-        xml1 = tree.getroot()
-        tree = ET.parse('testplugin.xml')
-        xml2 = tree.getroot()
-        xmlUploader.xmlmerger('PluginHolder',xml1,xml2)
-    '''''

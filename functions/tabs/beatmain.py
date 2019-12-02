@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import r2pipe
 import pymongo
@@ -19,6 +21,7 @@ from DocumentationTab import DocumentationTab
 from analysisTab import AnalysisTab
 from projectTab import ProjectTab
 from PointsOfInterestTab import PointsOfInterestTab
+
 project=""
 
 def main():
@@ -26,7 +29,6 @@ def main():
     app = QApplication([])
     mainWindow = QMainWindow()
 
-    
     # dark theme
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53,53,53))
@@ -58,7 +60,7 @@ def main():
     mainWindow.setAutoFillBackground(True)
     mainWindow.setCentralWidget(tabWidget)
     mainWindow.show()
-
+    
     sys.exit(app.exec())
 
 tree = ET.parse('../xml/Beat.xml')
@@ -68,4 +70,7 @@ if xmlUploader.is_system_empty():
     xmlUploader.uploadSystem(my_dict)
 else:
     x=0
-main()
+
+if __name__ == '__main__':
+    main()
+
