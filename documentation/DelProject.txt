@@ -3,4 +3,6 @@ HOW TO DELETE A PROJECT:
 1. Open BEAT.
 2. Go to Project Tab.
 3. Choose a project from left side panel.
-3. Select Delete button to eliminate project.
+4. Select Delete button to eliminate project.
+5. Confirmation message will appear.
+6. Click Ok to continue.
