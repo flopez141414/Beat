@@ -157,8 +157,6 @@ class AnalysisTab(QWidget):
         for items in self.searchedWord:
             self.poiList.addItem(items)
 
-    ##########################################################################333
-    ########################################
     # working on display
     def clickedPOI(self):
         current = [item.text() for item in self.poiList.selectedItems()]
@@ -489,6 +487,12 @@ class AnalysisTab(QWidget):
         # get handle to POI holder xml, create POI xmls, and upload them to DB
         parentTree = ET.parse('../xml/Project.xml')
         parentRoot = parentTree.getroot()
+        
+        currentProject = xmlUploader.retrieve_selected_project(project_name)
+        currentProjectID = currentProject['_id']
+        x = xmlUploader.updateCurrentProject(currentProjectID)
+        print(x)
+        
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
