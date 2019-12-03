@@ -1,0 +1,17 @@
+STATIC AND DYNAMIC ANALYSES:
+
+1. Open BEAT.
+2. Go to Analysis Tab.
+3. A valid project must have been saved first.
+4. Select desired project by double clicking project name under
+   Project View list.
+4. From "Select Plugin" drop-down menu, select desired plugin.
+5. Click on Run button for Static Analysis.
+   Note: Dynamic Analysis will not run before Static Analysis.
+6. When static analysis runs breakpoints are automatically set
+   on strings and functions.
+7. Select one of the following options:
+   a. Select "Point of Interest Type" from drop-down menu.
+   b. Search Point of Interest
+8. Click Run button on Dynamic Analysis to perform dynamic analysis.
+9. Click Stop button to stop Dynamic Analysis.
