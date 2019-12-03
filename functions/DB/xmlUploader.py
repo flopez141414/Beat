@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 import sys
 sys.path.append("../xml")
 sys.path.append("../windows")
-import xmlUploader
 
 # sets path to connect to DB
 def connection_project_path():
@@ -240,4 +239,12 @@ def update_plugin_description(old_description, new_description):
     myquery = {"Plugin.Plugin_Desc.#text": old_description}
     new_values = {"$set": {"Plugin.Plugin_Desc.#text": new_description}}
     plugins.update_one(myquery, new_values)
+    
+def updateCurrentProject(currentProjectID):
+    client = MongoClient('localhost',27017)
+    beatDatabase = client.beat
+    projectCollection = beatDatabase.Project
+    project = projectCollection.find({'_id': currentProjectID})
+    return project
+    
 
