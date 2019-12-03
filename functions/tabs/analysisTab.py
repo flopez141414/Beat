@@ -137,9 +137,10 @@ class AnalysisTab(QWidget):
 
         if pt.projectSelected:
             project_name = pt.project['Project']['Project_name']['#text']
-            self.display_current_project(project_name)
+            project_path = pt.project['Project']['BinaryFilePath']['#text']
+            self.display_current_project(project_name, project_path)
         else:
-            self.display_current_project("No Project Selected")
+            self.display_current_project("No Project Selected", "")
         self.setLayout(mainlayout)
         self.populate_plugin_dropdown()
 
@@ -148,10 +149,10 @@ class AnalysisTab(QWidget):
         for plugin in pluginList:
             self.pluginDropdown.addItem(plugin)
 
-    def display_current_project(self, project_name):
+    def display_current_project(self, project_name, project_path):
         self.current_project.clear()
         self.topLayout.addWidget(self.current_project, 0, 20)
-        current = 'Current Project:  ' + project_name
+        current = 'Current Project:  ' + project_name + '\n' + 'Binary File: ' + project_path
         self.current_project = QLabel(current)
         self.topLayout.addWidget(self.current_project, 0, 20)
 
@@ -483,7 +484,8 @@ class AnalysisTab(QWidget):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
         project_name = pt.project['Project']['Project_name']['#text']
-        self.display_current_project(project_name)
+        project_path = pt.project['Project']['BinaryFilePath']['#text']
+        self.display_current_project(project_name, project_path)
 
         bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
         bina.cmd("aaa")  # analyze binary in Radare2
