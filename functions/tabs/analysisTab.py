@@ -449,7 +449,7 @@ class AnalysisTab(QWidget):
             b2tf = root.find("./address")
             b2tf.text = str(hex(myFunction['offset']))
             b2tf = root.find("./parameterType")
-            b2tf.text = str(myFunction['signature'])
+            #b2tf.text = str(myFunction['signature'])
             
             breakpoints = [] # this will hold a list of our breakpoints
             breakpointElement = root.find('./breakpoints')

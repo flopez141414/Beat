@@ -47,7 +47,7 @@ class PluginManagementTab(QWidget):
         mainlayout.addLayout(self.rightLayout, 1, 1, 6, 5)
 
         # Left panel
-        searchBox = QLineEdit()
+        self.searchBox = QLineEdit()
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
         self.searchList = QListWidget()
@@ -56,7 +56,7 @@ class PluginManagementTab(QWidget):
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
-        leftLayout.addWidget(searchBox, 1, 0, 1, 3)
+        leftLayout.addWidget(self.searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 4, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 5)
         leftLayout.addWidget(newButton, 6, 0)
@@ -87,6 +87,9 @@ class PluginManagementTab(QWidget):
         self.browseButton2.clicked.connect(self.browse2)
         self.searchList.doubleClicked.connect(self.select_plugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
+        self.saveButton.clicked.connect(self.savexml)
+        self.deleteButton.clicked.connect(self.deletePluggin)
+        searchButton.clicked.connect(self.clickedSearch)
 
         # retrieve plugin titles and display on list
         pluginList = xmlUploader.retrieve_list_of_plugins()
@@ -114,8 +117,18 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
-        self.saveButton.clicked.connect(self.savexml)
-        self.deleteButton.clicked.connect(self.deletePluggin)
+
+    def clickedSearch(self):
+        target = self.searchBox.text()
+        pluginList = xmlUploader.retrieve_list_of_plugins()
+        self.searchedWord = [s for s in pluginList if target in s]
+        self.searchList.clear()
+        for items in self.searchedWord:
+            self.searchList.addItem(items)
+        if self.searchList.count() == 0:
+            errorMessageGnerator.showDialog("A plugin with that name does not exist!", "Search Result")
+
+
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):

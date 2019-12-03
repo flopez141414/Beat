@@ -2,6 +2,7 @@ import sys
 import r2pipe
 import pymongo
 import os
+import errorMessageGnerator
 # import webbrowser as wb #--new line to import pdf
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
@@ -65,6 +66,8 @@ class DocumentationTab(QWidget):
         self.searchDocList.clear()
         for items in self.searchedWord:
             self.searchDocList.addItem(items)
+        if self.searchDocList.count() == 0:
+            errorMessageGnerator.showDialog("A document with that name does not exist!", "Search Result")
 
     def readFile(self):
         current = ''
