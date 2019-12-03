@@ -2,7 +2,7 @@ import sys
 import r2pipe
 import pymongo
 import os
-# import webbrowser as wb #--new line to import pdf
+
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
@@ -52,7 +52,7 @@ class DocumentationTab(QWidget):
         self.setLayout(mainlayout)
 
         # display titles for docs
-        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Set MongoDB"]
+        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Static and Dynamic Analyses", "Set MongoDB"]
         for item in self.docTitles:
             self.searchDocList.addItem(item)
         self.searchButton.clicked.connect(self.searchDocs)
@@ -85,6 +85,8 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/MkProject.txt')
         elif current == 'Modify Project Description':
             self.fileOpener('../../documentation/ModifyProjDesc.txt')
+        elif current == 'Static and Dynamic Analyses':
+            self.fileOpener('../../documentation/StaticDynamic.txt')
         elif current == 'Set MongoDB':
             self.fileOpener('../../documentation/SetMongo.txt')
 
