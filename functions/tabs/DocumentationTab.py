@@ -30,7 +30,7 @@ class DocumentationTab(QWidget):
         # docList = QTextEdit()
         leftPanelLabel = QLabel('Document View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
 
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
