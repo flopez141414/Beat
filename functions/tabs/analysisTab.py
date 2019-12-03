@@ -47,11 +47,12 @@ class AnalysisTab(QWidget):
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
         mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
 
+        self.static_analysis_label = QLabel('Dynamic Analysis ') #B
         # Top layout elements
         self.pluginDropdown = QComboBox()
-        runStatic = QPushButton('Run')
+        self.runStatic = QPushButton('Run')
         self.poiDropdown = QComboBox()
-        runDynamic = QPushButton('Run')
+        self.runDynamic = QPushButton('Run')
         self.stopDynamic = QPushButton('Stop')
 
         # TODO: Using this button to test terminal temporarily: remove comment from setEnabled call after finished
@@ -62,11 +63,11 @@ class AnalysisTab(QWidget):
         self.topLayout.addWidget(QLabel('Plugin'), 0, 0)
         self.topLayout.addWidget(self.pluginDropdown, 0, 1, 1, 2)
         self.topLayout.addWidget(QLabel('Static Analysis'), 1, 0)
-        self.topLayout.addWidget(runStatic, 1, 1, 1, 1)
+        self.topLayout.addWidget(self.runStatic, 1, 1, 1, 1)
         self.topLayout.addWidget(QLabel('Point of Interest Type'), 2, 0)
         self.topLayout.addWidget(self.poiDropdown, 2, 1, 1, 2)
-        self.topLayout.addWidget(QLabel('Dynamic Analysis'), 1, 5, 1, 1)
-        self.topLayout.addWidget(runDynamic, 1, 6)
+        self.topLayout.addWidget(self.static_analysis_label, 1, 5, 1, 1)
+        self.topLayout.addWidget(self.runDynamic, 1, 6)
         self.topLayout.addWidget(self.stopDynamic, 1, 7)
         self.topLayout.addWidget(QLabel(), 0, 3, 1, 15)
 
@@ -94,21 +95,21 @@ class AnalysisTab(QWidget):
         self.poiContentArea = QScrollArea()
         self.terminal = QTextEdit()
         self.commentButton = QPushButton('Comments')
-        self.outputButton = QPushButton('Output')
-        self.analysisButton = QPushButton('Analysis')
+     #   self.outputButton = QPushButton('Output')
+       # self.analysisButton = QPushButton('Analysis')
         self.current_project = QLabel('Current Project: ')
 
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
         rightLayout.addWidget(self.poiContentArea, 1, 0, 10, 8)
         rightLayout.addWidget(self.terminal, 11, 0, 10, 8)
-        rightLayout.addWidget(self.analysisButton, 1, 9)
-        rightLayout.addWidget(self.outputButton, 2, 9)
+        #rightLayout.addWidget(self.analysisButton, 1, 9)
+       # rightLayout.addWidget(self.outputButton, 2, 9)
         rightLayout.addWidget(self.commentButton, 2, 8)
 
         # Functionality
         self.commentButton.clicked.connect(self.openCommentWindow)
-        self.analysisButton.clicked.connect(self.openAnalysisWindow)
-        self.outputButton.clicked.connect(self.openOutputWindow)
+       # self.analysisButton.clicked.connect(self.openAnalysisWindow)
+        #self.outputButton.clicked.connect(self.openOutputWindow)
 
         # set Plugin name
         self.pluginDropdown.addItem("Select Plugin")
@@ -117,17 +118,21 @@ class AnalysisTab(QWidget):
         self.pluginDropdown.activated[str].connect(self.onActivated)
 
         # dynamic analysis run event listener
-        runDynamic.clicked.connect(self.dynamicAnalysis)
+        self.runDynamic.clicked.connect(self.dynamicAnalysis)
         self.connectedClient = False  # flag to continue step into dynamic analysis
         self.initialized = False  # flag to see if we have already initiated dynamic analysis
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
-        runStatic.clicked.connect(self.clickStaticAnalysis)
+        self.runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
 #         self.poiList.clicked.connect(self.clickedPOI)
         self.poiList.clicked.connect(self.expandPOI)
         self.setLayout(mainlayout)
-        
+        #B this should not be visible at start
+        self.runDynamic.hide()
+        self.stopDynamic.hide()
+        self.static_analysis_label.hide()
+
         if pt.projectSelected:
             project_name = pt.project['Project']['Project_name']['#text']
             self.display_current_project(project_name)
@@ -400,6 +405,11 @@ class AnalysisTab(QWidget):
 #         self.parseNetworkItems()
 
     def onActivated(self,option):
+        #B make invisible
+        self.runDynamic.hide()
+        self.stopDynamic.hide()
+        self.static_analysis_label.hide()
+
         data=[]
         BeatTree=ET.parse("../xml/Beat.xml")
         root=BeatTree.getroot()
@@ -510,7 +520,12 @@ class AnalysisTab(QWidget):
         xmlUploader.uploadXML(my_dict)
         
         self.terminal.append("Static Analysis done!")
-    
+        ########### Make visible dynamic here
+        self.runDynamic.show()
+        self.stopDynamic.show()
+        self.static_analysis_label.show()
+
+
     def dynamicAnalysis(self):
         # only do the initializing of breakpoints/opening file/running in debug mode once
         if (self.initialized is False):
