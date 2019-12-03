@@ -53,7 +53,7 @@ class DocumentationTab(QWidget):
         self.setLayout(mainlayout)
 
         # display titles for docs
-        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Set MongoDB"]
+        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Static and Dynamic Analyses", "Set MongoDB"]
         for item in self.docTitles:
             self.searchDocList.addItem(item)
         self.searchButton.clicked.connect(self.searchDocs)
@@ -88,6 +88,8 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/MkProject.txt')
         elif current == 'Modify Project Description':
             self.fileOpener('../../documentation/ModifyProjDesc.txt')
+        elif current == 'Static and Dynamic Analyses':
+            self.fileOpener('../../documentation/StaticDynamic.txt')
         elif current == 'Set MongoDB':
             self.fileOpener('../../documentation/SetMongo.txt')
 
@@ -104,4 +106,3 @@ class DocumentationTab(QWidget):
             print(file.read())
         except:
             print(File_object, " Not Found.")
-

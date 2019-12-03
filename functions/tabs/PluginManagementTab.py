@@ -62,6 +62,11 @@ class PluginManagementTab(QWidget):
         leftLayout.addWidget(newButton, 6, 0)
 
         # Right panel
+        self.structureLabel = QLabel('Plugin Structure')
+        self.datasetLabel = QLabel('Plugin Predefined Data Set')
+        self.pluginNameLabel = QLabel('Plugin Name')
+        self.pluginDescLabel = QLabel('Plugin Description')
+        self.poisLabel = QLabel('Points of Interest')
         self.rightPanelLabel = QLabel('Detailed Plugin View')
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
@@ -97,6 +102,7 @@ class PluginManagementTab(QWidget):
             self.searchList.addItem(item)
 
     def loadRightLayout(self):
+        self.clearRightLayout()
         self.rightLayout.addWidget(self.browseButton1, 1, 6)
         self.rightLayout.addWidget(self.browseButton2, 2, 6)
         self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 10)
@@ -104,19 +110,30 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.pluginDataSet, 2, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginName, 3, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginDesc, 6, 2, 2, 1)
-        # self.rightLayout.addWidget(self.defaultOutDropdown, 5, 2, 1, 1)
         self.rightLayout.addWidget(self.pointsOI, 8, 2, 4, 1)
 
-        self.rightLayout.addWidget(QLabel('Plugin Structure'), 1, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Predefined Data Set'), 2, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Name'), 3, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Description'), 6, 1, 1, 1)
-        # self.rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Points of Interest'), 8, 1, 1, 1)
+        self.structureLabel = QLabel('Plugin Structure')
+        self.datasetLabel = QLabel('Plugin Predefined Data Set')
+        self.pluginNameLabel = QLabel('Plugin Name')
+        self.pluginDescLabel = QLabel('Plugin Description')
+        self.poisLabel = QLabel('Points of Interest')
+        self.rightLayout.addWidget(self.structureLabel, 1, 1, 1, 1)
+        self.rightLayout.addWidget(self.datasetLabel, 2, 1, 1, 1)
+        self.rightLayout.addWidget(self.pluginNameLabel, 3, 1, 1, 1)
+        self.rightLayout.addWidget(self.pluginDescLabel, 6, 1, 1, 1)
+        self.rightLayout.addWidget(self.poisLabel, 8, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 7)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
+
+    def clearRightLayout(self):
+        self.structureLabel.clear()
+        self.datasetLabel.clear()
+        self.pluginNameLabel.clear()
+        self.pluginDescLabel.clear()
+        self.poisLabel.clear()
+
 
     def clickedSearch(self):
         target = self.searchBox.text()
@@ -218,18 +235,10 @@ class PluginManagementTab(QWidget):
         list_of_poi = []
         x = plugin['Plugin']['DataInPlugin']
         for y in x:
-            print(x)
-            print('///////////////////')
-            print(y)
             #self.pointsOI.addItem(str(y.attrib['name']))
             list_of_poi.append(y)
 
         return list_of_poi
-        '''''
-        # add pois to gui list
-        for item in list_of_poi:
-            self.pointsOI.addItem(item)
-        '''''
 
     def enableEditing(self):
         self.pluginStructArea.setEnabled(True)

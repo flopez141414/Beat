@@ -71,6 +71,10 @@ class ProjectTab(QWidget):
         projectDescHolder = self.projDescriptionArea
         self.binaryFilePath = QTextEdit()
         projectPathHolder = self.binaryFilePath
+        self.projectNameLabel = QLabel('Project Name')
+        self.projectdescLabel = QLabel('Project Description')
+        self.binFileLabel = QLabel('Binary File Path')
+        self.binFilePropLabel = QLabel('Binary File Properties')
 
         self.binaryFileProp = QTableWidget()
         self.binaryFileProp.horizontalHeader().setStretchLastSection(True)
@@ -247,6 +251,11 @@ class ProjectTab(QWidget):
 
     # loads right side
     def loadRightLayout(self):
+        self.clearRightlayout()
+
+        self.rightPanelLabel = QLabel('Detailed Project View')
+        self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
+        self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 14)
         self.rightLayout.addWidget(self.projNameArea, 1, 2, 10, 10)
         self.rightLayout.addWidget(self.projDescriptionArea, 2, 2, 5, 10)
@@ -255,14 +264,25 @@ class ProjectTab(QWidget):
         self.rightLayout.addWidget(self.browseButton, 4, 12)
         self.deleteButton.show()
 
-        self.rightLayout.addWidget(QLabel('Project Name'), 1, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Project Description'), 2, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Binary File Path'), 5, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Binary File Properties'), 6, 1, 1, 1)
+        self.projectNameLabel = QLabel('Project Name')
+        self.projectdescLabel = QLabel('Project Description')
+        self.binFileLabel = QLabel('Binary File Path')
+        self.binFilePropLabel = QLabel('Binary File Properties')
+        self.rightLayout.addWidget(self.projectNameLabel, 1, 1, 1, 1)
+        self.rightLayout.addWidget(self.projectdescLabel, 2, 1, 1, 1)
+        self.rightLayout.addWidget(self.binFileLabel, 4, 1, 1, 1)
+        self.rightLayout.addWidget(self.binFilePropLabel, 6, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 8)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 8)
         self.updateButton.hide()
+
+    def clearRightlayout(self):
+        self.rightPanelLabel.clear()
+        self.projectNameLabel.clear()
+        self.projectdescLabel.clear()
+        self.binFileLabel.clear()
+        self.binFilePropLabel.clear()
 
     def select_project(self):
         global project
