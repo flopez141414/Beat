@@ -16,7 +16,7 @@ Third party software:
 Languages:
                         Python 3.x
 
-Python packages:
+Python Libraries:
                         R2Pipe
                         PyQt5
                         PyMongo
