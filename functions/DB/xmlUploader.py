@@ -97,7 +97,7 @@ def retrieve_list_of_plugins():
     list_of_plugins = []
     for item in pluginList:
         list_of_plugins.append(item['Plugin']['Plugin_name']['#text'])
-    print('hello')
+
     return list_of_plugins
 
 def is_system_empty():
@@ -171,22 +171,18 @@ def xmlmerger(holder, xml, xml2):
     tree1=ET.parse(xml)
     tree2=ET.parse(xml2)
     xml2=tree2.getroot()
-    print("+++++++++++++++++++++++++++++++++++++++++++++++")
     for element1 in tree1.findall(holder):
         element1.append(xml2)
-    
-    print("+++++++++++++++++++++++++++++++++++++++++++++++")
     return tree1
+
 def xmlmergerByAddress(holder, xml1, xml2):
     tree = ET.parse(xml1)
     xml1 = tree.getroot()
     tree = ET.parse(xml2)
     xml2 = tree.getroot()
-    print("+++++++++++++++++++++++++++++++++++++++++++++++")
     for element1 in xml1.findall(holder):
         element1.append(xml2)
     xml3=ET.dump(xml1)
-    print("+++++++++++++++++++++++++++++++++++++++++++++++")
     return xml3
 
 def uploadDataSet(xml):
@@ -202,22 +198,6 @@ def delete_selected_plugin(nameofplugin):
     plugins = connection_plugin_path()
     myquery = {"Plugin.Plugin_name.#text": nameofplugin}
     plugins.delete_one(myquery)
-
-# holder element of where to place xml2
-#def xmlmerger(holder, xml1, xml2):
-    #print("+++++++++++++++++++++++++++++++++++++++++++++++")
-    #for element1 in xml1.findall(holder):
-     #   element1.append(xml2)
-    #ET.dump(xml1)
-    #print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa')
-
-#    for elem in xml1:
- #       for subelem in elem:
-  #          print(subelem.text)
-
-   # print('debuggin')
-    #print("+++++++++++++++++++++++++++++++++++++++++++++++")
-    #return xml1
 
 def update_proj_description(old_description, new_description):
     projects = connection_project_path()

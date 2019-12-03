@@ -150,12 +150,10 @@ class PluginManagementTab(QWidget):
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
-        print('browse1')
         self.openFile(1)
 
     def browse2(self):
         self.openFile(2)
-        print('browse2')
 
     def select_plugin(self):
         # for this mode we will load the right layout
@@ -174,7 +172,6 @@ class PluginManagementTab(QWidget):
         #get list from db
         plugin = xmlUploader.retrieve_selected_plugin(pluginName)
 
-        print('*******')
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
         self.pluginStructArea.setText(plugin['Plugin']['structure_path']['#text'])
@@ -194,7 +191,6 @@ class PluginManagementTab(QWidget):
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
             if caller == 1:
-                print('1')
                 if(self.pluginxmlhandler(fileName, 1)): # if xml is good
                     self.pluginStructArea.setText(fileName)
                     poi_list = retrieve_poi_list()
@@ -202,7 +198,6 @@ class PluginManagementTab(QWidget):
                     for item in poi_list:
                         self.pointsOI.addItem(item)
             elif caller == 2:
-                print('2')
                 if (self.pluginxmlhandler(fileName, 2)):  # if xml is good
                     self.pluginDataSet.setText(fileName)
                     self.pluginxmlhandler(fileName, 2)
@@ -217,7 +212,6 @@ class PluginManagementTab(QWidget):
     def pluginxmlhandler(self, filePath, caller):
         global xml1
         global xml2
-        print('Handler')
         if(self.checkxml(filePath,caller)): # if xml is good
             if caller == 1:
                 tree = ET.parse(filePath)
@@ -407,8 +401,6 @@ def save_xml_local(self):
     name_of_file = ('testingSavingFunctionalitytolocal')
     completeName = os.path.join(savePath, name_of_file + ".txt")
 
-    print('Saving Locally')
-
 #Returns a list of strings from XML1 only
 def retrieve_poi_list():
     global xml1
@@ -417,6 +409,4 @@ def retrieve_poi_list():
 
     for y in x:
         list_of_poi.append(str(y.attrib['name']))
-        print(str(y.attrib['name']))
-
     return list_of_poi

@@ -169,12 +169,10 @@ class AnalysisTab(QWidget):
     # working on display
     def clickedPOI(self):
         current = [item.text() for item in self.poiList.selectedItems()]
-        print(' '.join(current))
         # print(self.poiSuperList2)
         current = ' '.join(current)
         option = self.poiDropdown.currentText()
         searchedPoi = [s for s in self.poiSuperList2 if current[0] in s]
-        print(searchedPoi)
         if option == "Strings":
             self.valueLine.setText(' '.join(searchedPoi[7:]))
 
@@ -420,10 +418,8 @@ class AnalysisTab(QWidget):
             data.append(item.text)
             if item.text == option:
                 pluginData = root.find('./Plugins/Plugin[@nameOfPlugin="{}"]/DataInPlugin'.format(option))
-                # print(pluginData.tag)
                 for element in pluginData:
                     plugin = element.get('name')
-                    print(plugin)
                     self.poiDropdown.addItem(plugin)
 
     def makeStringTree(self, stringsData, parentRoot):
@@ -499,6 +495,10 @@ class AnalysisTab(QWidget):
         # get handle to POI holder xml, create POI xmls, and upload them to DB
         parentTree = ET.parse('../xml/Project.xml')
         parentRoot = parentTree.getroot()
+
+        parentRootName = parentRoot.find('./Project_name')
+        parentRootName.text = project_name
+
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
