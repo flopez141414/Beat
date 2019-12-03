@@ -2,6 +2,7 @@ import sys
 import r2pipe
 import pymongo
 import os
+import errorMessageGnerator
 # import webbrowser as wb #--new line to import pdf
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
@@ -30,7 +31,7 @@ class DocumentationTab(QWidget):
         # docList = QTextEdit()
         leftPanelLabel = QLabel('Document View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
+        #leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
 
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -52,7 +53,7 @@ class DocumentationTab(QWidget):
         self.setLayout(mainlayout)
 
         # display titles for docs
-        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Set MongoDB"]
+        self.docTitles = ["About BEAT", "Add Plugin", "Delete Plugin", "Delete Project", "Make Project", "Modify Project Description", "Static and Dynamic Analyses", "Set MongoDB"]
         for item in self.docTitles:
             self.searchDocList.addItem(item)
         self.searchButton.clicked.connect(self.searchDocs)
@@ -65,6 +66,8 @@ class DocumentationTab(QWidget):
         self.searchDocList.clear()
         for items in self.searchedWord:
             self.searchDocList.addItem(items)
+        if self.searchDocList.count() == 0:
+            errorMessageGnerator.showDialog("A document with that name does not exist!", "Search Result")
 
     def readFile(self):
         current = ''
@@ -85,6 +88,8 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/MkProject.txt')
         elif current == 'Modify Project Description':
             self.fileOpener('../../documentation/ModifyProjDesc.txt')
+        elif current == 'Static and Dynamic Analyses':
+            self.fileOpener('../../documentation/StaticDynamic.txt')
         elif current == 'Set MongoDB':
             self.fileOpener('../../documentation/SetMongo.txt')
 
@@ -101,4 +106,3 @@ class DocumentationTab(QWidget):
             print(file.read())
         except:
             print(File_object, " Not Found.")
-

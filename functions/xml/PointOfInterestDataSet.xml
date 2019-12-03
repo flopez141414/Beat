@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pointOfInterestDataSet id="">
-<fileName required="true"></fileName>
   <stringHolder>
     <stringPointOfInterest id="">
 	<value></value>
 	<address></address>
 	<comment></comment>
 	<section></section>
+	<breakpoints></breakpoints>
     </stringPointOfInterest>
   </stringHolder>
   <functionHolder>
-    <functionPointOfInterest>
+    <functionPointOfInterest id="">
 	<name></name>
 	<address></address>
 	<orderOfParameters></orderOfParameters>
@@ -21,6 +21,7 @@
 	<callOrder></callOrder>
 	<comment></comment>
 	<section></section>
+	<breakpoints></breakpoints>
     </functionPointOfInterest>
   </functionHolder>
   <variableHolder>
@@ -40,6 +41,7 @@
 	<address></address>
 	<comment></comment>
 	<section></section>
+	<breakpoints></breakpoints>
     </structPointOfInterest>
   </structHolder>
   <protocolHolder>
@@ -51,6 +53,7 @@
 	<address></address>
 	<comment></comment>
 	<section></section>
+	<breakpoints></breakpoints>
     </protocolPointOfInterest>
   </protocolHolder>
 </pointOfInterestDataSet>
