@@ -48,7 +48,7 @@ class PluginManagementTab(QWidget):
         mainlayout.addLayout(self.rightLayout, 1, 1, 6, 5)
 
         # Left panel
-        searchBox = QLineEdit()
+        self.searchBox = QLineEdit()
         searchButton = QPushButton('Search')
         newButton = QPushButton('New')
         self.searchList = QListWidget()
@@ -57,12 +57,17 @@ class PluginManagementTab(QWidget):
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
 
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
-        leftLayout.addWidget(searchBox, 1, 0, 1, 3)
+        leftLayout.addWidget(self.searchBox, 1, 0, 1, 3)
         leftLayout.addWidget(searchButton, 1, 4, 1, 1)
         leftLayout.addWidget(self.searchList, 2, 0, 1, 5)
         leftLayout.addWidget(newButton, 6, 0)
 
         # Right panel
+        self.structureLabel = QLabel('Plugin Structure')
+        self.datasetLabel = QLabel('Plugin Predefined Data Set')
+        self.pluginNameLabel = QLabel('Plugin Name')
+        self.pluginDescLabel = QLabel('Plugin Description')
+        self.poisLabel = QLabel('Points of Interest')
         self.rightPanelLabel = QLabel('Detailed Plugin View')
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
@@ -90,12 +95,15 @@ class PluginManagementTab(QWidget):
         self.searchList.doubleClicked.connect(self.disableEditing)
         self.saveButton.clicked.connect(self.savexml)
         self.deleteButton.clicked.connect(self.deletePluggin)
+        searchButton.clicked.connect(self.clickedSearch)
+
         # retrieve plugin titles and display on list
         pluginList = xmlUploader.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
 
     def loadRightLayout(self):
+        self.clearRightLayout()
         self.rightLayout.addWidget(self.browseButton1, 1, 6)
         self.rightLayout.addWidget(self.browseButton2, 2, 6)
         self.rightLayout.addWidget(self.rightPanelLabel, 0, 0, 1, 10)
@@ -103,19 +111,41 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.pluginDataSet, 2, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginName, 3, 2, 2, 1)
         self.rightLayout.addWidget(self.pluginDesc, 6, 2, 2, 1)
-        # self.rightLayout.addWidget(self.defaultOutDropdown, 5, 2, 1, 1)
         self.rightLayout.addWidget(self.pointsOI, 8, 2, 4, 1)
 
-        self.rightLayout.addWidget(QLabel('Plugin Structure'), 1, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Predefined Data Set'), 2, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Name'), 3, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Plugin Description'), 6, 1, 1, 1)
-        # self.rightLayout.addWidget(QLabel('Default Output Field'), 5, 1, 1, 1)
-        self.rightLayout.addWidget(QLabel('Points of Interest'), 8, 1, 1, 1)
+        self.structureLabel = QLabel('Plugin Structure')
+        self.datasetLabel = QLabel('Plugin Predefined Data Set')
+        self.pluginNameLabel = QLabel('Plugin Name')
+        self.pluginDescLabel = QLabel('Plugin Description')
+        self.poisLabel = QLabel('Points of Interest')
+        self.rightLayout.addWidget(self.structureLabel, 1, 1, 1, 1)
+        self.rightLayout.addWidget(self.datasetLabel, 2, 1, 1, 1)
+        self.rightLayout.addWidget(self.pluginNameLabel, 3, 1, 1, 1)
+        self.rightLayout.addWidget(self.pluginDescLabel, 6, 1, 1, 1)
+        self.rightLayout.addWidget(self.poisLabel, 8, 1, 1, 1)
         self.rightLayout.addWidget(self.saveButton, 15, 7)
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
+
+    def clearRightLayout(self):
+        self.structureLabel.clear()
+        self.datasetLabel.clear()
+        self.pluginNameLabel.clear()
+        self.pluginDescLabel.clear()
+        self.poisLabel.clear()
+
+
+    def clickedSearch(self):
+        target = self.searchBox.text()
+        pluginList = xmlUploader.retrieve_list_of_plugins()
+        self.searchedWord = [s for s in pluginList if target in s]
+        self.searchList.clear()
+        for items in self.searchedWord:
+            self.searchList.addItem(items)
+        if self.searchList.count() == 0:
+            errorMessageGnerator.showDialog("A plugin with that name does not exist!", "Search Result")
+
 
 
     # aids in opening a file. Tells which button was clicked
@@ -206,18 +236,10 @@ class PluginManagementTab(QWidget):
         list_of_poi = []
         x = plugin['Plugin']['DataInPlugin']
         for y in x:
-            print(x)
-            print('///////////////////')
-            print(y)
             #self.pointsOI.addItem(str(y.attrib['name']))
             list_of_poi.append(y)
 
         return list_of_poi
-        '''''
-        # add pois to gui list
-        for item in list_of_poi:
-            self.pointsOI.addItem(item)
-        '''''
 
     def enableEditing(self):
         self.pluginStructArea.setEnabled(True)
@@ -281,7 +303,7 @@ class PluginManagementTab(QWidget):
         else:
             if pname != "" and pdesc != "" and plugpath != "" and data != "":
                 xml1.attrib['nameOfPlugin']=pname
-            
+
                 b2tf = xml1.find("./Plugin_name")
                 b2tf.text = pname
                 b2tf = xml1.find("./Plugin_Desc")
@@ -291,13 +313,12 @@ class PluginManagementTab(QWidget):
                 b2tf = xml1.find("./predefined_dataset_path")
                 with open(data, 'r') as file:
                     x = file.read().replace('\n', '')
-                
+
                 y=open("../xml/"+pname+"DataSet.xml","w")
                 y.write(x)
                 y.close()
                 b2tf.text = data
                 my_dict = ET.tostring(xml1, encoding='utf8').decode('utf8')
-                print(my_dict)
                 newPlugin=open("../xml/"+pname+"plugin.xml",'w')
                 newPlugin.write(my_dict)
                 newPlugin.close()
@@ -308,10 +329,10 @@ class PluginManagementTab(QWidget):
                 xmlUploader.delete_system()
                 systemTree=ET.parse('../xml/Beat.xml')
                 systemRoot=systemTree.getroot()
-                
+
                 xmlUploader.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
-                
-            
+
+
                 #xmlUploader.uploadSystem(system)
                 xmlUploader.uploadPlugin(my_dict)
                 self.updatePluginList()
@@ -333,7 +354,6 @@ class PluginManagementTab(QWidget):
         global plugin
         global descH
         pdesc = descH.toPlainText()
-        print(pdesc)
         description = plugin['Plugin']['Plugin_Desc']['#text']
         xmlUploader.update_plugin_description(description, pdesc)
         errorMessageGnerator.showDialog("Description updated successfully", "Success")

@@ -398,6 +398,7 @@ class AnalysisTab(QWidget):
 #             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
 #         self.displayPOIparam()
 #         self.parseNetworkItems()
+
     def onActivated(self,option):
         data=[]
         BeatTree=ET.parse("../xml/Beat.xml")
@@ -413,7 +414,7 @@ class AnalysisTab(QWidget):
                 pluginData=root.find('./Plugins/Plugin[@nameOfPlugin="{}"]/DataInPlugin'.format(option))
                 #print(pluginData.tag)
                 for element in pluginData:
-                    plugin= element.get('name')        
+                    plugin= element.get('name')
                     self.poiDropdown.addItem(plugin)
             
     def makeStringTree(self, stringsData, parentRoot):
@@ -424,8 +425,8 @@ class AnalysisTab(QWidget):
         root=tree.getroot()
         for index in range(len(stringsData)): # access each string
             myString = stringsData[index] # this dictionary contains one String POI
-            
-           
+
+
             b2tf = root.find(".//stringPointOfInterest/value")
             b2tf.text = str(base64.standard_b64decode(myString['string']))
             b2tf = root.find(".//stringPointOfInterest/address")
@@ -503,10 +504,10 @@ class AnalysisTab(QWidget):
         projectTree=ET.parse('../tabs/'+project_name+'.xml')
         projectRoot=projectTree.getroot()
         my_dict=ET.tostring(projectRoot, encoding='utf8').decode('utf8')
-        
+
         xmlUploader.delete_selected_project(project_name)
         os.remove('../tabs/'+project_name+'data.xml')
-        xmlUploader.uploadXML(my_dict) 
+        xmlUploader.uploadXML(my_dict)
         
         self.terminal.append("Static Analysis done!")
     
