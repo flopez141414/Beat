@@ -1,0 +1,261 @@
+<Project> 
+  <Project_name required="true">proj1</Project_name>
+  <projectDescription required="true">proje2</projectDescription>
+  <BinaryFilePath required="true">/mnt/c/Users/Rocio/PycharmProjects/Beat-Team-12/executables/hello</BinaryFilePath>
+  <StaticDataSet>
+    <OS>linux</OS>
+    <BinaryType>elf</BinaryType>
+    <Machine>AMD</Machine>
+    <Class>ELF64</Class>
+    <Bits>64</Bits>
+    <Language>c</Language>
+    <Canary>false</Canary>
+    <Crypto>false</Crypto>
+    <NX>true</NX>
+    <Pic>true</Pic>
+    <Relocs>true</Relocs>
+    <Relro>partial</Relro>
+    <Stripped>false</Stripped>
+  </StaticDataSet>
+  <AllData> <pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'inside the function'</value>
+	<address>0x200a</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet><pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'inside the function'</value>
+	<address>0x200a</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet><pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'inside the function'</value>
+	<address>0x200a</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet><pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'inside the function'</value>
+	<address>0x200a</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet></AllData>
+  <StaticAnalysis>
+    <pointOfInterestDataSet id="">
+    </pointOfInterestDataSet>
+  </StaticAnalysis>
+  <DynamicAnalysis>
+    <Run id="">
+      <DynamicData runID="">
+      </DynamicData>
+    </Run>
+  </DynamicAnalysis>
+  <Output>
+  </Output>
+</Project>
