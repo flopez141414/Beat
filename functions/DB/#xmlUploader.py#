@@ -60,7 +60,7 @@ def uploadXML(xml):
 
 def uploadDataSet(xml):
     client = MongoClient('localhost', 27017)
-    db = client.beat
+    db = client.pymongo_test
     my_dict = xmltodict.parse(xml)
     dataSet = db.dataSet
     result = dataSet.insert_one(my_dict)
@@ -196,11 +196,13 @@ def uploadDataSet(xml):
     dataSet = db.Project
     result = dataSet.insert_one(my_dict)
 def delete_system():
-    system = connection_system_path()
-    system.drop()
+    plugins = connection_system_path()
+    plugins.drop()
 def delete_selected_plugin(nameofplugin):
     plugins = connection_plugin_path()
     myquery = {"Plugin.Plugin_name.#text": nameofplugin}
+    pl
+    plugins['Plugin']['Plugin_name']['#text']
     plugins.delete_one(myquery)
 
 # holder element of where to place xml2

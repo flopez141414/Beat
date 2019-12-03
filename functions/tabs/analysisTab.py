@@ -1,5 +1,5 @@
 import sys
-
+import os
 import r2pipe
 import pymongo
 import json
@@ -410,48 +410,50 @@ class AnalysisTab(QWidget):
         for item in pluginName:
             data.append(item.text)
             if item.text==option:
-                pluginData=root.find('./Plugins/Plugin[@name="{}"]/DataInPlugin'.format(option))
+                pluginData=root.find('./Plugins/Plugin[@nameOfPlugin="{}"]/DataInPlugin'.format(option))
                 #print(pluginData.tag)
                 for element in pluginData:
-                    plugin= element.get('name')
-                    print(plugin)        
+                    plugin= element.get('name')        
                     self.poiDropdown.addItem(plugin)
             
     def makeStringTree(self, stringsData, parentRoot):
 #             stringHolderElement = parentRoot.find('./stringHolder')
-        poiHolderElement = parentRoot.find('./StaticAnalysis')
         
+        #poiHolderElement = parentRoot.find('.//pointOfInterestDataSet')
+        tree=ET.parse('../xml/PointOfInterestDataSet.xml')
+        root=tree.getroot()
         for index in range(len(stringsData)): # access each string
             myString = stringsData[index] # this dictionary contains one String POI
-            tree = ET.parse('../xml/StringPointOfInterest.xml')
-            root = tree.getroot()
-            b2tf = root.find("./value")
+            
+           
+            b2tf = root.find(".//stringPointOfInterest/value")
             b2tf.text = str(base64.standard_b64decode(myString['string']))
-            b2tf = root.find("./address")
+            b2tf = root.find(".//stringPointOfInterest/address")
             b2tf.text = str(hex(myString['vaddr']))
-            b2tf = root.find("./section")
+            b2tf = root.find(".//stringPointOfInterest/section")
             b2tf.text = str(myString['section'])
 #                 stringHolderElement.append(root)
-            poiHolderElement.append(root)
+            #poiHolderElement.append(root)
+        return root
 
     def makeFunctionsTree(self, functionsData, parentRoot, r2buffer):
 #         functionHolderElement = parentRoot.find('./StaticAnalysis')
-        poiHolderElement = parentRoot.find('./StaticAnalysis')
+        poiHolderElement = parentRoot.find('.//pointOfInterestDataSet')
+        tree=ET.parse('../xml/PointOfInterestDataSet.xml')
+        root=tree.getroot()
         r2buffer.cmd('doo')
          
         for index in range(len(functionsData)): # access each function
             myFunction = functionsData[index] # this dictionary contains one function POI
-            tree = ET.parse('../xml/FunctionPointOfInterest.xml')
-            root = tree.getroot()
-            b2tf = root.find("./name")
+            b2tf = root.find(".//functionPointOfInterest/name")
             b2tf.text = str(myFunction['name'])
-            b2tf = root.find("./address")
+            b2tf = root.find(".//functionPointOfInterest/address")
             b2tf.text = str(hex(myFunction['offset']))
-            b2tf = root.find("./parameterType")
+            b2tf = root.find(".//functionPointOfInterest/parameterType")
             b2tf.text = str(myFunction['signature'])
             
             breakpoints = [] # this will hold a list of our breakpoints
-            breakpointElement = root.find('./breakpoints')
+            breakpointElement = root.find('.//functionPointOfInterest/breakpoints')
             jsonReferences = json.loads(r2buffer.cmd('axtj '+ myFunction['name']))
             breakpoints.clear()
             
@@ -487,12 +489,24 @@ class AnalysisTab(QWidget):
         jsonFunctions = json.loads(functionsPOI)
         
         # get handle to POI holder xml, create POI xmls, and upload them to DB
-        parentTree = ET.parse('../xml/Project.xml')
+        parentTree = ET.parse('../xml/PointOfInterestDataSet.xml')
         parentRoot = parentTree.getroot()
-        self.makeStringTree(jsonStrings, parentRoot)
-        self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
-        parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        xmlUploader.uploadDataSet(parent_dict) 
+        temp=self.makeStringTree(jsonStrings, parentRoot)
+        #self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
+        parent_dict = ET.tostring(temp, encoding='utf8').decode('utf8')
+        #xmlproject1=open('../tabs/'+project_name+'.xml','w')
+        y=open("../tabs/"+project_name+"data.xml","w")
+        y.write(parent_dict)
+        y.close()
+        temp=xmlUploader.xmlmerger('.//AllData','../tabs/'+project_name+'.xml','../tabs/'+project_name+'data.xml')
+        temp.write('../tabs/'+project_name+'.xml')
+        projectTree=ET.parse('../tabs/'+project_name+'.xml')
+        projectRoot=projectTree.getroot()
+        my_dict=ET.tostring(projectRoot, encoding='utf8').decode('utf8')
+        
+        xmlUploader.delete_selected_project(project_name)
+        os.remove('../tabs/'+project_name+'data.xml')
+        xmlUploader.uploadXML(my_dict) 
         
         self.terminal.append("Static Analysis done!")
     

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf8'?>
+<pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\\n            [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\\n            [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\\n            [-w deadline] [-W timeout] [hop1 ...] destination\\n'</value>
+	<address>0xb4a8</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet>

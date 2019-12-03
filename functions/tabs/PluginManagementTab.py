@@ -10,6 +10,7 @@ import xmltodict
 import pprint
 import urllib
 import os.path
+import os
 
 sys.path.append("../DB")
 sys.path.append("../windows")
@@ -87,7 +88,8 @@ class PluginManagementTab(QWidget):
         self.browseButton2.clicked.connect(self.browse2)
         self.searchList.doubleClicked.connect(self.select_plugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
-
+        self.saveButton.clicked.connect(self.savexml)
+        self.deleteButton.clicked.connect(self.deletePluggin)
         # retrieve plugin titles and display on list
         pluginList = xmlUploader.retrieve_list_of_plugins()
         for item in pluginList:
@@ -114,8 +116,7 @@ class PluginManagementTab(QWidget):
         self.rightLayout.addWidget(self.deleteButton, 15, 1)
         self.rightLayout.addWidget(self.updateButton, 15, 7)
         self.updateButton.hide()
-        self.saveButton.clicked.connect(self.savexml)
-        self.deleteButton.clicked.connect(self.deletePluggin)
+
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
@@ -262,7 +263,6 @@ class PluginManagementTab(QWidget):
                 self.searchList.takeItem(self.searchList.row(item))
             self.updatePluginList()
 
-
     def savexml(self):
         global xml1
         global xml2
@@ -280,6 +280,8 @@ class PluginManagementTab(QWidget):
             errorMessageGnerator.showDialog("A plugin with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and plugpath != "" and data != "":
+                xml1.attrib['nameOfPlugin']=pname
+            
                 b2tf = xml1.find("./Plugin_name")
                 b2tf.text = pname
                 b2tf = xml1.find("./Plugin_Desc")
@@ -287,9 +289,30 @@ class PluginManagementTab(QWidget):
                 b2tf = xml1.find("./structure_path")
                 b2tf.text = plugpath
                 b2tf = xml1.find("./predefined_dataset_path")
+                with open(data, 'r') as file:
+                    x = file.read().replace('\n', '')
+                
+                y=open("../xml/"+pname+"DataSet.xml","w")
+                y.write(x)
+                y.close()
                 b2tf.text = data
-
                 my_dict = ET.tostring(xml1, encoding='utf8').decode('utf8')
+                print(my_dict)
+                newPlugin=open("../xml/"+pname+"plugin.xml",'w')
+                newPlugin.write(my_dict)
+                newPlugin.close()
+                beatTree='../xml/Beat.xml'
+                pluginTree="../xml/"+pname+"plugin.xml"
+                system=xmlUploader.xmlmerger('.//Plugins',beatTree,pluginTree)
+                system.write('../xml/Beat.xml')
+                xmlUploader.delete_system()
+                systemTree=ET.parse('../xml/Beat.xml')
+                systemRoot=systemTree.getroot()
+                
+                xmlUploader.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
+                
+            
+                #xmlUploader.uploadSystem(system)
                 xmlUploader.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()

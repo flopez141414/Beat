@@ -1,10 +1,4 @@
-<System>
-  <Name>BEAT</Name>
-  <Projects>
-    <Project>
-    </Project>
-  </Projects>
-  <Plugins>
+<?xml version='1.0' encoding='utf8'?>
 <Plugin nameOfPlugin="Network">
       <Plugin_name required="true">Network</Plugin_name>
    <Plugin_Desc required="true">asdasd</Plugin_Desc>
@@ -52,5 +46,4 @@
 	  </DynamicRadare2Instructions>
 	</Protocols>
       </DataInPlugin>
-    </Plugin></Plugins>
-</System>
+    </Plugin>

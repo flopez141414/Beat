@@ -1,0 +1,204 @@
+<Project> 
+  <Project_name required="true">myProject</Project_name>
+  <projectDescription required="true">asdf</projectDescription>
+  <BinaryFilePath required="true">/home/jmtrujillot/Desktop/Beat-Team-12/executables/ping.exe</BinaryFilePath>
+  <StaticDataSet>
+    <OS>linux</OS>
+    <BinaryType>elf</BinaryType>
+    <Machine>AMD</Machine>
+    <Class>ELF64</Class>
+    <Bits>64</Bits>
+    <Language>c</Language>
+    <Canary>true</Canary>
+    <Crypto>false</Crypto>
+    <NX>true</NX>
+    <Pic>true</Pic>
+    <Relocs>false</Relocs>
+    <Relro>full</Relro>
+    <Stripped>true</Stripped>
+  </StaticDataSet>
+  <AllData> <pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\\n            [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\\n            [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\\n            [-w deadline] [-W timeout] [hop1 ...] destination\\n'</value>
+	<address>0xb4a8</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet><pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\\n            [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\\n            [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\\n            [-w deadline] [-W timeout] [hop1 ...] destination\\n'</value>
+	<address>0xb4a8</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet><pointOfInterestDataSet id="">
+  <stringHolder>
+    <stringPointOfInterest id="">
+	<value>b'Usage: ping [-aAbBdDfhLnOqrRUvV64] [-c count] [-i interval] [-I interface]\\n            [-m mark] [-M pmtudisc_option] [-l preload] [-p pattern] [-Q tos]\\n            [-s packetsize] [-S sndbuf] [-t ttl] [-T timestamp_option]\\n            [-w deadline] [-W timeout] [hop1 ...] destination\\n'</value>
+	<address>0xb4a8</address>
+	<comment />
+	<section>.rodata</section>
+	<breakpoints />
+    </stringPointOfInterest>
+  </stringHolder>
+  <functionHolder>
+    <functionPointOfInterest id="">
+	<name />
+	<address />
+	<orderOfParameters />
+	<parameterType />
+	<parameterValue />
+	<returnType />
+	<returnValue />
+	<callOrder />
+	<comment />
+	<section />
+	<breakpoints />
+    </functionPointOfInterest>
+  </functionHolder>
+  <variableHolder>
+    <variablePointOfInterest id="">
+	<type />
+	<value />
+	<address />
+	<comment />
+	<section />
+    </variablePointOfInterest>
+  </variableHolder>
+  <structHolder>
+    <structPointOfInterest id="">
+	<value />
+	<order />
+	<type />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </structPointOfInterest>
+  </structHolder>
+  <protocolHolder>
+    <protocolPointOfInterest id="">
+	<structure />
+	<size />
+	<value />
+	<section />
+	<address />
+	<comment />
+	<section />
+	<breakpoints />
+    </protocolPointOfInterest>
+  </protocolHolder>
+</pointOfInterestDataSet></AllData>
+  <StaticAnalysis>
+    <pointOfInterestDataSet id="">
+    </pointOfInterestDataSet>
+  </StaticAnalysis>
+  <DynamicAnalysis>
+    <Run id="">
+      <DynamicData runID="">
+      </DynamicData>
+    </Run>
+  </DynamicAnalysis>
+  <Output>
+  </Output>
+</Project>

@@ -218,6 +218,9 @@ class ProjectTab(QWidget):
                 b2tf = root.find("./StaticDataSet/Stripped")
                 b2tf.text = fileProperties[12]
                 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
+                xmlproject1=open('../tabs/'+pname+'.xml','w')
+                xmlproject1.write(my_dict)
+                xmlproject1.close()
                 xmlUploader.uploadXML(my_dict)
                 project = xmlUploader.retrieve_selected_project(pname)
                 errorMessageGnerator.showDialog("Project created successfully", "Success")
