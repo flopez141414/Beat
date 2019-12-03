@@ -1,7 +1,7 @@
 
 BEAT
 ------------
-Version: 6.0
+Version: 7.0
 
 Commit: https://github.com/flopez141414/Beat-Team-12
 
