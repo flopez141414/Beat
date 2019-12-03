@@ -52,5 +52,52 @@
 	  </DynamicRadare2Instructions>
 	</Protocols>
       </DataInPlugin>
+    </Plugin><Plugin nameOfPlugin="Network2">
+      <Plugin_name required="true">Network2</Plugin_name>
+   <Plugin_Desc required="true">asdsd</Plugin_Desc>
+	<structure_path required="true">/home/jmtrujillot/Desktop/Beat-Team-12/functions/xml/Plugin.xml</structure_path>
+	<predefined_dataset_path required="true">/home/jmtrujillot/Desktop/Beat-Team-12/functions/xml/PointOfInterestDataSet.xml</predefined_dataset_path>
+      <Filters>
+	<Filter id="1">main</Filter>
+	<Filter id="2">network</Filter>
+	<Filter id="3">socket</Filter>
+	<Filter id="4">send</Filter>
+	<Filter id="5">receive</Filter>
+	<Filter id="6">connect</Filter>
+	<Filter id="7">ipv4</Filter>
+	<Filter id="8">ipv6</Filter>
+      </Filters>
+      <DataInPlugin>
+	<Strings name="Strings">
+	  <StaticRadare2Instruction>izz</StaticRadare2Instruction>
+	  <DynamicRadare2Instructions>
+	    <Instruction id="" />
+	  </DynamicRadare2Instructions>
+	</Strings>
+	<Functions name="Functions">
+	  <StaticRadare2Instruction />
+	  <DynamicRadare2Instructions>
+	    <Instruction id="" />
+	  </DynamicRadare2Instructions>
+	</Functions>
+	<Variables name="Variables">
+	  <StaticRadare2Instruction />
+	  <DynamicRadare2Instructions>
+	    <Instruction id="" />
+	  </DynamicRadare2Instructions>
+	</Variables>
+	<Structures name="Structures">
+	  <StaticRadare2Instruction />
+	  <DynamicRadare2Instructions>
+	    <Instruction id="" />
+	  </DynamicRadare2Instructions>
+	</Structures>
+	<Protocols name="Protocols">
+	  <StaticRadare2Instruction />
+	  <DynamicRadare2Instructions>
+	    <Instruction id="" />
+	  </DynamicRadare2Instructions>
+	</Protocols>
+      </DataInPlugin>
     </Plugin></Plugins>
 </System>

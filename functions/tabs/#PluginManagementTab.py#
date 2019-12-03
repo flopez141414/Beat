@@ -144,7 +144,7 @@ class PluginManagementTab(QWidget):
         #get list from db
         plugin = xmlUploader.retrieve_selected_plugin(pluginName)
 
-        print('*******')
+        
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
         self.pluginStructArea.setText(plugin['Plugin']['structure_path']['#text'])
@@ -247,6 +247,8 @@ class PluginManagementTab(QWidget):
         list_of_poi = []
         x = plugin['Plugin']['DataInPlugin']
         for y in x:
+            print(x)
+            print(y)
             #self.pointsOI.addItem(str(y.attrib['name']))
             list_of_poi.append(y)
 

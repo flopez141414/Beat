@@ -157,10 +157,12 @@ class ProjectTab(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open file", "",
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
-            self.binaryFilePath.setText(fileName)
-            self.staticAnalysis(fileName)
-            global myFileName
-            myFileName = fileName
+            if (self.check_architecture(fileName)):  # B if valid architecture of exe file continue
+                
+                self.binaryFilePath.setText(fileName)
+                self.staticAnalysis(fileName)
+                global myFileName
+                myFileName = fileName
             return fileName
         self.updateProjectList()
 
@@ -358,7 +360,24 @@ class ProjectTab(QWidget):
         name = project['Project']['Project_name']['#text']
         description = project['Project']['projectDescription']['#text']
         xmlUploader.update_proj_description(description, pdesc)
-
+    def check_architecture(self, filename):
+        
+        try:
+            rlocal = r2pipe.open(filename)
+            binInfo = rlocal.cmd('iI').splitlines()
+            for x in binInfo:
+                matchingline = [s for s in binInfo if x in s]
+                a = matchingline[0].split()
+                if a[1]=='x86':
+                    return True
+                errorMessageGnerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
+                return False
+        except:
+            errorMessageGnerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
+            return False
+        
+        return False
+    
     def turnOff(self):
         self.saveButton.hide()
 
