@@ -29,7 +29,6 @@ from OutputFieldView import Ui_Dialog as output_Field_Window
 
 
 class AnalysisTab(QWidget):
-
     def __init__(self):
         super().__init__()
         stringsPOI = []
