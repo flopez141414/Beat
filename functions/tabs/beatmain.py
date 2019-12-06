@@ -8,7 +8,6 @@ import xmltodict
 sys.path.append("../DB")
 sys.path.append("../xml")
 import xmlUploader
-# from xmlUploader import uploadXml
 
 
 from PyQt5 import QtGui, QtCore
@@ -51,7 +50,6 @@ def main():
     tabWidget.addTab(ProjectTab(), "Project tab")
     tabWidget.addTab(PluginManagementTab(), "Plugin Management Tab")
     tabWidget.addTab(AnalysisTab(), "Analysis Tab")
-    #tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
     tabWidget.addTab(DocumentationTab(), "Documentation Tab")
 
     mainWindow.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")
