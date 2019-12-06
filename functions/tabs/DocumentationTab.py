@@ -3,7 +3,6 @@ import r2pipe
 import pymongo
 import os
 import errorMessageGnerator
-# import webbrowser as wb #--new line to import pdf
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
@@ -28,10 +27,8 @@ class DocumentationTab(QWidget):
         self.searchButton = QPushButton('Search')
 
         self.searchDocList = QListWidget()
-        # docList = QTextEdit()
         leftPanelLabel = QLabel('Document View')
         leftPanelLabel.setAlignment(Qt.AlignCenter)
-        #leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
 
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftLayout.addWidget(leftPanelLabel, 0, 0, 1, 5)
@@ -42,7 +39,6 @@ class DocumentationTab(QWidget):
         # Right panel
         rightPanelLabel = QLabel('Detail Document View')
         rightPanelLabel.setAlignment(Qt.AlignCenter)
-        #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         self.docContentArea = QTextEdit()
         rightLayout.addWidget(rightPanelLabel, 0, 0, 1, 10)
@@ -58,8 +54,6 @@ class DocumentationTab(QWidget):
             self.searchDocList.addItem(item)
         self.searchButton.clicked.connect(self.searchDocs)
 
-    # def clickEvent(self):
-    #     print("Clicked")
     def searchDocs(self):
         target = self.searchBox.text()
         self.searchedWord = [s for s in self.docTitles if target in s]
@@ -75,8 +69,6 @@ class DocumentationTab(QWidget):
             current = currentQTableWidgetItem.text()
         print(current)
         if current == 'About BEAT':
-            # self.fileOpener
-            # wb.open_new(r'../../documentation/BEAT-doc.pdf'))#new line for pdf display
             self.fileOpener('../../documentation/About.txt')
         elif current == 'Add Plugin':
             self.fileOpener('../../documentation/AddPlugin.txt')
@@ -94,7 +86,6 @@ class DocumentationTab(QWidget):
             self.fileOpener('../../documentation/SetMongo.txt')
 
     def fileOpener(self,File_object):
-
         cwd = os.getcwd()
         self.docContentArea.setText("test")
         print(cwd)

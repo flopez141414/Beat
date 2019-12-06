@@ -146,8 +146,6 @@ class PluginManagementTab(QWidget):
         if self.searchList.count() == 0:
             errorMessageGnerator.showDialog("A plugin with that name does not exist!", "Search Result")
 
-
-
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
         self.openFile(1)
@@ -255,9 +253,7 @@ class PluginManagementTab(QWidget):
                 errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
                 return False
 
-
         return True
-
 
     def updatePluginList(self):
         self.searchList.clear()
@@ -272,7 +268,6 @@ class PluginManagementTab(QWidget):
         list_of_poi = []
         x = plugin['Plugin']['DataInPlugin']
         for y in x:
-            #self.pointsOI.addItem(str(y.attrib['name']))
             list_of_poi.append(y)
 
         return list_of_poi
@@ -365,17 +360,12 @@ class PluginManagementTab(QWidget):
                 xmlUploader.delete_system()
                 systemTree=ET.parse('../xml/Beat.xml')
                 systemRoot=systemTree.getroot()
-
                 xmlUploader.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
-
-
-                #xmlUploader.uploadSystem(system)
                 xmlUploader.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
                 errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin",
                                                 "Success")
-                # self.save_xml_local()
             if pname == "":
                 errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
             if pdesc == "":
@@ -385,7 +375,6 @@ class PluginManagementTab(QWidget):
             if data == "":
                 errorMessageGnerator.showDialog("Enter a plugin dataset", "Missing dataset")
 
-
     def edit_existing_plugin(self):
         global plugin
         global descH
@@ -393,7 +382,6 @@ class PluginManagementTab(QWidget):
         description = plugin['Plugin']['Plugin_Desc']['#text']
         xmlUploader.update_plugin_description(description, pdesc)
         errorMessageGnerator.showDialog("Description updated successfully", "Success")
-
 
 def save_xml_local(self):
     global xml2
