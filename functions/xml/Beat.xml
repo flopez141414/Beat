@@ -52,11 +52,11 @@
 	  </DynamicRadare2Instructions>
 	</Protocols>
       </DataInPlugin>
-    </Plugin><Plugin nameOfPlugin="network">
-    <Plugin_name required="true">network</Plugin_name>
-    <Plugin_Desc required="true">network plugin</Plugin_Desc>
-    <structure_path required="true">/mnt/c/Users/Felipe/git/Beat-Team-1222/functions/xml/Plugin.xml</structure_path>
-    <predefined_dataset_path required="true">/mnt/c/Users/Felipe/git/Beat-Team-1222/functions/xml/PointOfInterestDataSet.xml</predefined_dataset_path>
+    </Plugin><Plugin nameOfPlugin="Networks">
+    <Plugin_name required="true">Networks</Plugin_name>
+    <Plugin_Desc required="true">Networks</Plugin_Desc>
+    <structure_path required="true">/mnt/c/Users/Rocio/PycharmProjects/Beat-Team-12/functions/xml/Plugin.xml</structure_path>
+    <predefined_dataset_path required="true">/mnt/c/Users/Rocio/PycharmProjects/Beat-Team-12/functions/xml/PointOfInterestDataSet.xml</predefined_dataset_path>
     <Filters>
         <Filter id="1">main</Filter>
         <Filter id="2">network</Filter>
@@ -99,9 +99,9 @@
             </DynamicRadare2Instructions>
         </Protocols>
     </DataInPlugin>
-</Plugin><Plugin nameOfPlugin="network">
-    <Plugin_name required="true">network</Plugin_name>
-    <Plugin_Desc required="true">network</Plugin_Desc>
+</Plugin><Plugin nameOfPlugin="Network">
+    <Plugin_name required="true">Network</Plugin_name>
+    <Plugin_Desc required="true">Network plugin for demo</Plugin_Desc>
     <structure_path required="true">/mnt/c/Users/Felipe/git/Beat-Team-1222/functions/xml/Plugin.xml</structure_path>
     <predefined_dataset_path required="true">/mnt/c/Users/Felipe/git/Beat-Team-1222/functions/xml/PointOfInterestDataSet.xml</predefined_dataset_path>
     <Filters>

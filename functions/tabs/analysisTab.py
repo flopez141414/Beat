@@ -137,9 +137,10 @@ class AnalysisTab(QWidget):
 
         if pt.projectSelected:
             project_name = pt.project['Project']['Project_name']['#text']
-            self.display_current_project(project_name)
+            project_path = pt.project['Project']['BinaryFilePath']['#text']
+            self.display_current_project(project_name, project_path)
         else:
-            self.display_current_project("No Project Selected")
+            self.display_current_project("No Project Selected", "")
         self.setLayout(mainlayout)
         self.populate_plugin_dropdown()
 
@@ -148,10 +149,10 @@ class AnalysisTab(QWidget):
         for plugin in pluginList:
             self.pluginDropdown.addItem(plugin)
 
-    def display_current_project(self, project_name):
+    def display_current_project(self, project_name, project_path):
         self.current_project.clear()
         self.topLayout.addWidget(self.current_project, 0, 20)
-        current = 'Current Project:  ' + project_name
+        current = 'Current Project:  ' + project_name + '\n' + 'Binary File: ' + project_path
         self.current_project = QLabel(current)
         self.topLayout.addWidget(self.current_project, 0, 20)
 
@@ -168,12 +169,10 @@ class AnalysisTab(QWidget):
     # working on display
     def clickedPOI(self):
         current = [item.text() for item in self.poiList.selectedItems()]
-        print(' '.join(current))
         # print(self.poiSuperList2)
         current = ' '.join(current)
         option = self.poiDropdown.currentText()
         searchedPoi = [s for s in self.poiSuperList2 if current[0] in s]
-        print(searchedPoi)
         if option == "Strings":
             self.valueLine.setText(' '.join(searchedPoi[7:]))
 
@@ -419,10 +418,8 @@ class AnalysisTab(QWidget):
             data.append(item.text)
             if item.text == option:
                 pluginData = root.find('./Plugins/Plugin[@nameOfPlugin="{}"]/DataInPlugin'.format(option))
-                # print(pluginData.tag)
                 for element in pluginData:
                     plugin = element.get('name')
-                    print(plugin)
                     self.poiDropdown.addItem(plugin)
 
     def makeStringTree(self, stringsData, parentRoot):
@@ -483,7 +480,8 @@ class AnalysisTab(QWidget):
         self.poiList.clear()
         self.terminal.setText("Running Static Analysis..")
         project_name = pt.project['Project']['Project_name']['#text']
-        self.display_current_project(project_name)
+        project_path = pt.project['Project']['BinaryFilePath']['#text']
+        self.display_current_project(project_name, project_path)
 
         bina = r2pipe.open(pt.project['Project']['BinaryFilePath']['#text'])
         bina.cmd("aaa")  # analyze binary in Radare2
@@ -499,9 +497,9 @@ class AnalysisTab(QWidget):
         
         
         parentRoot = parentTree.getroot()
-        parentTreeName = parentRoot.find("./Project_name")
-        parentTreeName.text = project_name        
-        
+        parentRootName = parentRoot.find('./Project_name')
+        parentRootName.text = project_name
+
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
