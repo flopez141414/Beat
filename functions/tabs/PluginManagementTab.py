@@ -1,26 +1,30 @@
-import sys
-import r2pipe
-import pymongo
-import xmlUploader
-import xml.dom.minidom
-import xml.etree.ElementTree as ET
-from xml.etree import ElementTree
+#!/usr/bin/env python3
 import json
-import xmltodict
-import pprint
-import urllib
-import os.path
 import os
-
-sys.path.append("../DB")
-sys.path.append("../windows")
-
-import errorMessageGnerator
+import os.path
+import pprint
+import sys
+import urllib
+import xml.dom.minidom
+from xml.etree import ElementTree
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
     QLineEdit, QListWidget, QFileDialog, QMessageBox, QComboBox
+import pymongo
+import r2pipe
+
+import errorMessageGnerator
+import xml.etree.ElementTree as ET
+import xmlUploader
+import xmltodict
+
+
+sys.path.append("../DB")
+sys.path.append("../windows")
+
+
 
 # Global Vars
 xml1 = []

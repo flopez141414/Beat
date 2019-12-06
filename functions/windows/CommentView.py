@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-
+#!/usr/bin/env python3
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QListWidget
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
-from PyQt5.QtWidgets import QListWidget
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):

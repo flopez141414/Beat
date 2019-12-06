@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
-
 import sys
-import r2pipe
-import pymongo
-import xml.etree.ElementTree as ET
-import xmltodict
-sys.path.append("../DB")
-sys.path.append("../xml")
-import xmlUploader
-# from xmlUploader import uploadXml
-
 
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTabWidget
-from PyQt5.QtGui import QPalette
 from PyQt5.Qt import QColor
+from PyQt5.QtGui import QPalette
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTabWidget
+import pymongo
+import r2pipe
 
-from PluginManagementTab import PluginManagementTab
+sys.path.append("../DB")
+sys.path.append("../xml")
 from DocumentationTab import DocumentationTab
+from PluginManagementTab import PluginManagementTab
+from PointsOfInterestTab import PointsOfInterestTab
 from analysisTab import AnalysisTab
 from projectTab import ProjectTab
-from PointsOfInterestTab import PointsOfInterestTab
+import xml.etree.ElementTree as ET
+import xmlUploader
+import xmltodict
+
+
+
+
 
 project=""
 
@@ -51,7 +52,6 @@ def main():
     tabWidget.addTab(ProjectTab(), "Project tab")
     tabWidget.addTab(PluginManagementTab(), "Plugin Management Tab")
     tabWidget.addTab(AnalysisTab(), "Analysis Tab")
-    #tabWidget.addTab(PointsOfInterestTab(), "Points Of Interest Tab")
     tabWidget.addTab(DocumentationTab(), "Documentation Tab")
 
     mainWindow.setWindowTitle("BEAT: Behavior Extraction and Analysis Tool")
@@ -62,7 +62,8 @@ def main():
     mainWindow.show()
     
     sys.exit(app.exec())
-
+    
+# mimicing singleton
 tree = ET.parse('../xml/Beat.xml')
 root = tree.getroot()
 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
@@ -70,7 +71,7 @@ if xmlUploader.is_system_empty():
     xmlUploader.uploadSystem(my_dict)
 else:
     x=0
-
+    
+# entry point to program
 if __name__ == '__main__':
     main()
-

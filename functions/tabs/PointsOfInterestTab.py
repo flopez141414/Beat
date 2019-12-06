@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
 import sys
-import r2pipe
-import pymongo
+
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QComboBox, QLineEdit, QListWidget, QTextEdit
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5 import QtCore, QtGui
+import pymongo
+import r2pipe
 
 
 class PointsOfInterestTab(QWidget):

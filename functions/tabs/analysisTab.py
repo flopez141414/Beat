@@ -29,7 +29,6 @@ from OutputFieldView import Ui_Dialog as output_Field_Window
 
 
 class AnalysisTab(QWidget):
-
     def __init__(self):
         super().__init__()
         stringsPOI = []
@@ -49,18 +48,13 @@ class AnalysisTab(QWidget):
         mainlayout.addLayout(leftLayout, 1, 0, 6, 1)
         mainlayout.addLayout(rightLayout, 1, 1, 6, 5)
 
-        self.static_analysis_label = QLabel('Dynamic Analysis ')  # B
+        self.static_analysis_label = QLabel('Dynamic Analysis ')
         # Top layout elements
         self.pluginDropdown = QComboBox()
         self.runStatic = QPushButton('Run')
         self.poiDropdown = QComboBox()
         self.runDynamic = QPushButton('Run')
         self.stopDynamic = QPushButton('Stop')
-
-        # TODO: Using this button to test terminal temporarily: remove comment from setEnabled call after finished
-        #         self.stopDynamic.setEnabled(False)
-        # TODO: Disable this connection after testing is finished and create a new button to grab input from terminal
-        self.stopDynamic.clicked.connect(self.sendTextToTerminal)
 
         self.topLayout.addWidget(QLabel('Plugin'), 0, 0)
         self.topLayout.addWidget(self.pluginDropdown, 0, 1, 1, 2)
@@ -77,10 +71,8 @@ class AnalysisTab(QWidget):
         self.searchBox = QLineEdit()
         self.searchButton = QPushButton('Search')
         self.searchedWord = []
-
         self.poiList = QListWidget()
         leftPanelLabel = QLabel('Point of Interest View')
-        #         leftPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         leftPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         leftPanelLabel.setAlignment(Qt.AlignCenter)
 
@@ -91,7 +83,6 @@ class AnalysisTab(QWidget):
 
         # Right panel
         rightPanelLabel = QLabel('Point of Interest View')
-        #         rightPanelLabel.setStyleSheet("background-color: rgba(173,216,230 ,1 )")
         rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
         rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.poiContentArea = QScrollArea()
@@ -110,27 +101,19 @@ class AnalysisTab(QWidget):
 
         # Functionality
         self.commentButton.clicked.connect(self.openCommentWindow)
-        # self.analysisButton.clicked.connect(self.openAnalysisWindow)
-        # self.outputButton.clicked.connect(self.openOutputWindow)
 
         # set Plugin name
         self.pluginDropdown.addItem("Select Plugin")
-        # pluginDropdown.addItem("Network Plugin")
-        # pluginDropdown.addItem("dummy")
         self.pluginDropdown.activated[str].connect(self.onActivated)
-
-        # dynamic analysis run event listener
-        self.runDynamic.clicked.connect(self.dynamicAnalysis)
-        self.connectedClient = False  # flag to continue step into dynamic analysis
-        self.initialized = False  # flag to see if we have already initiated dynamic analysis
 
         self.poiDropdown.activated[str].connect(self.displayPOI)
         self.runStatic.clicked.connect(self.clickStaticAnalysis)
         self.searchButton.clicked.connect(self.clickedSearch)
-        #         self.poiList.clicked.connect(self.clickedPOI)
+        
         self.poiList.clicked.connect(self.expandPOI)
         self.setLayout(mainlayout)
-        # B this should not be visible at start
+        
+        # this should not be visible at start
         self.runDynamic.hide()
         self.stopDynamic.hide()
         self.static_analysis_label.hide()
@@ -163,16 +146,6 @@ class AnalysisTab(QWidget):
         self.poiList.clear()
         for items in self.searchedWord:
             self.poiList.addItem(items)
-
-    # working on display
-    def clickedPOI(self):
-        current = [item.text() for item in self.poiList.selectedItems()]
-        # print(self.poiSuperList2)
-        current = ' '.join(current)
-        option = self.poiDropdown.currentText()
-        searchedPoi = [s for s in self.poiSuperList2 if current[0] in s]
-        if option == "Strings":
-            self.valueLine.setText(' '.join(searchedPoi[7:]))
 
     def displayPOIparam(self):
         content_widget = QWidget()
@@ -268,19 +241,6 @@ class AnalysisTab(QWidget):
         else:
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
 
-    def parseNetworkItems(self):
-        global poiSuperList
-        target = ['socket', 'send', 'rec', 'ipv', 'main']
-        for i in target:
-            self.searchedWord.append([s for s in poiSuperList if i in s])
-
-        self.poiList.clear()
-        poiSuperList = []
-        for items in self.searchedWord:
-            for item2 in items:
-                self.poiList.addItem(item2)
-        self.searchedWord = []
-
     def expandPOI(self):
         client = MongoClient('localhost', 27017)  # client to access database
         db = client.beat  # getting an instance of our DB
@@ -321,85 +281,22 @@ class AnalysisTab(QWidget):
             strings = pois['Project']['StaticAnalysis']['stringPointOfInterest']
             for i in range(len(strings)):
                 self.poiList.addItem(strings[i]['value'])
-
-        if option == "Functions":
+        elif option == "Functions":
             self.poiList.clear()
             functions = pois['Project']['StaticAnalysis']['functionPointOfInterest']
             for i in range(len(functions)):
-                self.poiList.addItem(functions[i]['name'])
+                self.poiList.addItem(functions[i]['name'])       
+        elif option == "Variables":
+            self.poiList.clear()
+        elif option == "Protocols":
+            self.poiList.clear()
+        elif option == "Structures":
+            self.poiList.clear()
+            
         self.displayPOIparam()
 
-    #         if option =="Strings":
-    #             self.poiList.clear()
-    #             for data in dataSet: # access a cursor object from database
-    #                  stringPois = data['pointOfInterestDataSet']['stringHolder']['stringPointOfInterest']
-    #                 stringPois = data['Project']['StaticAnalysis']['stringPointOfInterest']
-    #
-    #                 for i in range(len(stringPois)): # access each individual string POI
-    #                     self.poiList.addItem(stringPois[i]['value'])
-    #
-    #         if option =="Functions":
-    #             self.poiList.clear()
-    #             for data in dataSet: # access a cursor object from database
-    # #                 functionPois = data['pointOfInterestDataSet']['functionHolder']['functionPointOfInterest']
-    #                 functionPois = data['Project']['StaticAnalysis']['functionPointOfInterest']
-    #
-    #                 for i in range(len(functionPois)): # access each individual function POI
-    #                     self.poiList.addItem(functionPois[i]['name'])
-
-    #     def displayPOI(self,option):
-    #         global poiSuperList
-    #         if option=="Strings":
-    #             poiSuperList=[]
-    #             self.poiList.clear()
-    # #            target=['socket','send','rec','ipv','main']
-    #  #           for i in target:
-    #   #          self.searchedWord.append([s for s in poiSuperList if i in s])
-    #             for item in stringsPOI:
-    #                 item2=item.split()
-    #                 self.poiList.addItem(' '.join(item2[7:]))
-    #                 poiSuperList.append(' '.join(item2[7:]))
-    #             #self.poiContentArea.setText(stringsPOI)
-    #             #self.poiList.itemSelectionChanged.connect(self.poiSelected)
-    #
-    #         elif option == "Variables":
-    #             self.poiList.clear()
-    #             poiSuperList=[]
-    #             #for item in variablesPOI:
-    #              #   self.poiList.addItem(item)
-    #             #self.poiContentArea.setText(variablesPOI)
-    #         elif option == "Functions":
-    #             self.poiList.clear()
-    #             poiSuperList=[]
-    #             for item in functionsPOI:
-    #                 item2=item.split()
-    #                 if item2[3]=="->":
-    #                     self.poiList.addItem(item2[5])
-    #                     poiSuperList.append(item2[5])
-    #                 else:
-    #                     self.poiList.addItem(item2[3])
-    #                     poiSuperList.append(item2[3])
-    #             #self.poiContentArea.setText(functionsPOI)
-    #             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-    #         elif option == "Structures":
-    #             self.poiList.clear()
-    #             poiSuperList=[]
-    #             #for item in structuresPOI:
-    #              #   self.poiList.addItem(item)
-    #             #self.poiContentArea.setText(structuresPOI)
-    #             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-    #         elif option == "Protocols":
-    #             self.poiList.clear()
-    #             poiSuperList=[]
-    #            # for item in protocolsPOI[2:]:
-    #             #    item2=item.split()
-    #              #   self.poiList.addItem(item2[3])
-    #             #self.poiContentArea.setText(dllsPOI)
-    #             #self.poiList.itemSelectionChanged.connect(self.displayPOIselected)
-    #         self.displayPOIparam()
-    #         self.parseNetworkItems()
     def onActivated(self, option):
-        # B make invisible
+        # make invisible
         self.runDynamic.hide()
         self.stopDynamic.hide()
         self.static_analysis_label.hide()
@@ -421,7 +318,6 @@ class AnalysisTab(QWidget):
                     self.poiDropdown.addItem(plugin)
 
     def makeStringTree(self, stringsData, parentRoot):
-        #             stringHolderElement = parentRoot.find('./stringHolder')
         poiHolderElement = parentRoot.find('./StaticAnalysis')
 
         for index in range(len(stringsData)):  # access each string
@@ -434,11 +330,9 @@ class AnalysisTab(QWidget):
             b2tf.text = str(hex(myString['vaddr']))
             b2tf = root.find("./section")
             b2tf.text = str(myString['section'])
-            #                 stringHolderElement.append(root)
             poiHolderElement.append(root)
 
     def makeFunctionsTree(self, functionsData, parentRoot, r2buffer):
-        #         functionHolderElement = parentRoot.find('./StaticAnalysis')
         poiHolderElement = parentRoot.find('./StaticAnalysis')
         r2buffer.cmd('doo')
 
@@ -451,7 +345,6 @@ class AnalysisTab(QWidget):
             b2tf = root.find("./address")
             b2tf.text = str(hex(myFunction['offset']))
             b2tf = root.find("./parameterType")
-            # b2tf.text = str(myFunction['signature'])
 
             breakpoints = []  # this will hold a list of our breakpoints
             breakpointElement = root.find('./breakpoints')
@@ -463,7 +356,6 @@ class AnalysisTab(QWidget):
             for bp in breakpoints:
                 tempElement = ET.SubElement(breakpointElement, 'breakpoint')
                 tempElement.text = bp
-            #             functionHolderElement.append(root)
             poiHolderElement.append(root)
 
     def clickStaticAnalysis(self):
@@ -494,7 +386,6 @@ class AnalysisTab(QWidget):
         parentTree = ET.parse('../xml/Project.xml')
         parentRoot = parentTree.getroot()
 
-
         parentRootName = parentRoot.find('./Project_name')
         parentRootName.text = project_name
 
@@ -504,77 +395,11 @@ class AnalysisTab(QWidget):
         xmlUploader.uploadDataSet(parent_dict)
 
         self.terminal.append("Static Analysis done!")
+        
         ########### Make visible dynamic here
         self.runDynamic.show()
         self.stopDynamic.show()
         self.static_analysis_label.show()
-
-    def dynamicAnalysis(self):
-        # only do the initializing of breakpoints/opening file/running in debug mode once
-        if (self.initialized is False):
-            programToAnalyze = "server.out"
-            functionName = "sym.imp.recv"
-            global r2
-            r2 = r2pipe.open("server.out")  # Open program to be analyzed by radare2
-            r2.cmd("aaa")  # Perform static analysis on program
-            r2.cmd("doo 12344")  # Re open program in debug/background mode
-            self.initialized = True
-            print("initialized dynamic analysis; connect the client now")
-        #         references = r2.cmd("axtj sym.imp.strncmp") # Find all references to functionName in binary
-
-        #         r2.cmd("db 0x401548") # hardcoded breakpoint to sym.imp.recv reference in main
-        #         print(references)
-        # #         for i in range(len(references)):
-        # #             self.terminal.append(references[i])# display references to sym.imp.strncmp on GUI
-
-        #         for i in range(len(references)):
-        #             breakpoint = 'db ' + hex(references[i]["from"]) # Create add breakpoint command
-        #             r2.cmd(breakpoint) # Add breakpoints at references locations
-        # #             print(breakpoint)
-        else:
-            if (self.connectedClient):
-                debugData = r2.cmdj('axtj sym.imp.recv')
-
-                breakpoint = 'db ' + hex(debugData[0]["from"])
-
-                r2.cmd(breakpoint)
-                self.terminal.append("set breakpoint at %s" % breakpoint)
-
-                terminalData = r2.cmd("dc")  # this will pause the program till you connect the client
-                self.terminal.append(terminalData)
-
-                terminalData = r2.cmd("dso")  # once client is connected, proceed to step over the function
-                self.terminal.append(terminalData)
-
-                # retreive data that server.out recieved
-                messageAddr = r2.cmd("dr rsi")
-                getPayloadCommand = "psz @" + messageAddr
-                payload = r2.cmd(getPayloadCommand)
-
-                # r2 output
-                self.terminal.append("found payload: %s" % payload)
-                self.terminal.append("at: %s" % messageAddr)
-
-    #
-    #                 breakpoints = r2.cmd("db")
-    #                 print(breakpoints)
-    #                 r2.cmd("dc")
-
-    #         whie True:
-    #             r2.cmd("dso") # step over recv function
-    # #         ripAddress = r2.cmd("dr rsi")
-    #             payload = r2.cmd("pxj @ 0x7ffff1111dc0")
-    #             print(payload)
-    #             break
-
-    def sendTextToTerminal(self):
-        #         binary = r2.open("hello")
-        #         commandToSend = self.terminal.toPlainText() # grabbing user input from text edit to send to radare2
-        #         print(commandToSend)
-        #         myText = binary.cmd(commandToSend)
-        #         print(myText)
-        #
-        self.connectedClient = True
 
     # Methods to open windows
     def openCommentWindow(self):

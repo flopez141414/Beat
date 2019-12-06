@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-
 import json
 import r2pipe
 import sys
-# XML libraries
 import xml.etree.ElementTree as ET
 import xmltodict
 import pprint
@@ -15,7 +13,6 @@ sys.path.append("../DB")
 sys.path.append("../windows")
 import xmlUploader
 import errorMessageGnerator
-# from xmlUploader import uploadXml
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
@@ -63,7 +60,6 @@ class ProjectTab(QWidget):
         # Right panel
         self.rightPanelLabel = QLabel('Detailed Project View')
         self.rightPanelLabel.setFont(QtGui.QFont('Arial', 12, weight=QtGui.QFont().Bold))
-        # rightPanelLabel.hide()
         self.rightPanelLabel.setAlignment(Qt.AlignCenter)
         self.projNameArea = QTextEdit()
         projectNameHolder = self.projNameArea  # storing global
@@ -123,7 +119,7 @@ class ProjectTab(QWidget):
         self.binaryFilePath.setEnabled(False)
         self.binaryFileProp.setEnabled(False)
 
-    # B check if valid exe file is being uploaded
+    # check if valid exe file is being uploaded
     def check_architecture(self, filename):
         try:
             rlocal = r2pipe.open(filename)
@@ -141,8 +137,6 @@ class ProjectTab(QWidget):
 
         return False
 
-
-
     def staticAnalysis(self, filename):
         global fileProperties
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic",
@@ -157,9 +151,8 @@ class ProjectTab(QWidget):
             fileProperties.append(a[1])
             self.binaryFileProp.setItem(colNum, 1, QTableWidgetItem(a[1]))
             colNum += 1
+            
         self.updateProjectList()
-
-    # global.py
     myFileName = ""
 
     def OpenFile(self):
@@ -168,7 +161,7 @@ class ProjectTab(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open file", "",
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
-            if (self.check_architecture(fileName)):  # B if valid architecture of exe file continue
+            if (self.check_architecture(fileName)):  # if valid architecture of exe file continue
                 self.binaryFilePath.setText(fileName)
                 self.staticAnalysis(fileName)
                 global myFileName
@@ -186,7 +179,6 @@ class ProjectTab(QWidget):
         global projectPathHolder
         global projectSelected
         global project
-        # self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
@@ -297,8 +289,8 @@ class ProjectTab(QWidget):
 
     def select_project(self):
         global project
-        # for this mode we will load the right layout
-        self.loadRightLayout()
+        self.loadRightLayout() # for this mode we will load the right layout
+        
         # disable buttons not needed
         self.saveButton.hide()
         self.browseButton.hide()
@@ -323,13 +315,12 @@ class ProjectTab(QWidget):
         # enable buttons
         self.saveButton.show()
         self.browseButton.show()
-        # disable Button
-        self.deleteButton.hide()
-
+        self.deleteButton.hide() # disable Button
         self.loadRightLayout()
         self.projDescriptionArea.clear()
         self.projNameArea.clear()
         self.binaryFilePath.clear()
+        
         i = 0
         for i in range(13):
             self.binaryFileProp.setItem(i, 1, QTableWidgetItem(""))

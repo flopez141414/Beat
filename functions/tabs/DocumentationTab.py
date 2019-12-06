@@ -1,15 +1,17 @@
-import sys
-import r2pipe
-import pymongo
+#!/usr/bin/env python3
 import os
-import errorMessageGnerator
-# import webbrowser as wb #--new line to import pdf
+import sys
 
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5 import QtCore, QtGui
+import pymongo
+import r2pipe
+
+sys.path.append("../windows")
+import errorMessageGnerator
 
 
 class DocumentationTab(QWidget):

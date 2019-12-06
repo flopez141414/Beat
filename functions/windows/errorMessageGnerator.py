@@ -1,5 +1,6 @@
-import PyQt5
+#!/usr/bin/env python3
 from PyQt5 import QtWidgets
+import PyQt5
 from PyQt5.QtWidgets import QMessageBox
 
 
