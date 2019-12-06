@@ -492,9 +492,9 @@ class AnalysisTab(QWidget):
 
         # get handle to POI holder xml, create POI xmls, and upload them to DB
         parentTree = ET.parse('../xml/Project.xml')
+        
+        
         parentRoot = parentTree.getroot()
-
-
         parentRootName = parentRoot.find('./Project_name')
         parentRootName.text = project_name
 
