@@ -13,9 +13,9 @@ from typing import Any
 
 sys.path.append("../DB")
 sys.path.append("../windows")
-import xmlUploader
+# import xmlUploader
+from xmlManager import ProjectXmlManager as xmlManager
 import errorMessageGnerator
-# from xmlUploader import uploadXml
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
@@ -35,6 +35,8 @@ listCounter = 0
 class ProjectTab(QWidget):
     def __init__(self):
         super().__init__()
+        
+        self.xmlUploader = xmlManager()
 
         global projectNameHolder
         global projectDescHolder
@@ -103,7 +105,7 @@ class ProjectTab(QWidget):
         self.searchList.doubleClicked.connect(self.select_project)
         self.searchList.doubleClicked.connect(self.disableEditing)
 
-        projectList = xmlUploader.retrieve_list_of_projects()
+        projectList = self.xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
 
@@ -191,7 +193,7 @@ class ProjectTab(QWidget):
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
 
-        if xmlUploader.project_exists(pname):
+        if self.xmlUploader.project_exists(pname):
             errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and ppath != "":
@@ -234,8 +236,8 @@ class ProjectTab(QWidget):
                 xmlproject1=open('../tabs/'+pname+'.xml','w')
                 xmlproject1.write(my_dict)
                 xmlproject1.close()
-                xmlUploader.uploadXML(my_dict)
-                project = xmlUploader.retrieve_selected_project(pname)
+                self.xmlUploader.uploadXML(my_dict)
+                project = self.xmlUploader.retrieve_selected_project(pname)
                 errorMessageGnerator.showDialog("Project created successfully", "Success")
                 self.disableEditing()
                 self.browseButton.hide()
@@ -252,7 +254,7 @@ class ProjectTab(QWidget):
 
     def clickedSearch(self):
         target = self.searchBox.text()
-        projectList = xmlUploader.retrieve_list_of_projects()
+        projectList = self.xmlUploader.retrieve_list_of_projects()
         self.searchedWord = [s for s in projectList if target in s]
         self.searchList.clear()
         for items in self.searchedWord:
@@ -307,7 +309,7 @@ class ProjectTab(QWidget):
 
         project = [item.text() for item in self.searchList.selectedItems()]
         projectName = ' '.join([str(elem) for elem in project])
-        project = xmlUploader.retrieve_selected_project(projectName)
+        project = self.xmlUploader.retrieve_selected_project(projectName)
         self.projNameArea.setText(project['Project']['Project_name']['#text'])
         self.projDescriptionArea.setText(project['Project']['projectDescription']['#text'])
         self.binaryFilePath.setText(project['Project']['BinaryFilePath']['#text'])
@@ -347,7 +349,7 @@ class ProjectTab(QWidget):
         delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project",
                                                        "Delete confirmation")
         if delete:
-            xmlUploader.delete_selected_project(toErase)
+            self.xmlUploader.delete_selected_project(toErase)
             for item in self.searchList.selectedItems():
                 self.searchList.takeItem(self.searchList.row(item))
             self.updateProjectList()
@@ -364,7 +366,7 @@ class ProjectTab(QWidget):
         pdesc = projectDescHolder.toPlainText()
         name = project['Project']['Project_name']['#text']
         description = project['Project']['projectDescription']['#text']
-        xmlUploader.update_proj_description(description, pdesc)
+        self.xmlUploader.update_proj_description(description, pdesc)
 
     def turnOff(self):
         self.saveButton.hide()
@@ -374,7 +376,7 @@ class ProjectTab(QWidget):
         global listCounter
         listCounter = 0
         self.searchList.clear()
-        projectList = xmlUploader.retrieve_list_of_projects()
+        projectList = self.xmlUploader.retrieve_list_of_projects()
         for item in projectList:
             self.searchList.addItem(item)
             listCounter += 1
@@ -384,6 +386,6 @@ class ProjectTab(QWidget):
         global projectDescHolder
         pdesc = projectDescHolder.toPlainText()
         description = project['Project']['projectDescription']['#text']
-        xmlUploader.update_proj_description(description, pdesc)
+        self.xmlUploader.update_proj_description(description, pdesc)
         errorMessageGnerator.showDialog("Description updated successfully", "Success")
 

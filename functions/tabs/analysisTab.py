@@ -14,7 +14,11 @@ from pymongo import MongoClient
 sys.path.append("../DB")
 sys.path.append("../windows")
 sys.path.append("../xml")
-import xmlUploader
+# import xmlUploader
+from xmlManager import PluginXmlManager
+from xmlManager import AnalysisXmlManager
+import xml.etree.ElementTree as ET
+
 import errorMessageGnerator
 from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QFormLayout, QWidget, QPushButton, QAction, QLabel, \
     QCheckBox, QFileDialog, QSplitter, \
@@ -30,6 +34,10 @@ from OutputFieldView import Ui_Dialog as output_Field_Window
 
 class AnalysisTab(QWidget):
     def __init__(self):
+        
+        self.AnalysisXmlManager = AnalysisXmlManager()
+        self.pluginManager = PluginXmlManager()
+                
         super().__init__()
         stringsPOI = []
         functionsPOI = []
@@ -109,22 +117,17 @@ class AnalysisTab(QWidget):
         self.poiList.clicked.connect(self.expandPOI)
         self.setLayout(mainlayout)
         
-        # B this should not be visible at start
+        # this should not be visible at start
         self.runDynamic.hide()
         self.stopDynamic.hide()
         self.static_analysis_label.hide()
-
-        if pt.projectSelected:
-            project_name = pt.project['Project']['Project_name']['#text']
-            project_path = pt.project['Project']['BinaryFilePath']['#text']
-            self.display_current_project(project_name, project_path)
-        else:
-            self.display_current_project("No Project Selected", "")
+        self.display_current_project("No Project Selected", "")
+        
         self.setLayout(mainlayout)
         self.populate_plugin_dropdown()
 
     def populate_plugin_dropdown(self):
-        pluginList = xmlUploader.retrieve_list_of_plugins()
+        pluginList = self.pluginManager.retrieve_list_of_plugins()
         for plugin in pluginList:
             self.pluginDropdown.addItem(plugin)
 
@@ -143,15 +146,6 @@ class AnalysisTab(QWidget):
         for items in self.searchedWord:
             self.poiList.addItem(items)
 
-    # working on display
-    def clickedPOI(self):
-        current = [item.text() for item in self.poiList.selectedItems()]
-        current = ' '.join(current)
-        option = self.poiDropdown.currentText()
-        searchedPoi = [s for s in self.poiSuperList2 if current[0] in s]
-        if option == "Strings":
-            self.valueLine.setText(' '.join(searchedPoi[7:]))
-
     def displayPOIparam(self):
         content_widget = QWidget()
         self.poiContentArea.setWidget(content_widget)
@@ -159,7 +153,6 @@ class AnalysisTab(QWidget):
         self.poiContentArea.setWidgetResizable(True)
         option = self.poiDropdown.currentText()
         if option == "Strings":
-            poiDatabase = xmlUploader.retrievePoiInProject()
             for i in range(layoutForPOI.count()): layoutForPOI.itemAt(i).widget().close()
             value = QLabel('Value:')
             sectionInBinary = QLabel('Section In Binary:')
@@ -291,7 +284,7 @@ class AnalysisTab(QWidget):
         dataCollection = db.Project  # accessing a collection of documents in our DB
         dataSet = dataCollection.find()
         pois = dataSet[1]
-
+        
         if option == "Strings":
             self.poiList.clear()
             strings = pois['Project']['StaticAnalysis']['stringPointOfInterest']
@@ -396,7 +389,6 @@ class AnalysisTab(QWidget):
         # get handle to POI holder xml, create POI xmls, and upload them to DB
         parentTree = ET.parse('../xml/Project.xml')
         
-        
         parentRoot = parentTree.getroot()
         parentRootName = parentRoot.find('./Project_name')
         parentRootName.text = project_name
@@ -404,11 +396,11 @@ class AnalysisTab(QWidget):
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        xmlUploader.uploadDataSet(parent_dict)
+        self.AnalysisXmlManager.uploadDataSet(parent_dict)
 
         self.terminal.append("Static Analysis done!")
         
-        ########### Make visible dynamic here
+        # Make dynamic visible here
         self.runDynamic.show()
         self.stopDynamic.show()
         self.static_analysis_label.show()

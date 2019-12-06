@@ -14,7 +14,7 @@ import os
 
 sys.path.append("../DB")
 sys.path.append("../windows")
-
+from xmlManager import PluginXmlManager
 import errorMessageGnerator
 
 from PyQt5 import QtGui, QtCore
@@ -35,6 +35,9 @@ listCounter = 0
 class PluginManagementTab(QWidget):
     def __init__(self):
         super().__init__()
+        
+        self.pluginManager = PluginXmlManager()
+
 
         global nameH
         global descH
@@ -98,7 +101,7 @@ class PluginManagementTab(QWidget):
         searchButton.clicked.connect(self.clickedSearch)
 
         # retrieve plugin titles and display on list
-        pluginList = xmlUploader.retrieve_list_of_plugins()
+        pluginList = self.pluginManager.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
 
@@ -138,7 +141,7 @@ class PluginManagementTab(QWidget):
 
     def clickedSearch(self):
         target = self.searchBox.text()
-        pluginList = xmlUploader.retrieve_list_of_plugins()
+        pluginList = self.pluginManager.retrieve_list_of_plugins()
         self.searchedWord = [s for s in pluginList if target in s]
         self.searchList.clear()
         for items in self.searchedWord:
@@ -168,7 +171,7 @@ class PluginManagementTab(QWidget):
         pluginName = ' '.join([str(elem) for elem in plugins])
 
         #get list from db
-        plugin = xmlUploader.retrieve_selected_plugin(pluginName)
+        plugin = self.pluginManager.retrieve_selected_plugin(pluginName)
 
         self.pluginName.setText(plugin['Plugin']['Plugin_name']['#text'])
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
@@ -257,7 +260,7 @@ class PluginManagementTab(QWidget):
 
     def updatePluginList(self):
         self.searchList.clear()
-        pluginList = xmlUploader.retrieve_list_of_plugins()
+        pluginList = self.pluginManager.retrieve_list_of_plugins()
         for item in pluginList:
             self.searchList.addItem(item)
 
@@ -311,7 +314,7 @@ class PluginManagementTab(QWidget):
         delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this plugin",
                                                        "Delete confirmation")
         if delete:
-            xmlUploader.delete_selected_plugin(toErase)
+            self.pluginManager.delete_selected_plugin(toErase)
             for item in self.searchList.selectedItems():
                 self.searchList.takeItem(self.searchList.row(item))
             self.updatePluginList()
@@ -329,7 +332,7 @@ class PluginManagementTab(QWidget):
         plugpath = structH.toPlainText()
         data = pdatasetH.toPlainText()
 
-        if xmlUploader.plugin_exists(pname):
+        if self.pluginManager.plugin_exists(pname):
             errorMessageGnerator.showDialog("A plugin with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and plugpath != "" and data != "":
@@ -355,13 +358,13 @@ class PluginManagementTab(QWidget):
                 newPlugin.close()
                 beatTree='../xml/Beat.xml'
                 pluginTree="../xml/"+pname+"plugin.xml"
-                system=xmlUploader.xmlmerger('.//Plugins',beatTree,pluginTree)
+                system=self.pluginManager.xmlmerger('.//Plugins',beatTree,pluginTree)
                 system.write('../xml/Beat.xml')
-                xmlUploader.delete_system()
+                self.pluginManager.delete_system()
                 systemTree=ET.parse('../xml/Beat.xml')
                 systemRoot=systemTree.getroot()
-                xmlUploader.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
-                xmlUploader.uploadPlugin(my_dict)
+                self.pluginManager.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
+                self.pluginManager.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
                 errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin",
@@ -380,7 +383,7 @@ class PluginManagementTab(QWidget):
         global descH
         pdesc = descH.toPlainText()
         description = plugin['Plugin']['Plugin_Desc']['#text']
-        xmlUploader.update_plugin_description(description, pdesc)
+        self.pluginManager.update_plugin_description(description, pdesc)
         errorMessageGnerator.showDialog("Description updated successfully", "Success")
 
 def save_xml_local(self):

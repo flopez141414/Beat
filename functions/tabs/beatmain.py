@@ -8,6 +8,7 @@ import xmltodict
 sys.path.append("../DB")
 sys.path.append("../xml")
 import xmlUploader
+# from xmlManager import PluginXmlManager
 
 
 from PyQt5 import QtGui, QtCore
@@ -20,12 +21,12 @@ from DocumentationTab import DocumentationTab
 from analysisTab import AnalysisTab
 from projectTab import ProjectTab
 
-project=""
-
 def main():
     # initialize stuff
     app = QApplication([])
     mainWindow = QMainWindow()
+    
+#     pluginManager = PluginXmlManager()
 
     # dark theme
     palette = QPalette()
