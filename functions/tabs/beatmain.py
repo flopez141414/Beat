@@ -19,7 +19,6 @@ from PluginManagementTab import PluginManagementTab
 from DocumentationTab import DocumentationTab
 from analysisTab import AnalysisTab
 from projectTab import ProjectTab
-from PointsOfInterestTab import PointsOfInterestTab
 
 project=""
 
