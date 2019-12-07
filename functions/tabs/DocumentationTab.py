@@ -2,7 +2,7 @@ import sys
 import r2pipe
 import pymongo
 import os
-import errorMessageGnerator
+import errorMessageGenerator
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QLabel, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QHBoxLayout, QListWidget, QComboBox, QLineEdit, QTextEdit
@@ -61,7 +61,7 @@ class DocumentationTab(QWidget):
         for items in self.searchedWord:
             self.searchDocList.addItem(items)
         if self.searchDocList.count() == 0:
-            errorMessageGnerator.showDialog("A document with that name does not exist!", "Search Result")
+            errorMessageGenerator.showDialog("A document with that name does not exist!", "Search Result")
 
     def readFile(self):
         current = ''

@@ -24,6 +24,7 @@ def confirmDeletion(message, title):
     msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
     msgBox.setSizeIncrement(1, 1)
     msgBox.setSizeGripEnabled(True)
+    
     returnValue = msgBox.exec()
     if returnValue == QMessageBox.Yes:
         return True

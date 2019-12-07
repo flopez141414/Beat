@@ -13,7 +13,7 @@ import os
 sys.path.append("../DB")
 sys.path.append("../windows")
 from xmlManager import PluginXmlManager
-import errorMessageGnerator
+import errorMessageGenerator
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
@@ -144,7 +144,7 @@ class PluginManagementTab(QWidget):
         for items in self.searchedWord:
             self.searchList.addItem(items)
         if self.searchList.count() == 0:
-            errorMessageGnerator.showDialog("A plugin with that name does not exist!", "Search Result")
+            errorMessageGenerator.showDialog("A plugin with that name does not exist!", "Search Result")
 
     # aids in opening a file. Tells which button was clicked
     def browse1(self):
@@ -230,27 +230,27 @@ class PluginManagementTab(QWidget):
                 tree = ET.parse(filePath)
                 xml = tree.getroot()
             except:
-                errorMessageGnerator.showDialog("Please select a valid Plugin xml", 'Plugin error')
+                errorMessageGenerator.showDialog("Please select a valid Plugin xml", 'Plugin error')
                 return False
         if(is_xml and caller == 1):
             # check if it has specific branches
             try:
                 x = xml.find("./DataInPlugin")
                 if x is None:
-                    errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture",
+                    errorMessageGenerator.showDialog("Invalid plugin. Please follow default architecture",
                        'Delete plugin')
                     return False
             except:
-                errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
+                errorMessageGenerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
                 return False
             try:
                 x = xml.find("./Filters")
                 if x is None:
-                    errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture",
+                    errorMessageGenerator.showDialog("Invalid plugin. Please follow default architecture",
                                                     'Delete plugin')
                     return False
             except:
-                errorMessageGnerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
+                errorMessageGenerator.showDialog("Invalid plugin. Please follow default architecture", 'Delete plugin')
                 return False
 
         return True
@@ -306,9 +306,9 @@ class PluginManagementTab(QWidget):
         global nameH
         toErase = nameH.toPlainText()
         if not toErase:
-            errorMessageGnerator.showDialog("Please select a Plugin to delete", 'Delete plugin')
+            errorMessageGenerator.showDialog("Please select a Plugin to delete", 'Delete plugin')
 
-        delete = errorMessageGnerator.confirmDeletion("Are you sure you want to delete this plugin",
+        delete = errorMessageGenerator.confirmDeletion("Are you sure you want to delete this plugin",
                                                        "Delete confirmation")
         if delete:
             self.pluginManager.deleteSelectedPlugin(toErase)
@@ -330,7 +330,7 @@ class PluginManagementTab(QWidget):
         data = pdatasetH.toPlainText()
 
         if self.pluginManager.pluginExists(pname):
-            errorMessageGnerator.showDialog("A plugin with that name already exists!", "Project Name Error")
+            errorMessageGenerator.showDialog("A plugin with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and plugpath != "" and data != "":
                 xml1.attrib['nameOfPlugin']=pname
@@ -364,16 +364,16 @@ class PluginManagementTab(QWidget):
                 self.pluginManager.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
-                errorMessageGnerator.showDialog("Please restart the system to finish setting up the new plugin",
+                errorMessageGenerator.showDialog("Please restart the system to finish setting up the new plugin",
                                                 "Success")
             if pname == "":
-                errorMessageGnerator.showDialog("Enter a Plugin name", "Plugin Name Error")
+                errorMessageGenerator.showDialog("Enter a Plugin name", "Plugin Name Error")
             if pdesc == "":
-                errorMessageGnerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
+                errorMessageGenerator.showDialog("Enter a description for the Plugin", "Plugin File Error")
             if plugpath == "":
-                errorMessageGnerator.showDialog("Enter an xml structure file", "Empty plugin structure")
+                errorMessageGenerator.showDialog("Enter an xml structure file", "Empty plugin structure")
             if data == "":
-                errorMessageGnerator.showDialog("Enter a plugin dataset", "Missing dataset")
+                errorMessageGenerator.showDialog("Enter a plugin dataset", "Missing dataset")
 
     def edit_existing_plugin(self):
         global plugin
@@ -381,7 +381,7 @@ class PluginManagementTab(QWidget):
         pdesc = descH.toPlainText()
         description = plugin['Plugin']['Plugin_Desc']['#text']
         self.pluginManager.updatePluginDescription(description, pdesc)
-        errorMessageGnerator.showDialog("Description updated successfully", "Success")
+        errorMessageGenerator.showDialog("Description updated successfully", "Success")
 
 def save_xml_local(self):
     global xml2

@@ -18,7 +18,7 @@ from xmlManager import PluginXmlManager
 from xmlManager import AnalysisXmlManager
 import xml.etree.ElementTree as ET
 
-import errorMessageGnerator
+import errorMessageGenerator
 from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QFormLayout, QWidget, QPushButton, QAction, QLabel, \
     QCheckBox, QFileDialog, QSplitter, \
     QHBoxLayout, QFrame, QGridLayout, QTabWidget, QVBoxLayout, QScrollArea, QHBoxLayout, QComboBox, QLineEdit, \

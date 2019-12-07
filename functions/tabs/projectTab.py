@@ -14,7 +14,7 @@ from typing import Any
 sys.path.append("../DB")
 sys.path.append("../windows")
 from xmlManager import ProjectXmlManager
-import errorMessageGnerator
+import errorMessageGenerator
 
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
@@ -134,10 +134,10 @@ class ProjectTab(QWidget):
                 a = matchingline[0].split()
                 if a[1]=='x86':
                     return True
-            errorMessageGnerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
+            errorMessageGenerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
             return False
         except:
-            errorMessageGnerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
+            errorMessageGenerator.showDialog('File is not a valid executable of Architecture x86', '.exe Error')
             return False
 
         return False
@@ -193,7 +193,7 @@ class ProjectTab(QWidget):
         ppath = projectPathHolder.toPlainText()
 
         if self.projectManager.projectExists(pname):
-            errorMessageGnerator.showDialog("A project with that name already exists!", "Project Name Error")
+            errorMessageGenerator.showDialog("A project with that name already exists!", "Project Name Error")
         else:
             if pname != "" and pdesc != "" and ppath != "":
                 # Adding to XMl
@@ -237,15 +237,15 @@ class ProjectTab(QWidget):
                 xmlproject1.close()
                 self.projectManager.uploadProject(my_dict)
                 project = self.projectManager.getSelectedProject(pname)
-                errorMessageGnerator.showDialog("Project created successfully", "Success")
+                errorMessageGenerator.showDialog("Project created successfully", "Success")
                 self.disableEditing()
                 self.browseButton.hide()
             elif pname == "":
-                errorMessageGnerator.showDialog("Enter a project name", "Project Name Error")
+                errorMessageGenerator.showDialog("Enter a project name", "Project Name Error")
             elif pdesc == "":
-                errorMessageGnerator.showDialog("Enter a description for the project", "Project File Error")
+                errorMessageGenerator.showDialog("Enter a description for the project", "Project File Error")
             elif ppath == "":
-                errorMessageGnerator.showDialog("Cannot create a project without a binary file", "Binary File Error")
+                errorMessageGenerator.showDialog("Cannot create a project without a binary file", "Binary File Error")
         self.updateProjectList()
         self.searchList.setCurrentItem(self.searchList.setCurrentRow(listCounter))
         self.searchList.item(listCounter)
@@ -259,7 +259,7 @@ class ProjectTab(QWidget):
         for items in self.searchedWord:
             self.searchList.addItem(items)
         if self.searchList.count() == 0:
-            errorMessageGnerator.showDialog("A project with that name does not exist!", "Search Result")
+            errorMessageGenerator.showDialog("A project with that name does not exist!", "Search Result")
 
     # loads right side
     def loadRightLayout(self):
@@ -344,8 +344,8 @@ class ProjectTab(QWidget):
         global projectNameHolder
         toErase = projectNameHolder.toPlainText()
         if not toErase:
-            errorMessageGnerator.showDialog("Please select a project to delete")
-        delete = errorMessageGnerator.confirmDeletion("Are you sure you want to delete this project",
+            errorMessageGenerator.showDialog("Please select a project to delete")
+        delete = errorMessageGenerator.confirmDeletion("Are you sure you want to delete this project",
                                                        "Delete confirmation")
         if delete:
             self.projectManager.deleteSelectedProject(toErase)
@@ -386,5 +386,5 @@ class ProjectTab(QWidget):
         pdesc = projectDescHolder.toPlainText()
         description = project['Project']['projectDescription']['#text']
         self.projectManager.updateProjectDescription(description, pdesc)
-        errorMessageGnerator.showDialog("Description updated successfully", "Success")
+        errorMessageGenerator.showDialog("Description updated successfully", "Success")
 
