@@ -88,12 +88,12 @@ class PluginManagementTab(QWidget):
         self.updateButton = QPushButton('Update Description')
         button = QPushButton("My Button")
         self.setLayout(mainlayout)
-        self.updateButton.clicked.connect(self.edit_existing_plugin)
+        self.updateButton.clicked.connect(self.editExistingPlugin)
         self.browseButton1.clicked.connect(self.browse1)
         self.browseButton2.clicked.connect(self.browse2)
-        self.searchList.doubleClicked.connect(self.select_plugin)
+        self.searchList.doubleClicked.connect(self.selectPlugin)
         self.searchList.doubleClicked.connect(self.disableEditing)
-        self.saveButton.clicked.connect(self.savexml)
+        self.saveButton.clicked.connect(self.saveXml)
         self.deleteButton.clicked.connect(self.deletePluggin)
         searchButton.clicked.connect(self.clickedSearch)
 
@@ -153,7 +153,7 @@ class PluginManagementTab(QWidget):
     def browse2(self):
         self.openFile(2)
 
-    def select_plugin(self):
+    def selectPlugin(self):
         # for this mode we will load the right layout
         global plugin
 
@@ -174,7 +174,7 @@ class PluginManagementTab(QWidget):
         self.pluginDesc.setText(plugin['Plugin']['Plugin_Desc']['#text'])
         self.pluginStructArea.setText(plugin['Plugin']['structure_path']['#text'])
         self.pluginDataSet.setText(plugin['Plugin']['predefined_dataset_path']['#text'])
-        list_of_poi = self.update_poi_list(plugin)
+        list_of_poi = self.updatePoiList(plugin)
         self.updatePluginList()
         for item in list_of_poi:
             self.pointsOI.addItem(item)
@@ -191,7 +191,7 @@ class PluginManagementTab(QWidget):
             if caller == 1:
                 if(self.pluginxmlhandler(fileName, 1)): # if xml is good
                     self.pluginStructArea.setText(fileName)
-                    poi_list = retrieve_poi_list()
+                    poi_list = retrievePoiList()
                     #add pois to gui list
                     for item in poi_list:
                         self.pointsOI.addItem(item)
@@ -210,7 +210,7 @@ class PluginManagementTab(QWidget):
     def pluginxmlhandler(self, filePath, caller):
         global xml1
         global xml2
-        if(self.checkxml(filePath,caller)): # if xml is good
+        if(self.checkXml(filePath,caller)): # if xml is good
             if caller == 1:
                 tree = ET.parse(filePath)
                 xml1 = tree.getroot()
@@ -222,7 +222,7 @@ class PluginManagementTab(QWidget):
         return False # if xml is bad return false
 
     #check for errors on xml
-    def checkxml(self,filePath,caller):
+    def checkXml(self,filePath,caller):
         #check if its an xml
         is_xml = True
         if caller == 1 or caller == 2:
@@ -261,7 +261,7 @@ class PluginManagementTab(QWidget):
         for item in pluginList:
             self.searchList.addItem(item)
 
-    def update_poi_list(self,plugin):
+    def updatePoiList(self,plugin):
         self.pointsOI.clear()
 
         # get poi list
@@ -316,7 +316,7 @@ class PluginManagementTab(QWidget):
                 self.searchList.takeItem(self.searchList.row(item))
             self.updatePluginList()
 
-    def savexml(self):
+    def saveXml(self):
         global xml1
         global xml2
         global nameH
@@ -375,7 +375,7 @@ class PluginManagementTab(QWidget):
             if data == "":
                 errorMessageGenerator.showDialog("Enter a plugin dataset", "Missing dataset")
 
-    def edit_existing_plugin(self):
+    def editExistingPlugin(self):
         global plugin
         global descH
         pdesc = descH.toPlainText()
@@ -383,14 +383,8 @@ class PluginManagementTab(QWidget):
         self.pluginManager.updatePluginDescription(description, pdesc)
         errorMessageGenerator.showDialog("Description updated successfully", "Success")
 
-def save_xml_local(self):
-    global xml2
-    savePath = ("/mnt/c/Users/RedFlash05/Desktop")
-    name_of_file = ('testingSavingFunctionalitytolocal')
-    completeName = os.path.join(savePath, name_of_file + ".txt")
-
 #Returns a list of strings from XML1 only
-def retrieve_poi_list():
+def retrievePoiList():
     global xml1
     x = xml1.find("./DataInPlugin")
     list_of_poi = []
