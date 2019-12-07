@@ -142,7 +142,7 @@ class ProjectTab(QWidget):
 
         return False
 
-    def staticAnalysis(self, filePath):
+    def extractBinaryProperties(self, filePath):
         global fileProperties
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic",
                              "relocs",
@@ -169,7 +169,7 @@ class ProjectTab(QWidget):
         if fileName:
             if (self.checkArchitecture(fileName)):  # if valid architecture of exe file continue
                 self.binaryFilePath.setText(fileName)
-                self.staticAnalysis(fileName)
+                self.extractBinaryProperties(fileName)
                 global myFileName
                 myFileName = fileName
                 return fileName
