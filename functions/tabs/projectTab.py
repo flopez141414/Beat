@@ -89,7 +89,7 @@ class ProjectTab(QWidget):
         self.updateButton = QPushButton('Update Description')
         self.saveButton.toggle()
         self.saveButton.clicked.connect(self.saveFile)
-        self.updateButton.clicked.connect(self.edit_existing_project)
+        self.updateButton.clicked.connect(self.editExistingProject)
 
         searchButton.clicked.connect(self.clickedSearch)
         newButton.clicked.connect(self.createNew)
@@ -101,7 +101,7 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setColumnCount(2)
         self.fillBinaryFileProperties()
         self.binaryFileProp.setEnabled(False)
-        self.searchList.doubleClicked.connect(self.select_project)
+        self.searchList.doubleClicked.connect(self.selectProject)
         self.searchList.doubleClicked.connect(self.disableEditing)
 
         projectList = self.projectManager.getListOfProjects()
@@ -175,9 +175,6 @@ class ProjectTab(QWidget):
                 return fileName
 
         self.updateProjectList()
-
-    def getFileName(self):
-        return self.myFilename
 
     def saveFile(self):
         global projectNameHolder
@@ -293,7 +290,7 @@ class ProjectTab(QWidget):
         self.binFileLabel.clear()
         self.binFilePropLabel.clear()
 
-    def select_project(self):
+    def selectProject(self):
         global project
         # for this mode we will load the right layout
         self.loadRightLayout()
@@ -353,20 +350,6 @@ class ProjectTab(QWidget):
         else:
             pass
 
-    def turnOn(self):
-        self.saveButton.show()
-
-    def edit_existing_project(self):
-        global project
-        global projectDescHolder
-        pdesc = projectDescHolder.toPlainText()
-        name = project['Project']['Project_name']['#text']
-        description = project['Project']['projectDescription']['#text']
-        self.projectManager.updateProjectDescription(description, pdesc)
-
-    def turnOff(self):
-        self.saveButton.hide()
-
     def updateProjectList(self):
         global project
         global listCounter
@@ -377,7 +360,7 @@ class ProjectTab(QWidget):
             self.searchList.addItem(item)
             listCounter += 1
 
-    def edit_existing_project(self):
+    def editExistingProject(self):
         global project
         global projectDescHolder
         pdesc = projectDescHolder.toPlainText()

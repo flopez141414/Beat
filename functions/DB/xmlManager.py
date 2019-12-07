@@ -48,13 +48,21 @@ class ProjectXmlManager():
 class AnalysisXmlManager():
     def __init__(self):
         self.projectPath = MongoClient('localhost', 27017).beat.Project
-    
+        self.pluginPath = MongoClient('localhost', 27017).beat.Plugin
+
     def uploadAnalysis(self, xml):
         my_dict = xmltodict.parse(xml)
         self.projectPath.insert_one(my_dict)
         
     def getAnalysis(self):
         return self.projectPath.find()
+
+    def getListOfPluginsForAnalysis(self):
+        pluginList = self.pluginPath.find()
+        list_of_plugins = []
+        for item in pluginList:
+            list_of_plugins.append(item['Plugin']['Plugin_name']['#text'])
+        return list_of_plugins
          
 # Handles database requests generating from the Plugin Tab
 class PluginXmlManager():

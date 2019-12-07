@@ -14,7 +14,6 @@ from pymongo import MongoClient
 sys.path.append("../DB")
 sys.path.append("../windows")
 sys.path.append("../xml")
-from xmlManager import PluginXmlManager
 from xmlManager import AnalysisXmlManager
 import xml.etree.ElementTree as ET
 
@@ -35,7 +34,6 @@ class AnalysisTab(QWidget):
     def __init__(self):
         
         self.analysisManager = AnalysisXmlManager()
-        self.pluginManager = PluginXmlManager()
                 
         super().__init__()
         stringsPOI = []
@@ -126,7 +124,7 @@ class AnalysisTab(QWidget):
         self.populatePluginDropdown()
 
     def populatePluginDropdown(self):
-        pluginList = self.pluginManager.getListOfPlugins()
+        pluginList = self.analysisManager.getListOfPluginsForAnalysis()
         for plugin in pluginList:
             self.pluginDropdown.addItem(plugin)
 
