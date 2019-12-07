@@ -125,4 +125,8 @@ class PluginXmlManager():
             element1.append(xml2)
         return tree1
     
+class SystemXmlManager():
+    def __init__(self):
+        self.pluginPath = MongoClient('localhost', 27017).beat.Plugin
+    
     
