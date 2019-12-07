@@ -14,7 +14,6 @@ from pymongo import MongoClient
 sys.path.append("../DB")
 sys.path.append("../windows")
 sys.path.append("../xml")
-# import xmlUploader
 from xmlManager import PluginXmlManager
 from xmlManager import AnalysisXmlManager
 import xml.etree.ElementTree as ET

@@ -2,6 +2,8 @@ from pymongo import MongoClient
 import xmltodict
 import xml.etree.ElementTree as ET
 
+import xmlUploader
+
 
 # PROJECT TAB
 class ProjectXmlManager():
@@ -63,22 +65,12 @@ class PluginXmlManager():
         self.pluginPath = MongoClient('localhost', 27017).beat.Plugin
         self.systemPath = MongoClient('localhost', 27017).beat.System
     
-    def uploadSystem(self, xml): # also on beatmain.py(*gonna duplicate in system xml manager)
+    def uploadSystemOnSave(self, xml):
         my_dict = xmltodict.parse(xml)
         self.systemPath.insert_one(my_dict)
         
     def delete_system(self):
         self.systemPath.drop()
-        
-    def is_system_empty(self):
-        self.systemPath.find()
-        list_of_projects = []
-        for item in projectsList:
-            list_of_projects.append(item['System'])
-        if list_of_projects==[]:
-            return True
-        else:
-            return False
         
     def retrieve_list_of_plugins(self): # also on  analysisTab.py
         pluginList = self.pluginPath.find()
@@ -127,6 +119,19 @@ class PluginXmlManager():
     
 class SystemXmlManager():
     def __init__(self):
-        self.pluginPath = MongoClient('localhost', 27017).beat.Plugin
+        self.systemPath = MongoClient('localhost', 27017).beat.System
     
+    def uploadSystem(self, xml): # also on beatmain.py
+        my_dict = xmltodict.parse(xml)
+        self.systemPath.insert_one(my_dict)
+    
+    def is_system_empty(self):
+        projectsList = self.systemPath.find()
+        list_of_projects = []
+        for item in projectsList:
+            list_of_projects.append(item['System'])
+        if list_of_projects==[]:
+            return True
+        else:
+            return False
     

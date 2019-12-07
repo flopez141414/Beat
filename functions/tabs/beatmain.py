@@ -7,8 +7,7 @@ import xml.etree.ElementTree as ET
 import xmltodict
 sys.path.append("../DB")
 sys.path.append("../xml")
-import xmlUploader
-# from xmlManager import PluginXmlManager
+from xmlManager import SystemXmlManager
 
 
 from PyQt5 import QtGui, QtCore
@@ -26,8 +25,6 @@ def main():
     app = QApplication([])
     mainWindow = QMainWindow()
     
-#     pluginManager = PluginXmlManager()
-
     # dark theme
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53,53,53))
@@ -61,11 +58,12 @@ def main():
     
     sys.exit(app.exec())
 
+systemManager = SystemXmlManager()
 tree = ET.parse('../xml/Beat.xml')
 root = tree.getroot()
 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-if xmlUploader.is_system_empty():
-    xmlUploader.uploadSystem(my_dict)
+if systemManager.is_system_empty():
+    systemManager.uploadSystem(my_dict)
 else:
     x=0
 

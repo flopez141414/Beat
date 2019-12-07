@@ -1,7 +1,6 @@
 import sys
 import r2pipe
 import pymongo
-import xmlUploader
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 from xml.etree import ElementTree
@@ -363,7 +362,7 @@ class PluginManagementTab(QWidget):
                 self.pluginManager.delete_system()
                 systemTree=ET.parse('../xml/Beat.xml')
                 systemRoot=systemTree.getroot()
-                self.pluginManager.uploadSystem(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
+                self.pluginManager.uploadSystemOnSave(ET.tostring(systemRoot, encoding='utf8').decode('utf8'))
                 self.pluginManager.uploadPlugin(my_dict)
                 self.updatePluginList()
                 self.disableEditing()
