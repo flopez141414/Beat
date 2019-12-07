@@ -20,7 +20,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QWidget, QPushButton, QLabel, QGridLayout, QTextEdit, \
     QLineEdit, QListWidget, QFileDialog, QMessageBox, QComboBox
 
-# Global Vars
+# Global variables
 xml1 = []
 xml2 = []
 nameH = ""
@@ -135,7 +135,6 @@ class PluginManagementTab(QWidget):
         self.pluginDescLabel.clear()
         self.poisLabel.clear()
 
-
     def clickedSearch(self):
         target = self.searchBox.text()
         pluginList = self.pluginManager.getListOfPlugins()
@@ -199,7 +198,6 @@ class PluginManagementTab(QWidget):
                 if (self.pluginxmlhandler(fileName, 2)):  # if xml is good
                     self.pluginDataSet.setText(fileName)
                     self.pluginxmlhandler(fileName, 2)
-
 
             global myFileName
             myFileName = fileName
@@ -276,13 +274,11 @@ class PluginManagementTab(QWidget):
         self.pluginStructArea.setEnabled(True)
         self.pluginDataSet.setEnabled(True)
         self.pluginName.setEnabled(True)
-        # self.pluginDesc.setEnabled(True)
 
     def disableEditing(self):
         self.pluginStructArea.setEnabled(False)
         self.pluginDataSet.setEnabled(False)
         self.pluginName.setEnabled(False)
-        # self.pluginDesc.setEnabled(False)
 
     def createNew(self):
         # load buttons and Layout
@@ -298,7 +294,6 @@ class PluginManagementTab(QWidget):
         self.pluginDataSet.clear()
         self.pluginDataSet.setEnabled(True)
         self.pointsOI.clear()
-
         self.updatePluginList()
         self.enableEditing()
 

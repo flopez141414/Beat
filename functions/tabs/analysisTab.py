@@ -250,10 +250,7 @@ class AnalysisTab(QWidget):
         self.searchedWord = []
 
     def expandPOI(self):
-        client = MongoClient('localhost', 27017)  # client to access database
-        db = client.beat  # getting an instance of our DB
-        dataCollection = db.Project  # accessing a collection of documents in our DB
-        dataSet = dataCollection.find()
+        dataSet = self.analysisManager.getAnalysis()
         pois = dataSet[1]
         option = self.poiDropdown.currentText()
 
@@ -278,10 +275,7 @@ class AnalysisTab(QWidget):
                     self.fRelativeOrderLine.setText(poi['breakpoints']['breakpoint'])
 
     def displayPOI(self, option):
-        client = MongoClient('localhost', 27017)  # client to access database
-        db = client.beat  # getting an instance of our DB
-        dataCollection = db.Project  # accessing a collection of documents in our DB
-        dataSet = dataCollection.find()
+        dataSet = self.analysisManager.getAnalysis()
         pois = dataSet[1]
         
         if option == "Strings":
@@ -337,7 +331,7 @@ class AnalysisTab(QWidget):
 
     def makeFunctionsTree(self, functionsData, parentRoot, r2buffer):
         poiHolderElement = parentRoot.find('./StaticAnalysis')
-        r2buffer.cmd('doo')
+        r2buffer.cmd('doo') # need to open file in debug mode to find references for breakpoints
 
         for index in range(len(functionsData)):  # access each function
             myFunction = functionsData[index]  # this dictionary contains one function POI
@@ -385,7 +379,7 @@ class AnalysisTab(QWidget):
         functionsPOI = bina.cmd("aflj")
         jsonFunctions = json.loads(functionsPOI)
 
-        # get handle to POI holder xml, create POI xmls, and upload them to DB
+        # get handle to Project xml, create POI xmls, and upload them to DB
         parentTree = ET.parse('../xml/Project.xml')
         
         parentRoot = parentTree.getroot()

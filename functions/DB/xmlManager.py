@@ -52,6 +52,9 @@ class AnalysisXmlManager():
     def uploadAnalysis(self, xml):
         my_dict = xmltodict.parse(xml)
         self.projectPath.insert_one(my_dict)
+        
+    def getAnalysis(self):
+        return self.projectPath.find()
          
 # Handles database requests generating from the Plugin Tab
 class PluginXmlManager():

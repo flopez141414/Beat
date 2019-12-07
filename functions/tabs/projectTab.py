@@ -124,8 +124,8 @@ class ProjectTab(QWidget):
         self.binaryFilePath.setEnabled(False)
         self.binaryFileProp.setEnabled(False)
 
-    # B check if valid exe file is being uploaded
-    def check_architecture(self, filename):
+    # check if valid exe file is being uploaded
+    def checkArchitecture(self, filename):
         try:
             rlocal = r2pipe.open(filename)
             binInfo = rlocal.cmd('iI').splitlines()
@@ -141,8 +141,6 @@ class ProjectTab(QWidget):
             return False
 
         return False
-
-
 
     def staticAnalysis(self, filename):
         global fileProperties
@@ -169,7 +167,7 @@ class ProjectTab(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open file", "",
                                                   "All Files (*);;Python Files (*.py)", options=options)
         if fileName:
-            if (self.check_architecture(fileName)):  # B if valid architecture of exe file continue
+            if (self.checkArchitecture(fileName)):  # if valid architecture of exe file continue
                 self.binaryFilePath.setText(fileName)
                 self.staticAnalysis(fileName)
                 global myFileName
@@ -187,7 +185,6 @@ class ProjectTab(QWidget):
         global projectPathHolder
         global projectSelected
         global project
-        # self.turnOff()
         pname = projectNameHolder.toPlainText()
         pdesc = projectDescHolder.toPlainText()
         ppath = projectPathHolder.toPlainText()
@@ -387,4 +384,3 @@ class ProjectTab(QWidget):
         description = project['Project']['projectDescription']['#text']
         self.projectManager.updateProjectDescription(description, pdesc)
         errorMessageGenerator.showDialog("Description updated successfully", "Success")
-
