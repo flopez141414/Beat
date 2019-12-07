@@ -308,7 +308,7 @@ class PluginManagementTab(QWidget):
         if not toErase:
             errorMessageGnerator.showDialog("Please select a Plugin to delete", 'Delete plugin')
 
-        delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this plugin",
+        delete = errorMessageGnerator.confirmDeletion("Are you sure you want to delete this plugin",
                                                        "Delete confirmation")
         if delete:
             self.pluginManager.deleteSelectedPlugin(toErase)

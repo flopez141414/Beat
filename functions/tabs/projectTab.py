@@ -345,7 +345,7 @@ class ProjectTab(QWidget):
         toErase = projectNameHolder.toPlainText()
         if not toErase:
             errorMessageGnerator.showDialog("Please select a project to delete")
-        delete = errorMessageGnerator.confirm_deletion("Are you sure you want to delete this project",
+        delete = errorMessageGnerator.confirmDeletion("Are you sure you want to delete this project",
                                                        "Delete confirmation")
         if delete:
             self.projectManager.deleteSelectedProject(toErase)

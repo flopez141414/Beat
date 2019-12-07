@@ -16,7 +16,7 @@ def showDialog(message, title):
     if returnValue == QMessageBox.Ok:
         pass
 
-def confirm_deletion(message, title):
+def confirmDeletion(message, title):
     msgBox = QMessageBox()
     msgBox.setIcon(QMessageBox.Question)
     msgBox.setText(message)
@@ -29,14 +29,3 @@ def confirm_deletion(message, title):
         return True
     elif returnValue == QMessageBox.No:
         return False
-
-
-def infoToast(message, title):
-    msgBox = QMessageBox()
-    msgBox.setIcon(QMessageBox.Information)
-    msgBox.setText(message)
-    msgBox.setWindowTitle(title)
-    msgBox.setStandardButtons(QMessageBox.Ok)
-    msgBox.setSizeIncrement(1, 1)
-    msgBox.setSizeGripEnabled(True)
-    returnValue = msgBox.exec()
