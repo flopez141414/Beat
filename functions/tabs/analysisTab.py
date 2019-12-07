@@ -34,7 +34,7 @@ from OutputFieldView import Ui_Dialog as output_Field_Window
 class AnalysisTab(QWidget):
     def __init__(self):
         
-        self.AnalysisXmlManager = AnalysisXmlManager()
+        self.analysisManager = AnalysisXmlManager()
         self.pluginManager = PluginXmlManager()
                 
         super().__init__()
@@ -126,7 +126,7 @@ class AnalysisTab(QWidget):
         self.populate_plugin_dropdown()
 
     def populate_plugin_dropdown(self):
-        pluginList = self.pluginManager.retrieve_list_of_plugins()
+        pluginList = self.pluginManager.getListOfPlugins()
         for plugin in pluginList:
             self.pluginDropdown.addItem(plugin)
 
@@ -395,7 +395,7 @@ class AnalysisTab(QWidget):
         self.makeStringTree(jsonStrings, parentRoot)
         self.makeFunctionsTree(jsonFunctions, parentRoot, bina)
         parent_dict = ET.tostring(parentRoot, encoding='utf8').decode('utf8')
-        self.AnalysisXmlManager.uploadDataSet(parent_dict)
+        self.analysisManager.uploadAnalysis(parent_dict)
 
         self.terminal.append("Static Analysis done!")
         

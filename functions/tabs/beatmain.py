@@ -62,7 +62,7 @@ systemManager = SystemXmlManager()
 tree = ET.parse('../xml/Beat.xml')
 root = tree.getroot()
 my_dict = ET.tostring(root, encoding='utf8').decode('utf8')
-if systemManager.is_system_empty():
+if systemManager.isSystemEmpty():
     systemManager.uploadSystem(my_dict)
 else:
     x=0
