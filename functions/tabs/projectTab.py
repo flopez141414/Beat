@@ -125,9 +125,9 @@ class ProjectTab(QWidget):
         self.binaryFileProp.setEnabled(False)
 
     # check if valid exe file is being uploaded
-    def checkArchitecture(self, filename):
+    def checkArchitecture(self, filePath):
         try:
-            rlocal = r2pipe.open(filename)
+            rlocal = r2pipe.open(filePath)
             binInfo = rlocal.cmd('iI').splitlines()
             for x in binInfo:
                 matchingline = [s for s in binInfo if x in s]
@@ -142,12 +142,12 @@ class ProjectTab(QWidget):
 
         return False
 
-    def staticAnalysis(self, filename):
+    def staticAnalysis(self, filePath):
         global fileProperties
         binPropertiesList = ["os", "bintype", "machine", "class", "bits", "lang", "canary", "crypto", "nx", "pic",
                              "relocs",
                              "relro", "stripped"]
-        rlocal = r2pipe.open(filename)
+        rlocal = r2pipe.open(filePath)
         colNum = 0
         binInfo = rlocal.cmd('iI').splitlines()
         for item in binPropertiesList:
